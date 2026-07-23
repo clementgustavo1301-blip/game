@@ -1,0 +1,3980 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Missão Virada Ocupacional — 1º Workshop de Inteligência Ocupacional do RN</title>
+<meta name="description" content="Jogo interativo de gestão ocupacional. Tome decisões estratégicas e transforme a saúde e performance da sua empresa. A Virada Começa Agora!">
+<meta name="theme-color" content="#0a1628">
+<style>
+/* ============================================
+   MISSÃO VIRADA OCUPACIONAL — CSS
+   Identidade: Azul-escuro, azul elétrico, 
+   amarelo destaque, visual corporativo/tech
+   ============================================ */
+
+/* ---------- RESET & BASE ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --bg-primary: #0a1628;
+  --bg-secondary: #0f1f3a;
+  --bg-card: rgba(15, 31, 58, 0.85);
+  --bg-glass: rgba(15, 31, 58, 0.6);
+  --blue-electric: #00b4ff;
+  --blue-medium: #1a73e8;
+  --blue-light: #4fc3f7;
+  --blue-dark: #0d2137;
+  --yellow: #ffc107;
+  --yellow-light: #ffca28;
+  --green: #00e676;
+  --green-dark: #00c853;
+  --red: #ff5252;
+  --red-dark: #d32f2f;
+  --orange: #ff9800;
+  --white: #ffffff;
+  --gray-100: #e0e6ed;
+  --gray-200: #b0bec5;
+  --gray-300: #78909c;
+  --gray-400: #546e7a;
+  --gradient-hero: linear-gradient(135deg, #0a1628 0%, #0f2940 40%, #1a3a5c 100%);
+  --gradient-card: linear-gradient(145deg, rgba(0,180,255,0.08) 0%, rgba(15,31,58,0.95) 100%);
+  --gradient-accent: linear-gradient(90deg, #00b4ff, #1a73e8);
+  --gradient-gold: linear-gradient(90deg, #ffc107, #ff9800);
+  --shadow-card: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,180,255,0.1);
+  --shadow-glow: 0 0 20px rgba(0,180,255,0.3);
+  --shadow-button: 0 4px 15px rgba(0,180,255,0.3);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Outfit', 'Inter', sans-serif;
+}
+
+html { 
+  font-size: 16px; 
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-primary);
+  background: var(--bg-primary);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- BACKGROUND PATTERN ---------- */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(0,180,255,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(26,115,232,0.05) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255,193,7,0.02) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Grid pattern overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    linear-gradient(rgba(0,180,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,180,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- UTILITY CLASSES ---------- */
+.hidden { display: none !important; }
+.flex-center { display: flex; align-items: center; justify-content: center; }
+.text-center { text-align: center; }
+.text-yellow { color: var(--yellow); }
+.text-blue { color: var(--blue-electric); }
+.text-green { color: var(--green); }
+.text-red { color: var(--red); }
+
+/* ---------- SCREEN CONTAINER ---------- */
+.screen {
+  display: none;
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 20px;
+  animation: fadeInScreen 0.5s ease-out;
+}
+.screen.active { display: flex; flex-direction: column; align-items: center; }
+
+@keyframes fadeInScreen {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- HEADER BAR ---------- */
+.game-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(10, 22, 40, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,180,255,0.15);
+  padding: 8px 16px;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.game-header.visible { display: flex; }
+
+.header-timer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--blue-electric);
+}
+.header-timer svg { width: 18px; height: 18px; }
+
+.header-round {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gray-200);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-icon {
+  background: rgba(0,180,255,0.1);
+  border: 1px solid rgba(0,180,255,0.2);
+  color: var(--blue-electric);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+.btn-icon:hover { background: rgba(0,180,255,0.2); transform: scale(1.1); }
+.btn-icon svg { width: 18px; height: 18px; }
+
+/* ---------- MINI INDICATORS (HEADER) ---------- */
+.mini-indicators {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.mini-ind {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.mini-ind-bar {
+  width: 40px;
+  height: 5px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.mini-ind-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s ease, background 0.5s ease;
+}
+
+/* ---------- PROGRESS BAR ---------- */
+.progress-container {
+  position: fixed;
+  top: 52px;
+  left: 0; right: 0;
+  z-index: 99;
+  height: 4px;
+  background: rgba(0,180,255,0.1);
+  display: none;
+}
+.progress-container.visible { display: block; }
+.progress-fill {
+  height: 100%;
+  background: var(--gradient-accent);
+  border-radius: 0 2px 2px 0;
+  transition: width 0.6s ease;
+  box-shadow: 0 0 10px rgba(0,180,255,0.5);
+}
+
+/* ---------- LANDING SCREEN ---------- */
+.landing-content {
+  max-width: 600px;
+  text-align: center;
+  padding: 60px 20px 40px;
+}
+
+.landing-logo {
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 30px;
+  position: relative;
+}
+.landing-logo .logo-ring {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: 3px solid var(--blue-electric);
+  border-radius: 50%;
+  animation: pulseRing 2s ease-in-out infinite;
+}
+.landing-logo .logo-ring:nth-child(2) { 
+  animation-delay: 0.5s;
+  border-color: rgba(0,180,255,0.4);
+  transform: scale(1.15);
+}
+.landing-logo .logo-icon {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+}
+
+@keyframes pulseRing {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.6; }
+}
+
+.landing-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: rgba(0,180,255,0.1);
+  border: 1px solid rgba(0,180,255,0.3);
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--blue-light);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+}
+
+.landing-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--white) 0%, var(--blue-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.landing-subtitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
+  font-weight: 700;
+  color: var(--yellow);
+  margin-bottom: 20px;
+}
+.landing-desc {
+  font-size: 0.95rem;
+  color: var(--gray-200);
+  line-height: 1.7;
+  margin-bottom: 32px;
+}
+.landing-tagline {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--yellow);
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+/* ---------- BUTTONS ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 36px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  min-height: 54px;
+  min-width: 200px;
+  position: relative;
+  overflow: hidden;
+}
+.btn:active { transform: scale(0.97); }
+.btn:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; }
+
+.btn-primary {
+  background: var(--gradient-accent);
+  color: var(--white);
+  box-shadow: var(--shadow-button);
+}
+.btn-primary:hover { 
+  box-shadow: 0 6px 25px rgba(0,180,255,0.5);
+  transform: translateY(-2px);
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: linear-gradient(transparent, rgba(255,255,255,0.1), transparent);
+  transform: rotate(45deg) translateY(-100%);
+  transition: transform 0.6s;
+}
+.btn-primary:hover::after { transform: rotate(45deg) translateY(100%); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--blue-electric);
+  border: 2px solid var(--blue-electric);
+}
+.btn-secondary:hover {
+  background: rgba(0,180,255,0.1);
+  transform: translateY(-2px);
+}
+
+.btn-gold {
+  background: var(--gradient-gold);
+  color: var(--bg-primary);
+  box-shadow: 0 4px 15px rgba(255,193,7,0.3);
+}
+.btn-gold:hover {
+  box-shadow: 0 6px 25px rgba(255,193,7,0.5);
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: linear-gradient(90deg, var(--red), var(--red-dark));
+  color: var(--white);
+}
+
+.btn-sm {
+  padding: 10px 20px;
+  font-size: 0.85rem;
+  min-height: 42px;
+  min-width: auto;
+}
+
+.btn-full { width: 100%; }
+
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+}
+
+/* ---------- CARDS ---------- */
+.card {
+  background: var(--gradient-card);
+  border: 1px solid rgba(0,180,255,0.12);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(10px);
+  transition: var(--transition);
+}
+.card:hover { border-color: rgba(0,180,255,0.25); }
+
+.card-tech {
+  position: relative;
+  overflow: hidden;
+}
+.card-tech::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gradient-accent);
+}
+
+/* ---------- FORM ELEMENTS ---------- */
+.form-group {
+  margin-bottom: 16px;
+  width: 100%;
+}
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gray-200);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(0,180,255,0.05);
+  border: 1.5px solid rgba(0,180,255,0.2);
+  border-radius: var(--radius-sm);
+  color: var(--white);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--blue-electric);
+  box-shadow: 0 0 0 3px rgba(0,180,255,0.15);
+  background: rgba(0,180,255,0.08);
+}
+.form-group input::placeholder { color: var(--gray-400); }
+
+.checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 16px 0;
+}
+.checkbox-group input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  accent-color: var(--blue-electric);
+  margin-top: 2px;
+  cursor: pointer;
+}
+.checkbox-group label {
+  font-size: 0.85rem;
+  color: var(--gray-200);
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+/* ---------- INDICATORS ---------- */
+.indicators-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.indicator-card {
+  background: var(--gradient-card);
+  border: 1px solid rgba(0,180,255,0.12);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.indicator-card.critical {
+  border-color: rgba(255,82,82,0.5);
+  animation: criticalPulse 1.5s ease-in-out infinite;
+}
+@keyframes criticalPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,82,82,0); }
+  50% { box-shadow: 0 0 20px rgba(255,82,82,0.3); }
+}
+
+.indicator-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.indicator-icon svg { width: 32px; height: 32px; }
+
+.indicator-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gray-200);
+  margin-bottom: 8px;
+}
+
+.indicator-value {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+  transition: color 0.5s ease;
+}
+
+.indicator-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.indicator-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s ease, background 0.5s ease;
+}
+
+/* ---------- ROUND SCREEN ---------- */
+.round-container {
+  max-width: 800px;
+  width: 100%;
+  padding-top: 70px;
+}
+
+.round-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.round-number {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--blue-electric);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+.round-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.situation-card {
+  background: var(--gradient-card);
+  border: 1px solid rgba(0,180,255,0.15);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 24px;
+  position: relative;
+}
+.situation-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--gradient-accent);
+  border-radius: var(--radius) var(--radius) 0 0;
+}
+.situation-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--blue-electric);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.situation-text {
+  font-size: 0.95rem;
+  color: var(--gray-100);
+  line-height: 1.7;
+}
+
+/* ---------- DECISION OPTIONS ---------- */
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.option-card {
+  background: rgba(15, 31, 58, 0.7);
+  border: 2px solid rgba(0,180,255,0.1);
+  border-radius: var(--radius);
+  padding: 20px;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.option-card:hover {
+  border-color: rgba(0,180,255,0.4);
+  background: rgba(15, 31, 58, 0.9);
+  transform: translateX(4px);
+}
+.option-card:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 2px;
+}
+.option-card.selected {
+  border-color: var(--blue-electric);
+  background: rgba(0,180,255,0.1);
+}
+.option-card.correct {
+  border-color: var(--green);
+  background: rgba(0,230,118,0.08);
+}
+.option-card.wrong {
+  border-color: var(--red);
+  background: rgba(255,82,82,0.08);
+}
+.option-card.neutral {
+  border-color: var(--orange);
+  background: rgba(255,152,0,0.08);
+}
+
+.option-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,180,255,0.15);
+  color: var(--blue-electric);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.9rem;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+.option-card.selected .option-letter {
+  background: var(--blue-electric);
+  color: var(--white);
+}
+
+.option-content {
+  display: flex;
+  align-items: flex-start;
+}
+.option-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--gray-100);
+}
+
+/* ---------- FEEDBACK PANEL ---------- */
+.feedback-panel {
+  background: var(--gradient-card);
+  border: 1px solid rgba(0,180,255,0.15);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-top: 16px;
+  animation: slideUp 0.4s ease-out;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.feedback-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.feedback-text {
+  font-size: 0.9rem;
+  color: var(--gray-200);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+.feedback-expert {
+  background: rgba(0,180,255,0.06);
+  border-left: 3px solid var(--blue-electric);
+  padding: 12px 16px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-top: 12px;
+}
+.feedback-expert-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--blue-electric);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+.feedback-expert-text {
+  font-size: 0.85rem;
+  color: var(--gray-200);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+.impact-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.03);
+}
+.impact-item.positive { color: var(--green); }
+.impact-item.negative { color: var(--red); }
+.impact-item.neutral-impact { color: var(--orange); }
+
+/* ---------- SURPRISE EVENT ---------- */
+.event-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10,22,40,0.95);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+.event-overlay.active { display: flex; }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.event-card {
+  max-width: 500px;
+  width: 100%;
+  background: var(--gradient-card);
+  border: 2px solid rgba(255,193,7,0.3);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  text-align: center;
+  animation: eventPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+.event-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--gradient-gold);
+}
+
+@keyframes eventPop {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.event-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  background: rgba(255,193,7,0.15);
+  border: 1px solid rgba(255,193,7,0.3);
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--yellow);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+.event-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.event-text {
+  font-size: 0.9rem;
+  color: var(--gray-200);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+/* ---------- RESULT SCREEN ---------- */
+.result-container {
+  max-width: 700px;
+  width: 100%;
+  padding-top: 30px;
+}
+
+.result-score-circle {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 24px;
+  position: relative;
+}
+.result-score-circle svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.result-score-circle .score-bg {
+  fill: none;
+  stroke: rgba(255,255,255,0.08);
+  stroke-width: 8;
+}
+.result-score-circle .score-fill {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 2s ease;
+}
+.result-score-value {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.result-score-number {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.result-score-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--gray-300);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.result-profile {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.result-profile-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+.result-profile-phrase {
+  font-size: 0.9rem;
+  color: var(--gray-200);
+  font-style: italic;
+}
+
+.result-section {
+  margin-bottom: 20px;
+}
+.result-section-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blue-electric);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.result-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(0,180,255,0.2);
+}
+
+.result-indicators {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.result-ind-item {
+  background: rgba(0,180,255,0.05);
+  border: 1px solid rgba(0,180,255,0.1);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  text-align: center;
+}
+.result-ind-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--gray-300);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.result-ind-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+}
+
+.result-list {
+  list-style: none;
+  padding: 0;
+}
+.result-list li {
+  padding: 8px 0;
+  font-size: 0.9rem;
+  color: var(--gray-100);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  line-height: 1.5;
+}
+.result-list li::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  border-radius: 50%;
+  margin-top: 8px;
+}
+.result-list.strengths li::before { background: var(--green); }
+.result-list.weaknesses li::before { background: var(--red); }
+
+.recommendation-card {
+  background: linear-gradient(135deg, rgba(0,180,255,0.08), rgba(255,193,7,0.05));
+  border: 1px solid rgba(255,193,7,0.2);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-top: 16px;
+}
+.recommendation-card h4 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--yellow);
+  margin-bottom: 8px;
+}
+.recommendation-card p {
+  font-size: 0.9rem;
+  color: var(--gray-200);
+  line-height: 1.7;
+}
+
+/* ---------- CTA SCREEN ---------- */
+.cta-container {
+  max-width: 600px;
+  width: 100%;
+  padding-top: 30px;
+}
+.cta-event-card {
+  background: var(--gradient-card);
+  border: 2px solid rgba(255,193,7,0.2);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.cta-event-card h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 4vw, 1.6rem);
+  font-weight: 800;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+.cta-event-detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  font-size: 0.9rem;
+  color: var(--gray-200);
+  margin-bottom: 8px;
+}
+.cta-event-detail svg { width: 18px; height: 18px; color: var(--yellow); flex-shrink: 0; }
+
+/* ---------- RANKING SCREEN ---------- */
+.ranking-container {
+  max-width: 700px;
+  width: 100%;
+  padding-top: 70px;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+.ranking-table th {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--gray-300);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 12px;
+  text-align: left;
+}
+.ranking-table td {
+  padding: 12px;
+  font-size: 0.85rem;
+  background: rgba(15,31,58,0.6);
+  border: 1px solid rgba(0,180,255,0.08);
+}
+.ranking-table tr td:first-child {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+.ranking-table tr td:last-child {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.ranking-table .rank-1 td { border-color: rgba(255,215,0,0.3); background: rgba(255,215,0,0.05); }
+.ranking-table .rank-2 td { border-color: rgba(192,192,192,0.3); background: rgba(192,192,192,0.03); }
+.ranking-table .rank-3 td { border-color: rgba(205,127,50,0.3); background: rgba(205,127,50,0.03); }
+
+.rank-position {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-align: center;
+}
+.rank-medal { font-size: 1.3rem; }
+.rank-score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--blue-electric);
+}
+
+/* ---------- ADMIN PANEL ---------- */
+.admin-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10,22,40,0.98);
+  z-index: 300;
+  display: none;
+  overflow-y: auto;
+  padding: 20px;
+}
+.admin-overlay.active { display: block; }
+
+.admin-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.admin-header h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.admin-stat {
+  background: rgba(0,180,255,0.06);
+  border: 1px solid rgba(0,180,255,0.12);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+}
+.admin-stat-value {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--blue-electric);
+}
+.admin-stat-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--gray-300);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.admin-section {
+  background: var(--gradient-card);
+  border: 1px solid rgba(0,180,255,0.12);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.admin-section h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--blue-electric);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admin-search {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.admin-search input {
+  flex: 1;
+  padding: 10px 14px;
+  background: rgba(0,180,255,0.05);
+  border: 1px solid rgba(0,180,255,0.2);
+  border-radius: var(--radius-sm);
+  color: var(--white);
+  font-family: var(--font-primary);
+  font-size: 0.9rem;
+}
+.admin-search input:focus {
+  outline: none;
+  border-color: var(--blue-electric);
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+.admin-table th {
+  text-align: left;
+  padding: 8px;
+  color: var(--gray-300);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(0,180,255,0.1);
+  cursor: pointer;
+  user-select: none;
+}
+.admin-table th:hover { color: var(--blue-electric); }
+.admin-table td {
+  padding: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--gray-100);
+}
+
+.admin-profile-dist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-profile-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.admin-profile-label {
+  width: 160px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray-200);
+  text-align: right;
+  flex-shrink: 0;
+}
+.admin-profile-fill-bg {
+  flex: 1;
+  height: 20px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.admin-profile-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+  display: flex;
+  align-items: center;
+  padding-left: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--white);
+  min-width: fit-content;
+}
+
+/* ---------- DIAGNOSTIC PRINT ---------- */
+.diagnostic-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10,22,40,0.98);
+  z-index: 250;
+  display: none;
+  overflow-y: auto;
+}
+.diagnostic-overlay.active { display: block; }
+
+.diagnostic-page {
+  max-width: 800px;
+  margin: 20px auto;
+  background: #ffffff;
+  color: #1a1a2e;
+  padding: 40px;
+  border-radius: var(--radius);
+  font-family: var(--font-primary);
+}
+
+/* ---------- CONFETTI ---------- */
+.confetti-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 999;
+  overflow: hidden;
+}
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  width: 10px;
+  height: 10px;
+  opacity: 0;
+  animation: confettiFall linear forwards;
+}
+@keyframes confettiFall {
+  0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+  100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+}
+
+/* ---------- ALERT NOTIFICATION ---------- */
+.alert-toast {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  z-index: 150;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  transition: all 0.4s ease;
+  max-width: 90%;
+  text-align: center;
+}
+.alert-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.alert-toast.warning {
+  background: rgba(255,152,0,0.9);
+  color: var(--white);
+  border: 1px solid rgba(255,152,0,1);
+}
+.alert-toast.critical-alert {
+  background: rgba(255,82,82,0.9);
+  color: var(--white);
+  border: 1px solid rgba(255,82,82,1);
+  animation: shake 0.5s ease;
+}
+.alert-toast.success {
+  background: rgba(0,230,118,0.9);
+  color: var(--bg-primary);
+  border: 1px solid rgba(0,230,118,1);
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  25% { transform: translateX(calc(-50% + 5px)) translateY(0); }
+  75% { transform: translateX(calc(-50% - 5px)) translateY(0); }
+}
+
+/* ---------- IIO EVOLUTION BAR ---------- */
+.iio-bar-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 16px auto;
+  padding: 12px 16px;
+  background: rgba(0,180,255,0.05);
+  border: 1px solid rgba(0,180,255,0.1);
+  border-radius: var(--radius-sm);
+}
+.iio-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.iio-label span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--gray-300);
+}
+.iio-label .iio-value {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--blue-electric);
+}
+.iio-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.iio-fill {
+  height: 100%;
+  background: var(--gradient-accent);
+  border-radius: 5px;
+  transition: width 1s ease;
+  box-shadow: 0 0 8px rgba(0,180,255,0.4);
+}
+
+/* ---------- PASSWORD MODAL ---------- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10,22,40,0.9);
+  z-index: 400;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.active { display: flex; }
+.modal-box {
+  background: var(--bg-secondary);
+  border: 1px solid rgba(0,180,255,0.2);
+  border-radius: var(--radius);
+  padding: 32px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+.modal-box h3 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.modal-box input {
+  width: 100%;
+  padding: 12px;
+  background: rgba(0,180,255,0.05);
+  border: 1px solid rgba(0,180,255,0.2);
+  border-radius: var(--radius-sm);
+  color: var(--white);
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.modal-box input:focus { outline: none; border-color: var(--blue-electric); }
+
+/* ---------- FOOTER ---------- */
+.footer {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--gray-400);
+  position: relative;
+  z-index: 1;
+}
+.footer-admin-btn {
+  background: none;
+  border: none;
+  color: var(--gray-400);
+  cursor: pointer;
+  font-size: 0.65rem;
+  padding: 4px 8px;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+}
+.footer-admin-btn:hover { opacity: 1; color: var(--gray-200); }
+
+/* ---------- COUNTDOWN OVERLAY ---------- */
+.countdown-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10,22,40,0.95);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.countdown-overlay.active { display: flex; }
+.countdown-number {
+  font-family: var(--font-display);
+  font-size: 8rem;
+  font-weight: 900;
+  color: var(--blue-electric);
+  animation: countPulse 1s ease;
+  text-shadow: 0 0 40px rgba(0,180,255,0.5);
+}
+@keyframes countPulse {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ---------- SCROLLBAR ---------- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(0,180,255,0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,180,255,0.5); }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .indicators-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .indicator-card { padding: 14px; }
+  .indicator-value { font-size: 1.8rem; }
+  .mini-indicators { display: none; }
+  .impact-grid { grid-template-columns: 1fr; }
+  .result-indicators { grid-template-columns: 1fr 1fr; }
+  .btn { min-width: 160px; padding: 14px 24px; }
+  .admin-profile-label { width: 100px; font-size: 0.65rem; }
+  .admin-table { font-size: 0.7rem; }
+  .admin-table th, .admin-table td { padding: 6px 4px; }
+  .diagnostic-page { padding: 20px; margin: 10px; }
+}
+@media (max-width: 480px) {
+  .indicators-grid { grid-template-columns: 1fr; }
+  .result-indicators { grid-template-columns: 1fr; }
+  .btn-group { flex-direction: column; align-items: stretch; }
+  .btn { width: 100%; }
+  .landing-content { padding: 40px 16px 30px; }
+}
+
+/* ---------- PRINT STYLES ---------- */
+@media print {
+  body { background: #fff !important; color: #1a1a2e !important; }
+  body::before, body::after { display: none !important; }
+  .game-header, .progress-container, .footer, .screen, .admin-overlay,
+  .event-overlay, .modal-overlay, .countdown-overlay, .confetti-container,
+  .alert-toast, .no-print { display: none !important; }
+  .diagnostic-overlay { 
+    display: block !important; 
+    position: static !important; 
+    background: none !important;
+  }
+  .diagnostic-page { 
+    box-shadow: none !important; 
+    margin: 0 !important; 
+    border-radius: 0 !important;
+    max-width: 100% !important;
+  }
+  .diagnostic-page .diag-header { border-bottom: 2px solid #1a73e8; padding-bottom: 16px; }
+  .diagnostic-page h1 { color: #0a1628; font-size: 1.5rem; }
+  .diagnostic-page h2 { color: #1a73e8; font-size: 1.1rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; }
+}
+
+/* ---------- TRANSITIONS FOR ENVIRONMENT ---------- */
+.env-healthy { 
+  --env-glow: rgba(0,230,118,0.05);
+  --env-border: rgba(0,230,118,0.15);
+}
+.env-warning {
+  --env-glow: rgba(255,152,0,0.05);
+  --env-border: rgba(255,152,0,0.15);
+}
+.env-critical {
+  --env-glow: rgba(255,82,82,0.05);
+  --env-border: rgba(255,82,82,0.15);
+}
+
+/* ---------- ANIMATION HELPERS ---------- */
+.animate-in {
+  animation: fadeSlideIn 0.5s ease-out both;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+
+/* Pulsing glow for buttons */
+.pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: var(--shadow-button); }
+  50% { box-shadow: 0 0 30px rgba(0,180,255,0.5), 0 0 60px rgba(0,180,255,0.2); }
+}
+
+/* Number counter animation helper */
+.counter-animate {
+  display: inline-block;
+  transition: all 0.5s ease;
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     ALERT TOAST 
+     ============================================ -->
+<div id="alertToast" class="alert-toast"></div>
+
+<!-- ============================================
+     GAME HEADER 
+     ============================================ -->
+<header id="gameHeader" class="game-header">
+  <div class="header-timer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+    <span id="headerTimer">00:00</span>
+  </div>
+  <div id="headerRound" class="header-round">Rodada 1/7</div>
+  <div class="mini-indicators" id="miniIndicators">
+    <div class="mini-ind" title="Saúde">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00e676" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <div class="mini-ind-bar"><div id="miniHealth" class="mini-ind-fill" style="width:35%;background:var(--green)"></div></div>
+    </div>
+    <div class="mini-ind" title="Jurídica">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4fc3f7" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div class="mini-ind-bar"><div id="miniLegal" class="mini-ind-fill" style="width:25%;background:var(--blue-light)"></div></div>
+    </div>
+    <div class="mini-ind" title="Produtividade">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ffc107" stroke-width="2"><polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/></svg>
+      <div class="mini-ind-bar"><div id="miniProd" class="mini-ind-fill" style="width:40%;background:var(--yellow)"></div></div>
+    </div>
+    <div class="mini-ind" title="Financeira">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff9800" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <div class="mini-ind-bar"><div id="miniFinance" class="mini-ind-fill" style="width:45%;background:var(--orange)"></div></div>
+    </div>
+  </div>
+  <div class="header-controls">
+    <button id="btnSound" class="btn-icon" title="Som" aria-label="Alternar som">
+      <svg id="soundOnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+      <svg id="soundOffIcon" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+    </button>
+    <button id="btnFullscreen" class="btn-icon" title="Tela cheia" aria-label="Tela cheia">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,3 21,3 21,9"/><polyline points="9,21 3,21 3,15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- PROGRESS BAR -->
+<div id="progressContainer" class="progress-container">
+  <div id="progressFill" class="progress-fill" style="width:0%"></div>
+</div>
+
+<!-- ============================================
+     SCREEN 1: LANDING
+     ============================================ -->
+<section id="screenLanding" class="screen active">
+  <div class="landing-content">
+    <div class="landing-logo">
+      <div class="logo-ring"></div>
+      <div class="logo-ring"></div>
+      <div class="logo-icon">
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+          <circle cx="30" cy="20" r="8" stroke="#00b4ff" stroke-width="2.5" fill="none"/>
+          <path d="M15 45c0-8.28 6.72-15 15-15s15 6.72 15 15" stroke="#00b4ff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M30 30v-5" stroke="#ffc107" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M25 18h10" stroke="#ffc107" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="47" cy="15" r="5" stroke="#00e676" stroke-width="1.5" fill="none"/>
+          <polyline points="44,15 46,17 50,13" stroke="#00e676" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="8" y="35" width="10" height="12" rx="2" stroke="#4fc3f7" stroke-width="1.5" fill="none"/>
+          <line x1="11" y1="38" x2="15" y2="38" stroke="#4fc3f7" stroke-width="1"/>
+          <line x1="11" y1="41" x2="15" y2="41" stroke="#4fc3f7" stroke-width="1"/>
+          <line x1="11" y1="44" x2="14" y2="44" stroke="#4fc3f7" stroke-width="1"/>
+        </svg>
+      </div>
+    </div>
+    <div class="landing-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+      1º Workshop de Inteligência Ocupacional do RN
+    </div>
+    <h1 class="landing-title">MISSÃO VIRADA OCUPACIONAL</h1>
+    <p class="landing-subtitle">A Virada Começa Agora</p>
+    <p class="landing-desc">
+      Assuma a gestão de uma empresa em crise ocupacional. Tome decisões estratégicas sobre saúde, 
+      segurança, liderança e custos. Transforme indicadores críticos antes que seja tarde.
+    </p>
+    <p class="landing-tagline">Você está pronto para a virada?</p>
+    <button class="btn btn-primary pulse-glow" onclick="Game.showScreen('register')" aria-label="Começar o jogo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"/></svg>
+      COMEÇAR
+    </button>
+  </div>
+  <div class="footer">
+    <p>Realização: Ecosafety &amp; Ecoclinic Medicina do Trabalho</p>
+    <p style="margin-top:4px;">20 de agosto de 2026 — CDL Mossoró — 18h às 22h</p>
+    <button class="footer-admin-btn" onclick="Admin.showPasswordModal()" aria-label="Acesso administrativo">Administração</button>
+  </div>
+</section>
+
+<!-- ============================================
+     SCREEN 2: REGISTER
+     ============================================ -->
+<section id="screenRegister" class="screen">
+  <div class="landing-content" style="padding-top:40px; max-width:500px;">
+    <h2 class="landing-title" style="font-size:clamp(1.5rem,4vw,2rem); margin-bottom:8px;">Identificação do Jogador</h2>
+    <p class="landing-desc" style="margin-bottom:24px;">Preencha seus dados para iniciar a missão. Suas informações serão salvas apenas neste dispositivo.</p>
+    
+    <form id="registerForm" onsubmit="return Game.handleRegister(event)" novalidate>
+      <div class="form-group">
+        <label for="playerName">Nome completo *</label>
+        <input type="text" id="playerName" placeholder="Seu nome" required autocomplete="name" maxlength="100">
+      </div>
+      <div class="form-group">
+        <label for="playerCompany">Empresa *</label>
+        <input type="text" id="playerCompany" placeholder="Nome da empresa" required autocomplete="organization" maxlength="100">
+      </div>
+      <div class="form-group">
+        <label for="playerRole">Cargo</label>
+        <input type="text" id="playerRole" placeholder="Seu cargo" autocomplete="organization-title" maxlength="100">
+      </div>
+      <div class="form-group">
+        <label for="playerWhatsapp">WhatsApp</label>
+        <input type="tel" id="playerWhatsapp" placeholder="(00) 00000-0000" autocomplete="tel" maxlength="20">
+      </div>
+      <div class="form-group">
+        <label for="playerEmail">E-mail</label>
+        <input type="email" id="playerEmail" placeholder="seu@email.com" autocomplete="email" maxlength="100">
+      </div>
+      
+      <div class="checkbox-group">
+        <input type="checkbox" id="consentCheck" required>
+        <label for="consentCheck">
+          Concordo com a utilização dos meus dados para comunicações relacionadas ao 
+          1º Workshop de Inteligência Ocupacional do RN, conforme a LGPD (Lei nº 13.709/2018). 
+          Meus dados serão armazenados apenas neste dispositivo e poderão ser removidos a qualquer momento.
+        </label>
+      </div>
+      
+      <button type="submit" class="btn btn-gold btn-full" style="margin-top:8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        INICIAR A VIRADA
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================
+     SCREEN 3: CONTEXT / BRIEFING
+     ============================================ -->
+<section id="screenContext" class="screen">
+  <div class="round-container" style="padding-top:30px;">
+    <div class="text-center animate-in">
+      <div class="landing-badge" style="margin-bottom:16px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        BRIEFING DA MISSÃO
+      </div>
+      <h2 class="landing-title" style="font-size:clamp(1.3rem,4vw,1.8rem); margin-bottom:12px;">Empresa Fictícia: Grupo Horizonte</h2>
+      <p class="situation-text" style="max-width:650px; margin:0 auto 20px; text-align:left;">
+        Você acaba de assumir a gestão de pessoas e saúde ocupacional do <strong>Grupo Horizonte</strong>, 
+        uma empresa de médio porte com 420 colaboradores. A situação é crítica:
+      </p>
+    </div>
+
+    <div class="card card-tech animate-in delay-1" style="max-width:650px; margin:0 auto 20px;">
+      <ul style="list-style:none; padding:0; display:grid; gap:8px;">
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
+          <span style="color:var(--red); flex-shrink:0;">&#9888;</span> Afastamentos aumentaram 35% nos últimos 6 meses
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
+          <span style="color:var(--red); flex-shrink:0;">&#9888;</span> Absenteísmo acima da média do setor
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
+          <span style="color:var(--red); flex-shrink:0;">&#9888;</span> Queda de 20% na produtividade operacional
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
+          <span style="color:var(--red); flex-shrink:0;">&#9888;</span> Reclamações frequentes de sobrecarga e burnout
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
+          <span style="color:var(--orange); flex-shrink:0;">&#9888;</span> Riscos psicossociais não mapeados
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
+          <span style="color:var(--orange); flex-shrink:0;">&#9888;</span> PGR e documentos de SST desatualizados
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
+          <span style="color:var(--orange); flex-shrink:0;">&#9888;</span> Falta de integração entre RH, SST e Medicina do Trabalho
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
+          <span style="color:var(--yellow); flex-shrink:0;">&#9888;</span> Custos trabalhistas ocultos crescentes
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
+          <span style="color:var(--yellow); flex-shrink:0;">&#9888;</span> Lideranças despreparadas para gestão de pessoas
+        </li>
+        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
+          <span style="color:var(--yellow); flex-shrink:0;">&#9888;</span> Ausência de análise de dados ocupacionais
+        </li>
+      </ul>
+    </div>
+
+    <div class="text-center animate-in delay-2">
+      <p style="font-size:0.85rem; color:var(--gray-200); margin-bottom:16px; font-weight:600; text-transform:uppercase; letter-spacing:1px;">Indicadores atuais da empresa</p>
+    </div>
+
+    <div class="indicators-grid animate-in delay-3" id="contextIndicators">
+      <!-- Filled by JS -->
+    </div>
+
+    <div class="iio-bar-container animate-in delay-4" style="max-width:650px;">
+      <div class="iio-label">
+        <span>Índice de Inteligência Ocupacional (IIO)</span>
+        <span class="iio-value" id="contextIIO">0</span>
+      </div>
+      <div class="iio-bar">
+        <div id="contextIIOFill" class="iio-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="text-center animate-in delay-5" style="margin-top:24px;">
+      <p style="font-size:1rem; color:var(--yellow); font-weight:700; margin-bottom:20px;">
+        Sua missão: transformar esses indicadores em 7 rodadas de decisão.
+      </p>
+      <button class="btn btn-primary" onclick="Game.startRounds()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+        ACEITAR A MISSÃO
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SCREEN 4: ROUND GAMEPLAY
+     ============================================ -->
+<section id="screenRound" class="screen">
+  <div class="round-container">
+    <div class="round-header" id="roundHeader">
+      <!-- Filled by JS -->
+    </div>
+    <div id="roundSituation" class="situation-card">
+      <!-- Filled by JS -->
+    </div>
+    <div id="roundOptions" class="options-container">
+      <!-- Filled by JS -->
+    </div>
+    <div id="roundFeedback" class="feedback-panel hidden">
+      <!-- Filled by JS -->
+    </div>
+    <div class="indicators-grid" id="roundIndicators" style="margin-top:20px;">
+      <!-- Filled by JS -->
+    </div>
+    <div class="iio-bar-container" style="margin-top:12px;">
+      <div class="iio-label">
+        <span>IIO — Índice de Inteligência Ocupacional</span>
+        <span class="iio-value" id="roundIIO">0</span>
+      </div>
+      <div class="iio-bar">
+        <div id="roundIIOFill" class="iio-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div id="roundNextBtn" class="text-center hidden" style="margin-top:20px;">
+      <button class="btn btn-primary" onclick="Game.nextRound()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+        <span id="nextBtnText">PRÓXIMA RODADA</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SURPRISE EVENT OVERLAY
+     ============================================ -->
+<div id="eventOverlay" class="event-overlay">
+  <div class="event-card">
+    <div class="event-badge">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      EVENTO SURPRESA
+    </div>
+    <h3 id="eventTitle" class="event-title"></h3>
+    <p id="eventText" class="event-text"></p>
+    <div id="eventImpact" class="impact-grid" style="justify-content:center; margin-bottom:20px;"></div>
+    <button class="btn btn-gold" onclick="Game.dismissEvent()">CONTINUAR</button>
+  </div>
+</div>
+
+<!-- ============================================
+     SCREEN 5: RESULT
+     ============================================ -->
+<section id="screenResult" class="screen">
+  <div class="result-container" id="resultContent">
+    <!-- Filled by JS -->
+  </div>
+</section>
+
+<!-- ============================================
+     SCREEN 6: CTA / EVENT
+     ============================================ -->
+<section id="screenCTA" class="screen">
+  <div class="cta-container">
+    <div class="text-center animate-in" style="margin-bottom:24px;">
+      <p style="font-size:1rem; color:var(--gray-100); line-height:1.7; max-width:500px; margin:0 auto;">
+        Você tomou decisões no jogo. Agora descubra como transformar esses resultados 
+        em uma <strong style="color:var(--yellow)">estratégia real</strong> para sua empresa.
+      </p>
+    </div>
+
+    <div class="cta-event-card animate-in delay-1">
+      <div class="landing-badge" style="margin-bottom:16px; font-size:0.7rem;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
+        EVENTO PRESENCIAL
+      </div>
+      <h2>1º Workshop de Inteligência Ocupacional do RN</h2>
+      <div class="cta-event-detail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        20 de agosto de 2026
+      </div>
+      <div class="cta-event-detail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+        Das 18h às 22h
+      </div>
+      <div class="cta-event-detail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        CDL Mossoró — RN
+      </div>
+      <p style="font-size:0.8rem; color:var(--gray-300); margin-top:12px;">
+        Realização: <strong>Ecosafety</strong> &amp; <strong>Ecoclinic Medicina do Trabalho</strong>
+      </p>
+    </div>
+
+    <div class="btn-group animate-in delay-2" style="flex-direction:column; max-width:400px; margin:0 auto;">
+      <a id="btnParticipate" href="#" target="_blank" class="btn btn-gold btn-full" onclick="Game.openLink('participate')">
+        GARANTIR MINHA PARTICIPAÇÃO
+      </a>
+      <button class="btn btn-primary btn-full" onclick="Game.shareResult()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        COMPARTILHAR RESULTADO
+      </button>
+      <button class="btn btn-secondary btn-full" onclick="Game.showDiagnostic()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        BAIXAR MEU DIAGNÓSTICO
+      </button>
+      <a id="btnSpecialist" href="#" target="_blank" class="btn btn-secondary btn-full" onclick="Game.openLink('specialist')" style="color:var(--green); border-color:var(--green);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        FALAR COM UM ESPECIALISTA
+      </a>
+      <button class="btn btn-secondary btn-full" onclick="Game.showScreen('ranking')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+        VER RANKING
+      </button>
+      <button class="btn btn-secondary btn-full" onclick="Game.restart()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23,4 23,10 17,10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+        JOGAR NOVAMENTE
+      </button>
+    </div>
+
+    <div class="footer" style="margin-top:24px;">
+      <p>Ecosafety &amp; Ecoclinic Medicina do Trabalho</p>
+      <button class="footer-admin-btn" onclick="Admin.showPasswordModal()">Administração</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     SCREEN 7: RANKING
+     ============================================ -->
+<section id="screenRanking" class="screen">
+  <div class="ranking-container">
+    <div class="text-center" style="margin-bottom:24px;">
+      <h2 class="landing-title" style="font-size:clamp(1.3rem,4vw,1.8rem);">Ranking</h2>
+      <p style="font-size:0.85rem; color:var(--gray-300);">Top 10 melhores resultados deste dispositivo</p>
+    </div>
+    <div id="rankingContent">
+      <!-- Filled by JS -->
+    </div>
+    <div class="text-center" style="margin-top:24px;">
+      <button class="btn btn-secondary btn-sm" onclick="Game.goBack()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15,18 9,12 15,6"/></svg>
+        VOLTAR
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     DIAGNOSTIC OVERLAY (for print/PDF)
+     ============================================ -->
+<div id="diagnosticOverlay" class="diagnostic-overlay">
+  <div class="diagnostic-page" id="diagnosticContent">
+    <!-- Filled by JS -->
+  </div>
+  <div class="text-center no-print" style="padding:20px;">
+    <div class="btn-group">
+      <button class="btn btn-primary btn-sm" onclick="window.print()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 6,2 18,2 18,9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        IMPRIMIR / SALVAR PDF
+      </button>
+      <button class="btn btn-secondary btn-sm" onclick="Game.closeDiagnostic()">FECHAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     ADMIN PASSWORD MODAL
+     ============================================ -->
+<div id="passwordModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>Acesso Administrativo</h3>
+    <p style="font-size:0.85rem; color:var(--gray-300); margin-bottom:16px;">Digite a senha para acessar o painel.</p>
+    <input type="password" id="adminPasswordInput" placeholder="Senha" onkeydown="if(event.key==='Enter')Admin.checkPassword()">
+    <div class="btn-group">
+      <button class="btn btn-primary btn-sm" onclick="Admin.checkPassword()">ENTRAR</button>
+      <button class="btn btn-secondary btn-sm" onclick="Admin.closePasswordModal()">CANCELAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     ADMIN PANEL OVERLAY
+     ============================================ -->
+<div id="adminOverlay" class="admin-overlay">
+  <div class="admin-container">
+    <div class="admin-header">
+      <h2>Painel Administrativo</h2>
+      <div class="btn-group" style="justify-content:flex-end;">
+        <button class="btn btn-secondary btn-sm" onclick="Admin.close()">FECHAR</button>
+      </div>
+    </div>
+
+    <p style="font-size:0.75rem; color:var(--gray-400); margin-bottom:16px; text-align:center; font-style:italic;">
+      Dados armazenados apenas neste dispositivo (localStorage). Não existe sincronização com servidor.
+    </p>
+
+    <!-- Stats -->
+    <div class="admin-stats" id="adminStats">
+      <!-- Filled by JS -->
+    </div>
+
+    <!-- Event Mode Toggle -->
+    <div class="admin-section">
+      <h3>Modo Evento</h3>
+      <p style="font-size:0.8rem; color:var(--gray-300); margin-bottom:12px;">
+        No Modo Evento, o ranking mostra apenas primeiro nome e empresa, e o jogo reinicia automaticamente após exibir o resultado.
+      </p>
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <input type="checkbox" id="eventModeToggle" onchange="Admin.toggleEventMode()" style="width:20px; height:20px; accent-color:var(--blue-electric);">
+          <span style="font-size:0.9rem; font-weight:600;">Ativar Modo Evento</span>
+        </label>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <label style="font-size:0.8rem; color:var(--gray-300);">Reinício automático (seg):</label>
+          <input type="number" id="eventAutoRestart" value="30" min="10" max="120" style="width:60px; padding:6px; background:rgba(0,180,255,0.05); border:1px solid rgba(0,180,255,0.2); border-radius:6px; color:var(--white); text-align:center;" onchange="Admin.saveEventSettings()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Links Configuration -->
+    <div class="admin-section">
+      <h3>Links dos Botões</h3>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-size:0.75rem;">Link — "Garantir minha participação"</label>
+        <input type="url" id="adminLinkParticipate" placeholder="https://..." onchange="Admin.saveLinks()">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-size:0.75rem;">Link — "Falar com um especialista"</label>
+        <input type="url" id="adminLinkSpecialist" placeholder="https://wa.me/..." onchange="Admin.saveLinks()">
+      </div>
+    </div>
+
+    <!-- Password Change -->
+    <div class="admin-section">
+      <h3>Alterar Senha</h3>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <input type="password" id="adminNewPassword" placeholder="Nova senha" style="flex:1; min-width:150px; padding:10px; background:rgba(0,180,255,0.05); border:1px solid rgba(0,180,255,0.2); border-radius:6px; color:var(--white);">
+        <button class="btn btn-sm btn-primary" onclick="Admin.changePassword()">ALTERAR</button>
+      </div>
+    </div>
+
+    <!-- Profile Distribution -->
+    <div class="admin-section">
+      <h3>Distribuição de Perfis</h3>
+      <div id="adminProfileDist" class="admin-profile-dist">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+    <!-- Common Mistakes -->
+    <div class="admin-section">
+      <h3>Rodadas com Mais Erros</h3>
+      <div id="adminMistakes">
+        <!-- Filled by JS -->
+      </div>
+    </div>
+
+    <!-- Participants Table -->
+    <div class="admin-section">
+      <h3>Participantes</h3>
+      <div class="admin-search">
+        <input type="text" id="adminSearch" placeholder="Buscar por nome ou empresa..." oninput="Admin.filterParticipants()">
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="admin-table" id="adminTable">
+          <thead>
+            <tr>
+              <th onclick="Admin.sortBy('name')">Nome</th>
+              <th onclick="Admin.sortBy('company')">Empresa</th>
+              <th onclick="Admin.sortBy('score')">Pontuação</th>
+              <th onclick="Admin.sortBy('profile')">Perfil</th>
+              <th onclick="Admin.sortBy('time')">Tempo</th>
+            </tr>
+          </thead>
+          <tbody id="adminTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="admin-section">
+      <h3>Ações</h3>
+      <div class="btn-group" style="justify-content:flex-start;">
+        <button class="btn btn-primary btn-sm" onclick="Admin.exportCSV()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          EXPORTAR CSV
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="Admin.clearRanking()">LIMPAR RANKING</button>
+        <button class="btn btn-danger btn-sm" onclick="Admin.clearAllData()">LIMPAR TODOS OS DADOS</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     COUNTDOWN OVERLAY
+     ============================================ -->
+<div id="countdownOverlay" class="countdown-overlay">
+  <div id="countdownNumber" class="countdown-number">3</div>
+</div>
+
+<!-- ============================================
+     CONFETTI CONTAINER
+     ============================================ -->
+<div id="confettiContainer" class="confetti-container"></div>
+
+<!-- ============================================
+     JAVASCRIPT — GAME ENGINE
+     ============================================ -->
+<script>
+/* ============================================
+   CONFIGURAÇÕES EDITÁVEIS
+   Altere os valores abaixo conforme necessário
+   ============================================ */
+
+// --- INFORMAÇÕES DO EVENTO ---
+const EVENT_CONFIG = {
+  name: '1º Workshop de Inteligência Ocupacional do RN',
+  date: '20 de agosto de 2026',
+  dateShort: '20/08',
+  time: 'Das 18h às 22h',
+  location: 'CDL Mossoró — RN',
+  organizers: 'Ecosafety & Ecoclinic Medicina do Trabalho',
+  concept: 'A Virada Começa Agora'
+};
+
+// --- LINKS DOS BOTÕES (editáveis aqui ou pelo painel admin) ---
+const DEFAULT_LINKS = {
+  participate: 'https://exemplo.com/inscricao',   // Link de inscrição
+  specialist: 'https://wa.me/5584999999999'       // WhatsApp do especialista
+};
+
+// --- SENHA DO PAINEL ADMINISTRATIVO ---
+// Pode ser alterada pelo próprio painel; o valor abaixo é a senha inicial
+let ADMIN_PASSWORD = 'virada2026';
+
+// --- MODO EVENTO ---
+let EVENT_MODE = false;
+let EVENT_AUTO_RESTART_SECONDS = 30;
+
+// ============================================
+// SOUND SYSTEM
+// ============================================
+const SoundSystem = {
+  enabled: false,
+  audioCtx: null,
+
+  init() {
+    try {
+      this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (e) {
+      console.warn('Web Audio API não disponível.');
+    }
+  },
+
+  play(type) {
+    if (!this.enabled || !this.audioCtx) return;
+    try {
+      const osc = this.audioCtx.createOscillator();
+      const gain = this.audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(this.audioCtx.destination);
+      const now = this.audioCtx.currentTime;
+
+      switch (type) {
+        case 'click':
+          osc.frequency.value = 600;
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+          osc.start(now);
+          osc.stop(now + 0.1);
+          break;
+        case 'success':
+          osc.frequency.value = 523;
+          gain.gain.setValueAtTime(0.1, now);
+          osc.start(now);
+          osc.frequency.setValueAtTime(659, now + 0.1);
+          osc.frequency.setValueAtTime(784, now + 0.2);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+          osc.stop(now + 0.4);
+          break;
+        case 'warning':
+          osc.type = 'sawtooth';
+          osc.frequency.value = 200;
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.start(now);
+          osc.stop(now + 0.3);
+          break;
+        case 'alert':
+          osc.type = 'square';
+          osc.frequency.value = 440;
+          gain.gain.setValueAtTime(0.08, now);
+          osc.start(now);
+          osc.frequency.setValueAtTime(220, now + 0.15);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc.stop(now + 0.3);
+          break;
+        case 'complete':
+          osc.frequency.value = 392;
+          gain.gain.setValueAtTime(0.1, now);
+          osc.start(now);
+          osc.frequency.setValueAtTime(523, now + 0.15);
+          osc.frequency.setValueAtTime(659, now + 0.3);
+          osc.frequency.setValueAtTime(784, now + 0.45);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+          osc.stop(now + 0.7);
+          break;
+        case 'event':
+          osc.type = 'triangle';
+          osc.frequency.value = 880;
+          gain.gain.setValueAtTime(0.1, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+          osc.start(now);
+          osc.stop(now + 0.5);
+          break;
+      }
+    } catch (e) { /* Silencioso */ }
+  },
+
+  toggle() {
+    this.enabled = !this.enabled;
+    if (this.enabled && this.audioCtx && this.audioCtx.state === 'suspended') {
+      this.audioCtx.resume();
+    }
+    document.getElementById('soundOnIcon').classList.toggle('hidden', !this.enabled);
+    document.getElementById('soundOffIcon').classList.toggle('hidden', this.enabled);
+    if (this.enabled) this.play('click');
+  }
+};
+
+// ============================================
+// CONFETTI SYSTEM
+// ============================================
+const Confetti = {
+  launch() {
+    const container = document.getElementById('confettiContainer');
+    const colors = ['#00b4ff', '#ffc107', '#00e676', '#ff9800', '#4fc3f7', '#ff5252', '#e040fb'];
+    const shapes = ['square', 'circle'];
+    for (let i = 0; i < 80; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      const size = 6 + Math.random() * 10;
+      const shape = shapes[Math.floor(Math.random() * shapes.length)];
+      piece.style.left = Math.random() * 100 + '%';
+      piece.style.width = size + 'px';
+      piece.style.height = size + 'px';
+      piece.style.background = color;
+      piece.style.borderRadius = shape === 'circle' ? '50%' : '2px';
+      piece.style.animationDuration = (2 + Math.random() * 3) + 's';
+      piece.style.animationDelay = Math.random() * 2 + 's';
+      container.appendChild(piece);
+    }
+    setTimeout(() => { container.innerHTML = ''; }, 6000);
+  }
+};
+
+// ============================================
+// TOAST NOTIFICATIONS
+// ============================================
+function showToast(message, type = 'warning', duration = 3000) {
+  const toast = document.getElementById('alertToast');
+  toast.textContent = message;
+  toast.className = 'alert-toast ' + type;
+  requestAnimationFrame(() => { toast.classList.add('visible'); });
+  setTimeout(() => { toast.classList.remove('visible'); }, duration);
+}
+
+// ============================================
+// GAME DATA — ROUNDS
+// ============================================
+const ROUNDS_DATA = [
+  {
+    number: 1,
+    theme: 'Riscos Psicossociais e NR-01',
+    title: 'Riscos Psicossociais e Atualização do PGR',
+    situation: 'A empresa recebeu um comunicado: os riscos psicossociais devem ser incluídos no Programa de Gerenciamento de Riscos (PGR), conforme a atualização da NR-01. Atualmente, o PGR do Grupo Horizonte está desatualizado e não contempla fatores como estresse ocupacional, assédio, sobrecarga mental e conflitos interpessoais. O SESMT não tem experiência com esse tipo de levantamento.',
+    options: [
+      {
+        letter: 'A',
+        text: 'Contratar uma consultoria especializada em saúde ocupacional para realizar o levantamento de riscos psicossociais, atualizar o PGR de forma integrada e capacitar o SESMT para manutenção contínua.',
+        impact: { health: 12, legal: 15, productivity: 5, finance: -8 },
+        quality: 'excellent',
+        strategic: true,
+        feedback: 'Decisão estratégica e sustentável.',
+        consequence: 'A empresa passa a ter um PGR completo e atualizado, reduzindo significativamente o risco de autuações e demonstrando compromisso com o bem-estar dos colaboradores.',
+        expert: 'O gerenciamento de riscos psicossociais não é apenas uma exigência normativa — é uma ferramenta de gestão que reduz afastamentos por transtornos mentais, melhora o clima e aumenta a produtividade.'
+      },
+      {
+        letter: 'B',
+        text: 'Orientar o SESMT a incluir os riscos psicossociais no PGR internamente, utilizando modelos e checklists genéricos disponíveis na internet para economizar recursos.',
+        impact: { health: 3, legal: 5, productivity: 2, finance: 2 },
+        quality: 'mediocre',
+        strategic: false,
+        feedback: 'Solução parcial. Cumpre formalmente, mas com fragilidades técnicas.',
+        consequence: 'O documento existe, mas pode não refletir a realidade da empresa. Em uma fiscalização detalhada ou perícia, a superficialidade do levantamento pode ser identificada.',
+        expert: 'Riscos psicossociais exigem metodologia adequada (como questionários validados e análise ergonômica). Documentos genéricos raramente atendem às especificidades de cada organização.'
+      },
+      {
+        letter: 'C',
+        text: 'Aguardar para ver como a fiscalização vai cobrar na prática e priorizar os investimentos em produção. Atualizar o PGR apenas se houver notificação formal.',
+        impact: { health: -5, legal: -10, productivity: 3, finance: 5 },
+        quality: 'poor',
+        strategic: false,
+        feedback: 'Risco elevado. Ganho financeiro de curto prazo com exposição jurídica significativa.',
+        consequence: 'A empresa fica vulnerável a autuações, ações trabalhistas e agravamento dos problemas de saúde mental dos colaboradores. O custo de uma multa ou ação judicial pode superar em muito o investimento evitado.',
+        expert: 'A gestão reativa em SST tende a ser muito mais cara do que a prevenção. Além dos custos diretos, há impacto no FAP, na imagem da empresa e na retenção de talentos.'
+      }
+    ]
+  },
+  {
+    number: 2,
+    theme: 'Afastamentos e Absenteísmo',
+    title: 'Aumento dos Atestados e Afastamentos Recorrentes',
+    situation: 'Nos últimos 3 meses, os atestados médicos aumentaram 40%. Cinco colaboradores do setor operacional estão com afastamentos recorrentes de curta duração (1 a 3 dias). O RH percebe o padrão, mas não existe acompanhamento médico ocupacional sistemático. O gestor da área cobra soluções imediatas para manter a produção.',
+    options: [
+      {
+        letter: 'A',
+        text: 'Implementar um programa de gestão de absenteísmo com acompanhamento pelo médico do trabalho, análise das causas dos afastamentos e criação de planos individuais de retorno ao trabalho.',
+        impact: { health: 15, legal: 8, productivity: 10, finance: -5 },
+        quality: 'excellent',
+        strategic: true,
+        feedback: 'Abordagem completa e sustentável.',
+        consequence: 'A empresa começa a entender as causas reais dos afastamentos e pode atuar preventivamente. Os colaboradores se sentem acolhidos e a tendência de afastamentos se estabiliza.',
+        expert: 'A gestão de absenteísmo eficaz vai além do controle — ela identifica fatores organizacionais, ergonômicos e de saúde que contribuem para as ausências e permite intervenções direcionadas.'
+      },
+      {
+        letter: 'B',
+        text: 'Criar uma política de controle rigoroso de atestados, com entrevista de retorno obrigatória conduzida pelo RH para verificar a legitimidade dos afastamentos e identificar possíveis abusos.',
+        impact: { health: -3, legal: -5, productivity: 5, finance: 3 },
+        quality: 'poor',
+        strategic: false,
+        feedback: 'Abordagem punitiva com riscos significativos.',
+        consequence: 'Colaboradores podem se sentir perseguidos e constrangidos. O clima piora, há risco de denúncias de assédio moral e o problema real por trás dos atestados permanece sem tratamento.',
+        expert: 'Entrevistas de retorno têm valor quando conduzidas com acolhimento e foco na saúde. Quando usadas como instrumento de pressão, configuram prática discriminatória e podem gerar passivo trabalhista.'
+      },
+      {
+        letter: 'C',
+        text: 'Contratar trabalhadores temporários para cobrir as ausências e manter a produção, tratando o problema como uma questão operacional e não de saúde.',
+        impact: { health: -2, legal: -3, productivity: 8, finance: -10 },
+        quality: 'mediocre',
+        strategic: false,
+        feedback: 'Solução paliativa com alto custo e sem tratar a causa.',
+        consequence: 'Os custos de contratação temporária se acumulam. Os problemas de saúde continuam sem tratamento e os afastamentos tendem a aumentar. Pode surgir risco de vínculo empregatício dos temporários.',
+        expert: 'Substituir pessoas sem investigar a causa é como trocar peças de uma máquina sem fazer a manutenção. O problema sistêmico continuará gerando consequências cada vez maiores.'
+      }
+    ]
+  },
+  {
+    number: 3,
+    theme: 'Liderança e Clima Organizacional',
+    title: 'Lideranças Despreparadas e Pressão Excessiva',
+    situation: 'Uma pesquisa interna revelou que 65% dos colaboradores consideram seus líderes "autoritários" ou "distantes". Há relatos de metas inatingíveis, ausência de feedback construtivo e comunicação agressiva. Nos últimos dois meses, dois pedidos de demissão citaram o clima organizacional como principal motivo. O turnover está afetando a operação.',
+    options: [
+      {
+        letter: 'A',
+        text: 'Desenvolver um programa de capacitação de líderes com foco em comunicação empática, gestão humanizada, saúde mental da equipe e ferramentas de feedback, com acompanhamento trimestral.',
+        impact: { health: 12, legal: 5, productivity: 10, finance: -6 },
+        quality: 'excellent',
+        strategic: true,
+        feedback: 'Investimento estratégico em pessoas com retorno sustentável.',
+        consequence: 'As lideranças desenvolvem competências para gerir pessoas de forma saudável. O clima melhora gradualmente, a rotatividade diminui e a produtividade aumenta pela melhora do engajamento.',
+        expert: 'Lideranças tóxicas são uma das principais causas de adoecimento mental no trabalho. Investir no desenvolvimento de líderes é investir diretamente na prevenção de afastamentos e na retenção de talentos.'
+      },
+      {
+        letter: 'B',
+        text: 'Reforçar o programa de metas com bonificações financeiras agressivas para líderes que atingirem resultados, criando incentivos claros de desempenho para toda a cadeia de gestão.',
+        impact: { health: -8, legal: -3, productivity: 5, finance: -5 },
+        quality: 'poor',
+        strategic: false,
+        feedback: 'Aumenta a pressão sobre pessoas já sobrecarregadas.',
+        consequence: 'Líderes intensificam a cobrança sobre suas equipes para alcançar as bonificações. O clima piora, os afastamentos por estresse aumentam e a empresa pode enfrentar ações por assédio moral organizacional.',
+        expert: 'Bonificações baseadas apenas em resultados financeiros sem considerar indicadores de clima, saúde e pessoas tendem a criar um ciclo vicioso de pressão e adoecimento.'
+      },
+      {
+        letter: 'C',
+        text: 'Transferir os colaboradores insatisfeitos para outros setores e manter as lideranças atuais, evitando confrontos e preservando a hierarquia estabelecida.',
+        impact: { health: -5, legal: -8, productivity: -3, finance: 2 },
+        quality: 'poor',
+        strategic: false,
+        feedback: 'Evita o problema sem resolvê-lo. Risco de interpretação como retaliação.',
+        consequence: 'Os colaboradores transferidos podem interpretar a movimentação como punição por terem reclamado. Novos colaboradores que chegarem ao setor enfrentarão os mesmos problemas. O risco de ações trabalhistas aumenta.',
+        expert: 'Transferir quem reclama sem tratar a liderança é silenciar sintomas. O problema continuará gerando rotatividade, afastamentos e passivos — apenas em novos rostos.'
+      }
+    ]
+  },
+  {
+    number: 4,
+    theme: 'Integração de Áreas',
+    title: 'Falta de Integração entre RH, SST e Medicina do Trabalho',
+    situation: 'O RH não tem acesso aos dados do PCMSO. O SESMT não sabe quais trabalhadores estão afastados. A Medicina do Trabalho realiza exames periódicos sem comunicar os achados relevantes à gestão. Cada área trabalha de forma isolada. O resultado: decisões fragmentadas, duplicidade de esforços e riscos não detectados a tempo.',
+    options: [
+      {
+        letter: 'A',
+        text: 'Criar um comitê integrado de saúde e performance com reuniões mensais entre RH, SST, Medicina do Trabalho e gestores operacionais, definindo indicadores compartilhados e fluxos de comunicação.',
+        impact: { health: 10, legal: 10, productivity: 12, finance: 5 },
+        quality: 'excellent',
+        strategic: true,
+        feedback: 'Modelo de integração com alto impacto e baixo custo.',
+        consequence: 'A empresa passa a ter visão sistêmica da saúde ocupacional. Problemas são detectados mais cedo, decisões são mais assertivas e os recursos são utilizados de forma mais eficiente.',
+        expert: 'A integração entre RH, SST e Saúde Ocupacional é a base da inteligência ocupacional. Quando essas áreas conversam, o gerenciamento de riscos deixa de ser burocrático e se torna estratégico.'
+      },
+      {
+        letter: 'B',
+        text: 'Contratar um software de gestão ocupacional para centralizar as informações de SST, RH e saúde, mantendo os processos e responsabilidades atuais de cada área.',
+        impact: { health: 3, legal: 5, productivity: 5, finance: -8 },
+        quality: 'mediocre',
+        strategic: false,
+        feedback: 'Ferramenta útil, mas insuficiente sem mudança de processo.',
+        consequence: 'O software centraliza dados, mas se as áreas não colaboram nos processos, as informações continuarão subutilizadas. Há risco de investimento sem retorno proporcional.',
+        expert: 'Tecnologia sem processo integrado é como comprar um carro sem saber dirigir. A ferramenta potencializa resultados quando há governança e cultura de colaboração entre as áreas.'
+      },
+      {
+        letter: 'C',
+        text: 'Designar o RH como área centralizadora, responsável por consolidar todos os relatórios de SST e Saúde em uma planilha mensal para a diretoria.',
+        impact: { health: 2, legal: 3, productivity: 3, finance: 2 },
+        quality: 'mediocre',
+        strategic: false,
+        feedback: 'Centraliza informação, mas não integra decisão.',
+        consequence: 'O RH fica sobrecarregado com uma atribuição que não domina tecnicamente. A qualidade da análise pode ser comprometida e a responsabilidade fica difusa.',
+        expert: 'Integrar áreas vai além de consolidar dados. É preciso que as equipes compartilhem análises, definam ações conjuntas e monitorem resultados de forma colaborativa.'
+      }
+    ]
+  },
+  {
+    number: 5,
+    theme: 'Acidente e Prevenção',
+    title: 'Acidente de Trabalho e Ausência de Procedimentos Preventivos',
+    situation: 'Um trabalhador sofreu um acidente com máquina no setor de produção, gerando afastamento de 30 dias. A investigação revelou que o procedimento operacional estava desatualizado há 2 anos, o treinamento do operador foi superficial e a manutenção preventiva da máquina estava atrasada em 4 meses. A empresa nunca realizou análise de riscos específica para aquela atividade.',
+    options: [
+      {
+        letter: 'A',
+        text: 'Paralisar a atividade, realizar análise de causas-raiz com participação do SESMT e dos trabalhadores, atualizar todos os procedimentos operacionais, treinar a equipe e revisar o cronograma de manutenção preventiva.',
+        impact: { health: 15, legal: 12, productivity: -5, finance: -10 },
+        quality: 'excellent',
+        strategic: true,
+        feedback: 'Abordagem completa. Perda temporária de produtividade com grande ganho em segurança.',
+        consequence: 'A empresa demonstra maturidade em SST. O risco de novos acidentes diminui drasticamente. A documentação atualizada protege juridicamente a empresa e os trabalhadores se sentem mais seguros.',
+        expert: 'A análise de causas-raiz é fundamental: ela identifica não apenas o que aconteceu, mas por que os controles falharam. Sem isso, acidentes semelhantes tendem a se repetir.'
+      },
+      {
+        letter: 'B',
+        text: 'Emitir a CAT, afastar o trabalhador conforme a legislação, providenciar o conserto da máquina e orientar verbalmente a equipe para redobrar os cuidados ao retomar a atividade.',
+        impact: { health: 2, legal: -5, productivity: 5, finance: 3 },
+        quality: 'poor',
+        strategic: false,
+        feedback: 'Cumpre o mínimo legal, mas não trata as causas.',
+        consequence: 'O procedimento continua desatualizado, o treinamento permanece insuficiente e a manutenção seguirá atrasada. As condições para um novo acidente estão mantidas.',
+        expert: 'Orientar verbalmente não substitui análise técnica, atualização de procedimentos e treinamento formal. A reincidência de acidentes em condições idênticas agrava a responsabilidade da empresa.'
+      },
+      {
+        letter: 'C',
+        text: 'Emitir a CAT e iniciar investigação do acidente, mas adiar a atualização dos procedimentos e treinamentos para o próximo semestre em razão do cronograma apertado de produção.',
+        impact: { health: -3, legal: -8, productivity: 8, finance: 5 },
+        quality: 'poor',
+        strategic: false,
+        feedback: 'Prioriza a produção sobre a segurança. Alto risco jurídico.',
+        consequence: 'Se ocorrer um novo acidente antes das correções, a empresa poderá ser responsabilizada por negligência. O adiamento documentado pode ser usado como prova contra a empresa em eventual processo.',
+        expert: 'Adiar medidas corretivas após um acidente é uma das situações mais graves em SST. Demonstra que a empresa conhecia o risco e escolheu não agir — o que configura dolo eventual em muitas interpretações jurídicas.'
+      }
+    ]
+  },
+  {
+    number: 6,
+    theme: 'Custos Invisíveis',
+    title: 'Custos Invisíveis: Absenteísmo, Presenteísmo e Rotatividade',
+    situation: 'O controller financeiro apresentou um relatório alarmante: o custo real dos afastamentos, rotatividade e baixa produtividade é três vezes maior que o estimado. Incluindo horas extras para cobrir faltas, recrutamento, treinamento de substitutos, presenteísmo e perdas de qualidade, a empresa perde aproximadamente R$ 480 mil por ano em custos que não aparecem nos demonstrativos tradicionais.',
+    options: [
+      {
+        letter: 'A',
+        text: 'Implementar um programa estruturado de saúde ocupacional e bem-estar com foco em prevenção, mapeando os principais fatores de risco, atuando nas causas do absenteísmo e monitorando indicadores de saúde e produtividade.',
+        impact: { health: 12, legal: 8, productivity: 10, finance: 15 },
+        quality: 'excellent',
+        strategic: true,
+        feedback: 'Investimento que se paga. Atua nas causas e gera retorno mensurável.',
+        consequence: 'A empresa começa a reduzir custos invisíveis de forma sustentável. Os indicadores de saúde e produtividade melhoram gradualmente, e o retorno sobre o investimento em prevenção se torna evidente em poucos meses.',
+        expert: 'Estudos demonstram que cada R$ 1 investido em saúde ocupacional preventiva gera retorno de R$ 3 a R$ 6 em redução de custos com afastamentos, rotatividade e ganhos de produtividade.'
+      },
+      {
+        letter: 'B',
+        text: 'Reduzir imediatamente custos cortando benefícios de saúde, treinamentos e programas de qualidade de vida para equilibrar o orçamento neste exercício fiscal.',
+        impact: { health: -15, legal: -5, productivity: -8, finance: 10 },
+        quality: 'poor',
+        strategic: false,
+        feedback: 'Alívio financeiro momentâneo com agravamento dos problemas.',
+        consequence: 'Os cortes em saúde e treinamento agravam o ciclo de adoecimento e desmotivação. A rotatividade aumenta, os custos de recrutamento crescem e a produtividade cai ainda mais. O "corte" se transforma em custo maior no médio prazo.',
+        expert: 'Cortar investimentos em saúde para reduzir custos é como parar de fazer manutenção preventiva em equipamentos para economizar. O colapso é questão de tempo.'
+      },
+      {
+        letter: 'C',
+        text: 'Terceirizar as atividades com maior índice de afastamento para transferir o risco trabalhista e reduzir custos diretos com encargos e benefícios.',
+        impact: { health: -5, legal: -10, productivity: 3, finance: 5 },
+        quality: 'poor',
+        strategic: false,
+        feedback: 'Transfere o problema sem resolvê-lo e cria novos riscos.',
+        consequence: 'A terceirização motivada apenas pela transferência de risco pode configurar fraude trabalhista. A empresa contratante mantém responsabilidade subsidiária ou solidária, e o risco reputacional aumenta.',
+        expert: 'A terceirização é legítima quando focada em especialização. Quando usada apenas para transferir passivos, cria vulnerabilidade jurídica e não resolve as causas do adoecimento ocupacional.'
+      }
+    ]
+  },
+  {
+    number: 7,
+    theme: 'Inteligência Ocupacional',
+    title: 'Dados, Indicadores e Estratégia de Inteligência Ocupacional',
+    situation: 'Após todas as decisões tomadas, a diretoria solicita um plano estratégico de longo prazo. A empresa precisa definir como vai monitorar, prevenir e gerenciar a saúde ocupacional de forma inteligente e sustentável. É o momento de consolidar uma visão integrada.',
+    options: [
+      {
+        letter: 'A',
+        text: 'Criar um painel de inteligência ocupacional com indicadores integrados (absenteísmo, FAP, NTEP, afastamentos, produtividade, clima, rotatividade) e estabelecer metas preventivas anuais com revisão trimestral.',
+        impact: { health: 15, legal: 12, productivity: 15, finance: 12 },
+        quality: 'excellent',
+        strategic: true,
+        feedback: 'Visão de futuro. Transforma dados em decisões estratégicas.',
+        consequence: 'A empresa constrói um modelo de gestão baseado em evidências. Os riscos são antecipados, as decisões são mais assertivas e a organização se posiciona como referência em inteligência ocupacional.',
+        expert: 'Inteligência ocupacional é a capacidade de transformar dados de saúde, segurança e pessoas em informação estratégica para tomada de decisão. É o futuro da gestão de SST.'
+      },
+      {
+        letter: 'B',
+        text: 'Contratar uma auditoria externa anual para verificar a conformidade legal da empresa e aguardar os relatórios para definir as ações corretivas necessárias.',
+        impact: { health: 3, legal: 8, productivity: 2, finance: -5 },
+        quality: 'mediocre',
+        strategic: false,
+        feedback: 'Válido como complemento, insuficiente como estratégia.',
+        consequence: 'A auditoria anual detecta problemas, mas a frequência é baixa para uma gestão proativa. Muitos riscos podem se materializar entre uma auditoria e outra.',
+        expert: 'Auditorias são ferramentas de verificação, não de gestão. Uma estratégia de inteligência ocupacional usa dados em tempo real para antecipar problemas, não apenas para verificar conformidade.'
+      },
+      {
+        letter: 'C',
+        text: 'Manter o modelo atual de gestão, tratando cada problema conforme surge, e direcionar o orçamento disponível para marketing e vendas para garantir o crescimento comercial.',
+        impact: { health: -5, legal: -5, productivity: 3, finance: 5 },
+        quality: 'poor',
+        strategic: false,
+        feedback: 'Gestão reativa. Crescer sem cuidar das pessoas é insustentável.',
+        consequence: 'A empresa pode crescer em receita, mas os custos ocultos com saúde, afastamentos e rotatividade corroerão a margem. Sem estratégia ocupacional, o crescimento é frágil e vulnerável.',
+        expert: 'Empresas que crescem sem estrutura de gestão de pessoas e saúde ocupacional tendem a enfrentar crises graves quando atingem determinado porte. A prevenção é investimento, não custo.'
+      }
+    ]
+  }
+];
+
+// ============================================
+// SURPRISE EVENTS DATA
+// ============================================
+const SURPRISE_EVENTS = [
+  {
+    id: 'fiscalizacao',
+    title: 'Fiscalização do Ministério do Trabalho',
+    text: 'Fiscais do Ministério do Trabalho e Emprego chegaram à empresa para uma inspeção não anunciada. Vão verificar documentação de SST, PGR, PCMSO e condições do ambiente de trabalho.',
+    conditionBased: true,
+    getImpact(state) {
+      if (state.legal < 40) {
+        return {
+          impact: { health: 0, legal: -10, productivity: -5, finance: -15 },
+          message: 'Resultado: Foram identificadas irregularidades significativas. A empresa recebeu autos de infração e prazo para adequação.'
+        };
+      } else {
+        return {
+          impact: { health: 2, legal: 5, productivity: 0, finance: -3 },
+          message: 'Resultado: A documentação estava razoavelmente em dia. Foram feitas observações pontuais sem autuação.'
+        };
+      }
+    }
+  },
+  {
+    id: 'afastamento_estrategico',
+    title: 'Afastamento de Colaborador Estratégico',
+    text: 'O coordenador de produção, profissional-chave com 12 anos de empresa, foi afastado por síndrome de burnout. Ele acumulava funções há meses e não houve planejamento de sucessão.',
+    conditionBased: false,
+    impact: { health: -5, legal: -3, productivity: -10, finance: -5 },
+    message: 'A operação é impactada pela ausência de um profissional sem substituto preparado. Isso expõe a fragilidade da gestão de pessoas.'
+  },
+  {
+    id: 'denuncia_assedio',
+    title: 'Denúncia de Assédio Moral',
+    text: 'Um colaborador registrou denúncia formal de assédio moral contra seu superior direto no canal de ouvidoria. A denúncia inclui relatos de humilhação pública e ameaças veladas.',
+    conditionBased: true,
+    getImpact(state) {
+      if (state.health < 45) {
+        return {
+          impact: { health: -8, legal: -12, productivity: -5, finance: -8 },
+          message: 'O caso ganhou repercussão interna. Outros colaboradores se manifestaram com relatos semelhantes. A empresa precisa agir com urgência.'
+        };
+      } else {
+        return {
+          impact: { health: -3, legal: -5, productivity: -2, finance: -3 },
+          message: 'A empresa acolheu a denúncia com seriedade. As ações anteriores de desenvolvimento de lideranças ajudaram a conter a crise.'
+        };
+      }
+    }
+  },
+  {
+    id: 'aumento_fap',
+    title: 'Aumento Inesperado do FAP',
+    text: 'A empresa foi notificada de que seu FAP (Fator Acidentário de Prevenção) aumentou significativamente para o próximo período, elevando os custos com encargos sobre a folha de pagamento.',
+    conditionBased: false,
+    impact: { health: 0, legal: -3, productivity: 0, finance: -12 },
+    message: 'O aumento do FAP reflete o histórico recente de afastamentos e acidentes. Cada ponto percentual representa milhares de reais anuais em encargos adicionais.'
+  },
+  {
+    id: 'reconhecimento',
+    title: 'Reconhecimento de Boas Práticas',
+    text: 'A empresa foi convidada a apresentar suas práticas de saúde ocupacional em um evento setorial, após ser indicada por colaboradores que reconheceram as melhorias recentes.',
+    conditionBased: true,
+    getImpact(state) {
+      const avg = (state.health + state.legal + state.productivity + state.finance) / 4;
+      if (avg > 50) {
+        return {
+          impact: { health: 5, legal: 3, productivity: 5, finance: 5 },
+          message: 'A visibilidade positiva fortaleceu a marca empregadora e atraiu novos talentos. Clientes também perceberam a maturidade da gestão.'
+        };
+      } else {
+        return {
+          impact: { health: 1, legal: 1, productivity: 1, finance: 1 },
+          message: 'A empresa participou, mas ainda precisa avançar muito para se destacar genuinamente. O convite serve como motivação.'
+        };
+      }
+    }
+  },
+  {
+    id: 'auditoria_cliente',
+    title: 'Auditoria de um Grande Cliente',
+    text: 'Um dos maiores clientes da empresa solicitou uma auditoria de SST e práticas trabalhistas como condição para renovação do contrato. Isso inclui verificação de documentação, indicadores de segurança e clima organizacional.',
+    conditionBased: true,
+    getImpact(state) {
+      if (state.legal >= 45 && state.health >= 45) {
+        return {
+          impact: { health: 3, legal: 5, productivity: 5, finance: 10 },
+          message: 'A auditoria foi bem-sucedida. O cliente renovou o contrato e sinalizou expansão da parceria, reconhecendo a evolução da empresa.'
+        };
+      } else {
+        return {
+          impact: { health: -2, legal: -5, productivity: -3, finance: -10 },
+          message: 'A auditoria revelou deficiências. O cliente colocou o contrato em avaliação e exigiu plano de ação corretivo com prazo de 60 dias.'
+        };
+      }
+    }
+  },
+  {
+    id: 'reducao_afastamentos',
+    title: 'Redução dos Afastamentos Após Ação Preventiva',
+    text: 'Os dados do último trimestre mostram uma tendência de queda nos afastamentos após as ações implementadas. O SESMT apresentou relatório com indicadores positivos.',
+    conditionBased: true,
+    getImpact(state) {
+      if (state.health > 50) {
+        return {
+          impact: { health: 8, legal: 3, productivity: 8, finance: 8 },
+          message: 'As ações preventivas estão gerando resultados concretos! A redução dos afastamentos impactou positivamente toda a operação.'
+        };
+      } else {
+        return {
+          impact: { health: 2, legal: 1, productivity: 2, finance: 2 },
+          message: 'Há sinais iniciais de melhora, mas os indicadores ainda estão abaixo do ideal. É preciso manter e intensificar as ações.'
+        };
+      }
+    }
+  },
+  {
+    id: 'crescimento_acelerado',
+    title: 'Crescimento Acelerado da Empresa',
+    text: 'A empresa conquistou dois novos contratos importantes e precisa expandir rapidamente. A demanda exige contratação de 50 novos colaboradores em 45 dias, o que pressiona todos os processos de RH e SST.',
+    conditionBased: true,
+    getImpact(state) {
+      if (state.productivity >= 50 && state.legal >= 45) {
+        return {
+          impact: { health: -3, legal: -2, productivity: 5, finance: 8 },
+          message: 'A estrutura atual permitiu absorver parte do crescimento com organização. Mas a pressão nos processos de integração exige atenção.'
+        };
+      } else {
+        return {
+          impact: { health: -8, legal: -8, productivity: -3, finance: 5 },
+          message: 'Sem estrutura adequada, o crescimento acelerado gerou sobrecarga, admissões sem exames completos e integração precária. Os riscos aumentaram significativamente.'
+        };
+      }
+    }
+  }
+];
+
+// ============================================
+// GAME STATE
+// ============================================
+const GameState = {
+  player: { name: '', company: '', role: '', whatsapp: '', email: '' },
+  indicators: { health: 35, legal: 25, productivity: 40, finance: 45 },
+  initialIndicators: { health: 35, legal: 25, productivity: 40, finance: 45 },
+  currentRound: 0,
+  decisions: [],
+  surpriseEventsUsed: [],
+  startTime: 0,
+  elapsedTime: 0,
+  timerInterval: null,
+  iio: 0,
+  totalDecisionTime: 0,
+  roundStartTime: 0,
+  finished: false,
+  previousScreen: 'landing'
+};
+
+// ============================================
+// GAME ENGINE
+// ============================================
+const Game = {
+  showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('screen' + screenId.charAt(0).toUpperCase() + screenId.slice(1));
+    if (target) {
+      target.classList.add('active');
+      target.scrollTop = 0;
+      window.scrollTo(0, 0);
+    }
+
+    const showHeader = ['round'].includes(screenId);
+    document.getElementById('gameHeader').classList.toggle('visible', showHeader);
+    document.getElementById('progressContainer').classList.toggle('visible', showHeader);
+
+    if (screenId !== 'ranking') GameState.previousScreen = screenId;
+  },
+
+  handleRegister(e) {
+    e.preventDefault();
+    const name = document.getElementById('playerName').value.trim();
+    const company = document.getElementById('playerCompany').value.trim();
+    const consent = document.getElementById('consentCheck').checked;
+
+    if (!name || !company) {
+      showToast('Por favor, preencha nome e empresa.', 'warning');
+      return false;
+    }
+    if (!consent) {
+      showToast('É necessário aceitar o termo de consentimento.', 'warning');
+      return false;
+    }
+
+    GameState.player = {
+      name,
+      company,
+      role: document.getElementById('playerRole').value.trim(),
+      whatsapp: document.getElementById('playerWhatsapp').value.trim(),
+      email: document.getElementById('playerEmail').value.trim()
+    };
+
+    SoundSystem.play('click');
+    this.showContext();
+    return false;
+  },
+
+  showContext() {
+    this.showScreen('context');
+    this.renderIndicators('contextIndicators', GameState.indicators);
+    document.getElementById('contextIIO').textContent = '0';
+    document.getElementById('contextIIOFill').style.width = '0%';
+  },
+
+  startRounds() {
+    SoundSystem.init();
+    SoundSystem.play('success');
+    GameState.startTime = Date.now();
+    GameState.currentRound = 0;
+    GameState.decisions = [];
+    GameState.surpriseEventsUsed = [];
+    GameState.totalDecisionTime = 0;
+    GameState.finished = false;
+    GameState.indicators = { ...GameState.initialIndicators };
+    this.startTimer();
+    this.showCountdown(() => {
+      this.showRound(0);
+    });
+  },
+
+  showCountdown(callback) {
+    const overlay = document.getElementById('countdownOverlay');
+    const numEl = document.getElementById('countdownNumber');
+    overlay.classList.add('active');
+    let count = 3;
+    numEl.textContent = count;
+    const interval = setInterval(() => {
+      count--;
+      if (count > 0) {
+        numEl.textContent = count;
+        numEl.style.animation = 'none';
+        void numEl.offsetWidth;
+        numEl.style.animation = 'countPulse 1s ease';
+        SoundSystem.play('click');
+      } else {
+        clearInterval(interval);
+        overlay.classList.remove('active');
+        SoundSystem.play('success');
+        if (callback) callback();
+      }
+    }, 1000);
+  },
+
+  startTimer() {
+    if (GameState.timerInterval) clearInterval(GameState.timerInterval);
+    GameState.timerInterval = setInterval(() => {
+      GameState.elapsedTime = Math.floor((Date.now() - GameState.startTime) / 1000);
+      const min = String(Math.floor(GameState.elapsedTime / 60)).padStart(2, '0');
+      const sec = String(GameState.elapsedTime % 60).padStart(2, '0');
+      document.getElementById('headerTimer').textContent = min + ':' + sec;
+    }, 1000);
+  },
+
+  stopTimer() {
+    if (GameState.timerInterval) {
+      clearInterval(GameState.timerInterval);
+      GameState.timerInterval = null;
+    }
+  },
+
+  showRound(index) {
+    GameState.currentRound = index;
+    GameState.roundStartTime = Date.now();
+    const round = ROUNDS_DATA[index];
+    this.showScreen('round');
+
+    // Update header
+    document.getElementById('headerRound').textContent = `RODADA ${round.number}/7`;
+    const progress = ((index) / 7) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+
+    // Round header
+    document.getElementById('roundHeader').innerHTML = `
+      <div class="round-number">Rodada ${round.number} de 7 — ${round.theme}</div>
+      <h2 class="round-title">${round.title}</h2>
+    `;
+
+    // Situation
+    document.getElementById('roundSituation').innerHTML = `
+      <div class="situation-label">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+        SITUAÇÃO
+      </div>
+      <p class="situation-text">${round.situation}</p>
+    `;
+
+    // Options
+    const optionsHtml = round.options.map((opt, i) => `
+      <div class="option-card" tabindex="0" role="button" aria-label="Opção ${opt.letter}" 
+           onclick="Game.selectOption(${index}, ${i})" 
+           onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();Game.selectOption(${index},${i})}"
+           id="option-${index}-${i}">
+        <div class="option-content">
+          <span class="option-letter">${opt.letter}</span>
+          <span class="option-text">${opt.text}</span>
+        </div>
+      </div>
+    `).join('');
+    document.getElementById('roundOptions').innerHTML = optionsHtml;
+
+    // Hide feedback and next button
+    document.getElementById('roundFeedback').classList.add('hidden');
+    document.getElementById('roundNextBtn').classList.add('hidden');
+
+    // Render indicators
+    this.renderIndicators('roundIndicators', GameState.indicators);
+    this.updateIIO();
+    this.updateMiniIndicators();
+    this.updateEnvironment();
+  },
+
+  selectOption(roundIndex, optionIndex) {
+    const round = ROUNDS_DATA[roundIndex];
+    const option = round.options[optionIndex];
+    const decisionTime = (Date.now() - GameState.roundStartTime) / 1000;
+    GameState.totalDecisionTime += decisionTime;
+
+    // Disable options
+    document.querySelectorAll('.option-card').forEach((card, i) => {
+      card.style.pointerEvents = 'none';
+      card.style.opacity = '0.7';
+      if (i === optionIndex) {
+        card.classList.add('selected');
+        card.style.opacity = '1';
+      }
+    });
+
+    // Mark option quality visually
+    setTimeout(() => {
+      document.querySelectorAll('.option-card').forEach((card, i) => {
+        const opt = round.options[i];
+        if (opt.quality === 'excellent') card.classList.add('correct');
+        else if (opt.quality === 'poor') card.classList.add('wrong');
+        else card.classList.add('neutral');
+      });
+    }, 500);
+
+    // Apply impact
+    const imp = option.impact;
+    GameState.indicators.health = Math.max(0, Math.min(100, GameState.indicators.health + imp.health));
+    GameState.indicators.legal = Math.max(0, Math.min(100, GameState.indicators.legal + imp.legal));
+    GameState.indicators.productivity = Math.max(0, Math.min(100, GameState.indicators.productivity + imp.productivity));
+    GameState.indicators.finance = Math.max(0, Math.min(100, GameState.indicators.finance + imp.finance));
+
+    // Record decision
+    GameState.decisions.push({
+      round: roundIndex,
+      option: optionIndex,
+      quality: option.quality,
+      strategic: option.strategic,
+      time: decisionTime
+    });
+
+    // Play sound
+    if (option.quality === 'excellent') SoundSystem.play('success');
+    else if (option.quality === 'poor') SoundSystem.play('warning');
+    else SoundSystem.play('click');
+
+    // Show feedback
+    const feedbackEl = document.getElementById('roundFeedback');
+    const feedbackIcon = option.quality === 'excellent' ? '&#10004;' : option.quality === 'poor' ? '&#10006;' : '&#9888;';
+    const feedbackColor = option.quality === 'excellent' ? 'var(--green)' : option.quality === 'poor' ? 'var(--red)' : 'var(--orange)';
+
+    feedbackEl.innerHTML = `
+      <div class="feedback-title" style="color:${feedbackColor}">
+        <span>${feedbackIcon}</span> ${option.feedback}
+      </div>
+      <p class="feedback-text">${option.consequence}</p>
+      <div class="impact-grid">
+        ${this.renderImpactItem('Saúde', imp.health)}
+        ${this.renderImpactItem('Jurídica', imp.legal)}
+        ${this.renderImpactItem('Produtividade', imp.productivity)}
+        ${this.renderImpactItem('Financeira', imp.finance)}
+      </div>
+      <div class="feedback-expert">
+        <div class="feedback-expert-label">Visão do Especialista</div>
+        <p class="feedback-expert-text">${option.expert}</p>
+      </div>
+    `;
+    feedbackEl.classList.remove('hidden');
+
+    // Update indicators with animation
+    setTimeout(() => {
+      this.renderIndicators('roundIndicators', GameState.indicators);
+      this.updateIIO();
+      this.updateMiniIndicators();
+      this.updateEnvironment();
+      this.checkCriticalAlerts();
+    }, 300);
+
+    // Show next button
+    const nextBtn = document.getElementById('roundNextBtn');
+    nextBtn.classList.remove('hidden');
+    const isLast = roundIndex >= ROUNDS_DATA.length - 1;
+    document.getElementById('nextBtnText').textContent = isLast ? 'VER RESULTADO' : 'PRÓXIMA RODADA';
+  },
+
+  renderImpactItem(label, value) {
+    const sign = value > 0 ? '+' : '';
+    const cls = value > 0 ? 'positive' : value < 0 ? 'negative' : 'neutral-impact';
+    return `<div class="impact-item ${cls}">${label}: ${sign}${value}</div>`;
+  },
+
+  nextRound() {
+    SoundSystem.play('click');
+    const nextIndex = GameState.currentRound + 1;
+
+    if (nextIndex >= ROUNDS_DATA.length) {
+      // Check for surprise event before results
+      const shouldEvent = this.shouldTriggerEvent(nextIndex);
+      if (shouldEvent) {
+        this.triggerSurpriseEvent(() => { this.showResults(); });
+      } else {
+        this.showResults();
+      }
+      return;
+    }
+
+    // Check for surprise event between rounds
+    const shouldEvent = this.shouldTriggerEvent(nextIndex);
+    if (shouldEvent) {
+      this.triggerSurpriseEvent(() => { this.showRound(nextIndex); });
+    } else {
+      this.showRound(nextIndex);
+    }
+  },
+
+  shouldTriggerEvent(afterRound) {
+    // Events happen after rounds 2, 4, and 6 (indices 2, 4, 6)
+    const eventRounds = [2, 4, 6];
+    if (!eventRounds.includes(afterRound)) return false;
+    // 80% chance of event
+    return Math.random() < 0.8;
+  },
+
+  triggerSurpriseEvent(callback) {
+    // Pick a random unused event
+    const available = SURPRISE_EVENTS.filter(e => !GameState.surpriseEventsUsed.includes(e.id));
+    if (available.length === 0) { callback(); return; }
+    
+    const event = available[Math.floor(Math.random() * available.length)];
+    GameState.surpriseEventsUsed.push(event.id);
+
+    let impact, message;
+    if (event.conditionBased && event.getImpact) {
+      const result = event.getImpact(GameState.indicators);
+      impact = result.impact;
+      message = result.message;
+    } else {
+      impact = event.impact;
+      message = event.message;
+    }
+
+    // Apply impact
+    GameState.indicators.health = Math.max(0, Math.min(100, GameState.indicators.health + impact.health));
+    GameState.indicators.legal = Math.max(0, Math.min(100, GameState.indicators.legal + impact.legal));
+    GameState.indicators.productivity = Math.max(0, Math.min(100, GameState.indicators.productivity + impact.productivity));
+    GameState.indicators.finance = Math.max(0, Math.min(100, GameState.indicators.finance + impact.finance));
+
+    SoundSystem.play('event');
+
+    // Show event overlay
+    document.getElementById('eventTitle').textContent = event.title;
+    document.getElementById('eventText').innerHTML = event.text + '<br><br><strong>' + message + '</strong>';
+    document.getElementById('eventImpact').innerHTML = `
+      ${this.renderImpactItem('Saúde', impact.health)}
+      ${this.renderImpactItem('Jurídica', impact.legal)}
+      ${this.renderImpactItem('Produtividade', impact.productivity)}
+      ${this.renderImpactItem('Financeira', impact.finance)}
+    `;
+    document.getElementById('eventOverlay').classList.add('active');
+
+    Game._eventCallback = callback;
+    this.updateMiniIndicators();
+    this.updateEnvironment();
+  },
+
+  dismissEvent() {
+    document.getElementById('eventOverlay').classList.remove('active');
+    SoundSystem.play('click');
+    if (Game._eventCallback) {
+      Game._eventCallback();
+      Game._eventCallback = null;
+    }
+  },
+
+  calculateIIO() {
+    if (GameState.decisions.length === 0) return 0;
+
+    const ind = GameState.indicators;
+    // Indicator average (40%)
+    const indAvg = (ind.health + ind.legal + ind.productivity + ind.finance) / 4;
+    const indScore = (indAvg / 100) * 40;
+
+    // Decision quality (30%)
+    const excellentCount = GameState.decisions.filter(d => d.quality === 'excellent').length;
+    const qualityRatio = excellentCount / GameState.decisions.length;
+    const qualityScore = qualityRatio * 30;
+
+    // Time bonus (10%) - faster is better, baseline 420 seconds (7 minutes)
+    const avgTime = GameState.totalDecisionTime / GameState.decisions.length;
+    const timeBonus = Math.max(0, Math.min(10, 10 - (avgTime - 20) * 0.15));
+
+    // Balance bonus (10%) - all indicators within 20 points of each other
+    const values = [ind.health, ind.legal, ind.productivity, ind.finance];
+    const range = Math.max(...values) - Math.min(...values);
+    const balanceScore = Math.max(0, 10 - (range * 0.15));
+
+    // Strategic vision (10%) - chose strategic options
+    const strategicCount = GameState.decisions.filter(d => d.strategic).length;
+    const strategicRatio = strategicCount / GameState.decisions.length;
+    const strategicScore = strategicRatio * 10;
+
+    const total = Math.round(Math.max(0, Math.min(100, indScore + qualityScore + timeBonus + balanceScore + strategicScore)));
+    return total;
+  },
+
+  updateIIO() {
+    const iio = this.calculateIIO();
+    GameState.iio = iio;
+    const iioEls = document.querySelectorAll('.iio-value');
+    const iioFills = document.querySelectorAll('.iio-fill');
+    iioEls.forEach(el => el.textContent = iio);
+    iioFills.forEach(el => el.style.width = iio + '%');
+  },
+
+  getProfile(score) {
+    if (score <= 30) return { name: 'Gestão em Estado de Alerta', color: 'var(--red)', phrase: 'A empresa precisa agir com urgência. Cada dia sem ação é um risco a mais.' };
+    if (score <= 50) return { name: 'Gestão Reativa', color: 'var(--orange)', phrase: 'Você responde aos problemas, mas ainda não os antecipa. A prevenção precisa entrar na estratégia.' };
+    if (score <= 70) return { name: 'Gestão em Evolução', color: 'var(--yellow)', phrase: 'Há consciência dos desafios e movimentos positivos. O caminho está traçado, continue evoluindo.' };
+    if (score <= 85) return { name: 'Gestão Preventiva', color: 'var(--green)', phrase: 'Você demonstra visão estratégica e foco em prevenção. A empresa está no caminho certo.' };
+    return { name: 'Líder da Virada Ocupacional', color: 'var(--blue-electric)', phrase: 'Excelência em gestão ocupacional. Você transforma dados em decisões e prevenção em resultado.' };
+  },
+
+  showResults() {
+    this.stopTimer();
+    GameState.finished = true;
+    const score = this.calculateIIO();
+    GameState.iio = score;
+    const profile = this.getProfile(score);
+    const ind = GameState.indicators;
+    const elapsed = GameState.elapsedTime;
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+    const timeStr = `${minutes}min ${seconds}s`;
+
+    // Determine strengths and weaknesses
+    const strengths = [];
+    const weaknesses = [];
+    const excellentRounds = GameState.decisions.filter(d => d.quality === 'excellent');
+    const poorRounds = GameState.decisions.filter(d => d.quality === 'poor');
+
+    if (ind.health >= 60) strengths.push('Boa gestão da saúde dos colaboradores');
+    else weaknesses.push('Saúde dos trabalhadores ainda precisa de atenção');
+
+    if (ind.legal >= 60) strengths.push('Segurança jurídica fortalecida');
+    else weaknesses.push('Vulnerabilidade jurídica e de conformidade');
+
+    if (ind.productivity >= 60) strengths.push('Produtividade em recuperação');
+    else weaknesses.push('Produtividade comprometida por problemas estruturais');
+
+    if (ind.finance >= 60) strengths.push('Saúde financeira preservada');
+    else weaknesses.push('Custos ocultos impactando a saúde financeira');
+
+    if (excellentRounds.length >= 5) strengths.push('Tomada de decisão consistentemente estratégica');
+    if (excellentRounds.length >= 3 && excellentRounds.length < 5) strengths.push('Decisões acertadas em áreas-chave');
+    if (poorRounds.length >= 3) weaknesses.push('Decisões de curto prazo comprometeram resultados sustentáveis');
+    
+    const strategicCount = GameState.decisions.filter(d => d.strategic).length;
+    if (strategicCount >= 5) strengths.push('Visão estratégica de longo prazo');
+    else if (strategicCount <= 2) weaknesses.push('Falta de visão estratégica e preventiva');
+
+    // Recommendation based on lowest indicator
+    const indArr = [
+      { key: 'health', label: 'Saúde', val: ind.health },
+      { key: 'legal', label: 'Segurança Jurídica', val: ind.legal },
+      { key: 'productivity', label: 'Produtividade', val: ind.productivity },
+      { key: 'finance', label: 'Saúde Financeira', val: ind.finance }
+    ].sort((a, b) => a.val - b.val);
+
+    const recommendations = {
+      health: 'Priorize um programa de saúde ocupacional integrado com acompanhamento contínuo dos colaboradores, gestão de absenteísmo e ações preventivas para riscos psicossociais.',
+      legal: 'Invista na atualização documental (PGR, PCMSO, laudos), capacitação do SESMT e integração das áreas de RH e SST para blindar a empresa juridicamente.',
+      productivity: 'Foque no desenvolvimento de lideranças, melhoria do clima organizacional e eliminação dos fatores que causam presenteísmo e desmotivação.',
+      finance: 'Implemente gestão de custos ocultos (afastamentos, rotatividade, FAP) e transforme os investimentos em prevenção em economia mensurável.'
+    };
+    const mainRec = recommendations[indArr[0].key];
+
+    // Diagnosis text
+    const diagTexts = [];
+    if (ind.health < 50) diagTexts.push('A saúde dos trabalhadores permanece em risco, com alta probabilidade de novos afastamentos.');
+    if (ind.legal < 50) diagTexts.push('A empresa está exposta a riscos jurídicos significativos, incluindo autuações e ações trabalhistas.');
+    if (ind.productivity < 50) diagTexts.push('A produtividade está abaixo do potencial, impactada por problemas de gestão de pessoas e clima.');
+    if (ind.finance < 50) diagTexts.push('Os custos ocultos continuam corroendo a margem financeira da empresa.');
+    if (diagTexts.length === 0) diagTexts.push('A empresa está em trajetória positiva de transformação, com indicadores em recuperação consistente.');
+
+    // Score circle color
+    let scoreColor = '#ff5252';
+    if (score > 30) scoreColor = '#ff9800';
+    if (score > 50) scoreColor = '#ffc107';
+    if (score > 70) scoreColor = '#00e676';
+    if (score > 85) scoreColor = '#00b4ff';
+
+    const circumference = 2 * Math.PI * 75;
+    const dashoffset = circumference - (score / 100) * circumference;
+
+    // Render result
+    const resultHtml = `
+      <div class="text-center animate-in">
+        <div class="result-score-circle">
+          <svg viewBox="0 0 170 170">
+            <circle class="score-bg" cx="85" cy="85" r="75"/>
+            <circle class="score-fill" cx="85" cy="85" r="75" 
+                    stroke="${scoreColor}"
+                    stroke-dasharray="${circumference}" 
+                    stroke-dashoffset="${circumference}"
+                    id="scoreCircleFill"/>
+          </svg>
+          <div class="result-score-value">
+            <div class="result-score-number" id="scoreNumber" style="color:${scoreColor}">0</div>
+            <div class="result-score-label">IIO</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-profile text-center animate-in delay-1">
+        <div class="result-profile-name" style="color:${profile.color}">${profile.name}</div>
+        <div class="result-profile-phrase">"${profile.phrase}"</div>
+        <div style="font-size:0.8rem; color:var(--gray-300); margin-top:8px;">Tempo: ${timeStr}</div>
+      </div>
+
+      <div class="card card-tech animate-in delay-2" style="margin-bottom:20px;">
+        <div class="result-section">
+          <div class="result-section-title">Indicadores Finais</div>
+          <div class="result-indicators">
+            <div class="result-ind-item">
+              <div class="result-ind-label">Saúde</div>
+              <div class="result-ind-value" style="color:${this.getIndicatorColor(ind.health)}">${ind.health}</div>
+            </div>
+            <div class="result-ind-item">
+              <div class="result-ind-label">Jurídica</div>
+              <div class="result-ind-value" style="color:${this.getIndicatorColor(ind.legal)}">${ind.legal}</div>
+            </div>
+            <div class="result-ind-item">
+              <div class="result-ind-label">Produtividade</div>
+              <div class="result-ind-value" style="color:${this.getIndicatorColor(ind.productivity)}">${ind.productivity}</div>
+            </div>
+            <div class="result-ind-item">
+              <div class="result-ind-label">Financeira</div>
+              <div class="result-ind-value" style="color:${this.getIndicatorColor(ind.finance)}">${ind.finance}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      ${strengths.length > 0 ? `
+      <div class="card animate-in delay-3" style="margin-bottom:16px;">
+        <div class="result-section" style="margin-bottom:0;">
+          <div class="result-section-title" style="color:var(--green);">Principais Acertos</div>
+          <ul class="result-list strengths">
+            ${strengths.map(s => `<li>${s}</li>`).join('')}
+          </ul>
+        </div>
+      </div>` : ''}
+
+      ${weaknesses.length > 0 ? `
+      <div class="card animate-in delay-4" style="margin-bottom:16px;">
+        <div class="result-section" style="margin-bottom:0;">
+          <div class="result-section-title" style="color:var(--red);">Principais Vulnerabilidades</div>
+          <ul class="result-list weaknesses">
+            ${weaknesses.map(w => `<li>${w}</li>`).join('')}
+          </ul>
+        </div>
+      </div>` : ''}
+
+      <div class="recommendation-card animate-in delay-5">
+        <h4>Recomendação Personalizada</h4>
+        <p>${mainRec}</p>
+      </div>
+
+      <div class="card animate-in" style="margin-top:16px; margin-bottom:20px;">
+        <div class="result-section" style="margin-bottom:0;">
+          <div class="result-section-title">Diagnóstico da Empresa</div>
+          <p style="font-size:0.9rem; color:var(--gray-200); line-height:1.7;">${diagTexts.join(' ')}</p>
+        </div>
+      </div>
+
+      <div class="text-center" style="margin-bottom:20px;">
+        <button class="btn btn-gold" onclick="Game.showScreen('cTA')">
+          VER COMO TRANSFORMAR ESSES RESULTADOS
+        </button>
+      </div>
+    `;
+
+    document.getElementById('resultContent').innerHTML = resultHtml;
+    this.showScreen('result');
+
+    // Animate score
+    setTimeout(() => {
+      const fill = document.getElementById('scoreCircleFill');
+      if (fill) fill.style.strokeDashoffset = dashoffset;
+      this.animateCounter('scoreNumber', 0, score, 1500);
+    }, 300);
+
+    // Confetti for high scores
+    if (score > 70) {
+      setTimeout(() => { Confetti.launch(); SoundSystem.play('complete'); }, 1000);
+    } else {
+      SoundSystem.play('complete');
+    }
+
+    // Save to ranking
+    this.saveResult(score, profile, timeStr);
+
+    // Event mode auto-restart
+    if (EVENT_MODE) {
+      setTimeout(() => {
+        showToast(`Reinício automático em ${EVENT_AUTO_RESTART_SECONDS} segundos...`, 'warning', EVENT_AUTO_RESTART_SECONDS * 1000);
+      }, 5000);
+      setTimeout(() => {
+        if (EVENT_MODE && GameState.finished) this.restart();
+      }, (EVENT_AUTO_RESTART_SECONDS + 5) * 1000);
+    }
+  },
+
+  animateCounter(elementId, start, end, duration) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const startTime = Date.now();
+    const animate = () => {
+      const progress = Math.min(1, (Date.now() - startTime) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(start + (end - start) * eased);
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    animate();
+  },
+
+  saveResult(score, profile, timeStr) {
+    const entry = {
+      name: GameState.player.name,
+      company: GameState.player.company,
+      role: GameState.player.role,
+      whatsapp: GameState.player.whatsapp,
+      email: GameState.player.email,
+      score,
+      profile: profile.name,
+      time: timeStr,
+      timeSeconds: GameState.elapsedTime,
+      indicators: { ...GameState.indicators },
+      decisions: [...GameState.decisions],
+      date: new Date().toISOString()
+    };
+
+    let results = [];
+    try { results = JSON.parse(localStorage.getItem('mvo_results') || '[]'); } catch (e) { results = []; }
+    results.push(entry);
+    try { localStorage.setItem('mvo_results', JSON.stringify(results)); } catch (e) {
+      showToast('Não foi possível salvar o resultado no dispositivo.', 'warning');
+    }
+  },
+
+  getIndicatorColor(value) {
+    if (value >= 70) return 'var(--green)';
+    if (value >= 50) return 'var(--yellow)';
+    if (value >= 30) return 'var(--orange)';
+    return 'var(--red)';
+  },
+
+  renderIndicators(containerId, indicators) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const items = [
+      { key: 'health', label: 'Saúde dos Trabalhadores', value: indicators.health, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' },
+      { key: 'legal', label: 'Segurança Jurídica', value: indicators.legal, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>' },
+      { key: 'productivity', label: 'Produtividade', value: indicators.productivity, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/><polyline points="17,6 23,6 23,12"/></svg>' },
+      { key: 'finance', label: 'Saúde Financeira', value: indicators.finance, icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>' }
+    ];
+
+    container.innerHTML = items.map(item => {
+      const color = this.getIndicatorColor(item.value);
+      const critical = item.value < 25 ? 'critical' : '';
+      return `
+        <div class="indicator-card ${critical}">
+          <div class="indicator-icon" style="color:${color}">${item.icon}</div>
+          <div class="indicator-label">${item.label}</div>
+          <div class="indicator-value" style="color:${color}">${item.value}</div>
+          <div class="indicator-bar">
+            <div class="indicator-fill" style="width:${item.value}%; background:${color}"></div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  updateMiniIndicators() {
+    const ind = GameState.indicators;
+    const update = (id, value) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.width = value + '%';
+        el.style.background = this.getIndicatorColor(value);
+      }
+    };
+    update('miniHealth', ind.health);
+    update('miniLegal', ind.legal);
+    update('miniProd', ind.productivity);
+    update('miniFinance', ind.finance);
+  },
+
+  updateEnvironment() {
+    const avg = (GameState.indicators.health + GameState.indicators.legal + 
+                 GameState.indicators.productivity + GameState.indicators.finance) / 4;
+    document.body.classList.remove('env-healthy', 'env-warning', 'env-critical');
+    if (avg >= 60) document.body.classList.add('env-healthy');
+    else if (avg >= 40) document.body.classList.add('env-warning');
+    else document.body.classList.add('env-critical');
+  },
+
+  checkCriticalAlerts() {
+    const ind = GameState.indicators;
+    const checks = [
+      { key: 'health', label: 'Saúde dos Trabalhadores', val: ind.health },
+      { key: 'legal', label: 'Segurança Jurídica', val: ind.legal },
+      { key: 'productivity', label: 'Produtividade', val: ind.productivity },
+      { key: 'finance', label: 'Saúde Financeira', val: ind.finance }
+    ];
+    for (const c of checks) {
+      if (c.val <= 15) {
+        showToast(`ALERTA CRÍTICO: ${c.label} em nível ${c.val}!`, 'critical-alert', 4000);
+        SoundSystem.play('alert');
+        break;
+      } else if (c.val <= 25) {
+        showToast(`Atenção: ${c.label} em nível preocupante (${c.val})`, 'warning', 3000);
+        break;
+      }
+    }
+  },
+
+  // ---- SHARING ----
+  shareResult() {
+    const score = GameState.iio;
+    const profile = this.getProfile(score);
+    const text = `Conquistei ${score} pontos no desafio Missão Virada Ocupacional e alcancei o perfil "${profile.name}". A Virada Começa Agora! ${EVENT_CONFIG.name} — ${EVENT_CONFIG.dateShort}, na ${EVENT_CONFIG.location}.`;
+
+    if (navigator.share) {
+      navigator.share({ title: 'Missão Virada Ocupacional', text }).catch(() => {});
+    } else {
+      // Fallback: copy to clipboard
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('Resultado copiado! Cole nas suas redes sociais.', 'success');
+        }).catch(() => {
+          this.showCopyFallback(text);
+        });
+      } else {
+        this.showCopyFallback(text);
+      }
+    }
+  },
+
+  showCopyFallback(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy');
+      showToast('Resultado copiado!', 'success');
+    } catch (e) {
+      showToast('Copie o texto: ' + text, 'warning', 8000);
+    }
+    document.body.removeChild(ta);
+  },
+
+  // ---- DIAGNOSTIC ----
+  showDiagnostic() {
+    const score = GameState.iio;
+    const profile = this.getProfile(score);
+    const ind = GameState.indicators;
+    const player = GameState.player;
+    const elapsed = GameState.elapsedTime;
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+
+    // Risks based on decisions
+    const risks = [];
+    GameState.decisions.forEach((d, i) => {
+      if (d.quality === 'poor') {
+        risks.push(`Rodada ${i + 1} (${ROUNDS_DATA[i].theme}): Decisão de risco elevado`);
+      }
+    });
+    if (ind.health < 50) risks.push('Saúde ocupacional dos trabalhadores em nível insuficiente');
+    if (ind.legal < 50) risks.push('Exposição a riscos jurídicos e de conformidade');
+    if (ind.productivity < 50) risks.push('Produtividade abaixo do potencial organizacional');
+    if (ind.finance < 50) risks.push('Custos ocultos impactando sustentabilidade financeira');
+
+    const recs = [];
+    if (ind.health < 60) recs.push('Implementar programa integrado de saúde ocupacional com acompanhamento contínuo');
+    if (ind.legal < 60) recs.push('Atualizar documentação de SST (PGR, PCMSO) e fortalecer conformidade normativa');
+    if (ind.productivity < 60) recs.push('Investir em desenvolvimento de lideranças e melhoria do clima organizacional');
+    if (ind.finance < 60) recs.push('Mapear e monitorar custos ocultos com absenteísmo, rotatividade e presenteísmo');
+    recs.push('Criar comitê integrado de saúde e performance organizacional');
+    recs.push('Estabelecer indicadores e metas de inteligência ocupacional');
+
+    const html = `
+      <div class="diag-header" style="text-align:center; border-bottom:2px solid #1a73e8; padding-bottom:16px; margin-bottom:20px;">
+        <h1 style="font-family:var(--font-display); font-size:1.4rem; color:#0a1628; margin-bottom:4px;">DIAGNÓSTICO — Missão Virada Ocupacional</h1>
+        <p style="font-size:0.85rem; color:#546e7a;">${EVENT_CONFIG.name}</p>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-bottom:20px;">
+        <div>
+          <p style="font-size:0.8rem; color:#78909c; margin-bottom:2px;">Participante</p>
+          <p style="font-weight:700; color:#1a1a2e;">${player.name}</p>
+        </div>
+        <div>
+          <p style="font-size:0.8rem; color:#78909c; margin-bottom:2px;">Empresa</p>
+          <p style="font-weight:700; color:#1a1a2e;">${player.company}</p>
+        </div>
+        <div>
+          <p style="font-size:0.8rem; color:#78909c; margin-bottom:2px;">Pontuação IIO</p>
+          <p style="font-weight:900; color:#1a73e8; font-size:1.3rem;">${score}/100</p>
+        </div>
+        <div>
+          <p style="font-size:0.8rem; color:#78909c; margin-bottom:2px;">Perfil</p>
+          <p style="font-weight:700; color:#1a1a2e;">${profile.name}</p>
+        </div>
+      </div>
+
+      <h2 style="font-family:var(--font-display); color:#1a73e8; font-size:1rem; margin:20px 0 10px; border-bottom:1px solid #e0e0e0; padding-bottom:4px;">Indicadores Finais</h2>
+      <table style="width:100%; border-collapse:collapse; margin-bottom:16px;">
+        <tr>
+          <td style="padding:8px; border:1px solid #e0e0e0; font-weight:600;">Saúde dos Trabalhadores</td>
+          <td style="padding:8px; border:1px solid #e0e0e0; text-align:center; font-weight:700; color:${ind.health >= 50 ? '#00c853' : '#d32f2f'};">${ind.health}/100</td>
+        </tr>
+        <tr>
+          <td style="padding:8px; border:1px solid #e0e0e0; font-weight:600;">Segurança Jurídica</td>
+          <td style="padding:8px; border:1px solid #e0e0e0; text-align:center; font-weight:700; color:${ind.legal >= 50 ? '#00c853' : '#d32f2f'};">${ind.legal}/100</td>
+        </tr>
+        <tr>
+          <td style="padding:8px; border:1px solid #e0e0e0; font-weight:600;">Produtividade</td>
+          <td style="padding:8px; border:1px solid #e0e0e0; text-align:center; font-weight:700; color:${ind.productivity >= 50 ? '#00c853' : '#d32f2f'};">${ind.productivity}/100</td>
+        </tr>
+        <tr>
+          <td style="padding:8px; border:1px solid #e0e0e0; font-weight:600;">Saúde Financeira</td>
+          <td style="padding:8px; border:1px solid #e0e0e0; text-align:center; font-weight:700; color:${ind.finance >= 50 ? '#00c853' : '#d32f2f'};">${ind.finance}/100</td>
+        </tr>
+      </table>
+
+      ${risks.length > 0 ? `
+      <h2 style="font-family:var(--font-display); color:#d32f2f; font-size:1rem; margin:20px 0 10px; border-bottom:1px solid #e0e0e0; padding-bottom:4px;">Principais Riscos Identificados</h2>
+      <ul style="padding-left:20px; color:#1a1a2e; font-size:0.9rem; line-height:1.8;">
+        ${risks.map(r => `<li>${r}</li>`).join('')}
+      </ul>` : ''}
+
+      <h2 style="font-family:var(--font-display); color:#1a73e8; font-size:1rem; margin:20px 0 10px; border-bottom:1px solid #e0e0e0; padding-bottom:4px;">Recomendações</h2>
+      <ul style="padding-left:20px; color:#1a1a2e; font-size:0.9rem; line-height:1.8;">
+        ${recs.map(r => `<li>${r}</li>`).join('')}
+      </ul>
+
+      <div style="margin-top:30px; padding-top:16px; border-top:2px solid #1a73e8; text-align:center;">
+        <p style="font-weight:700; color:#0a1628; font-size:1rem; margin-bottom:4px;">${EVENT_CONFIG.name}</p>
+        <p style="color:#546e7a; font-size:0.85rem;">${EVENT_CONFIG.date} — ${EVENT_CONFIG.time}</p>
+        <p style="color:#546e7a; font-size:0.85rem;">${EVENT_CONFIG.location}</p>
+        <p style="color:#78909c; font-size:0.8rem; margin-top:8px;">Realização: ${EVENT_CONFIG.organizers}</p>
+        <p style="color:#1a73e8; font-weight:700; font-size:0.9rem; margin-top:8px;">${EVENT_CONFIG.concept}</p>
+      </div>
+
+      <p style="text-align:center; font-size:0.7rem; color:#b0bec5; margin-top:16px;">
+        Diagnóstico gerado em ${new Date().toLocaleDateString('pt-BR')} — Tempo de jogo: ${minutes}min ${seconds}s
+      </p>
+    `;
+
+    document.getElementById('diagnosticContent').innerHTML = html;
+    document.getElementById('diagnosticOverlay').classList.add('active');
+  },
+
+  closeDiagnostic() {
+    document.getElementById('diagnosticOverlay').classList.remove('active');
+  },
+
+  // ---- LINKS ----
+  openLink(type) {
+    let links = DEFAULT_LINKS;
+    try {
+      const saved = JSON.parse(localStorage.getItem('mvo_links'));
+      if (saved) links = { ...links, ...saved };
+    } catch (e) {}
+    const url = links[type];
+    if (url && url !== '#' && url.startsWith('http')) {
+      window.open(url, '_blank');
+    } else {
+      showToast('Link ainda não configurado. Acesse o painel administrativo.', 'warning');
+    }
+  },
+
+  // ---- RANKING ----
+  showRanking() {
+    let results = [];
+    try { results = JSON.parse(localStorage.getItem('mvo_results') || '[]'); } catch (e) {}
+    results.sort((a, b) => b.score - a.score || a.timeSeconds - b.timeSeconds);
+    const top10 = results.slice(0, 10);
+
+    const container = document.getElementById('rankingContent');
+    if (top10.length === 0) {
+      container.innerHTML = '<p class="text-center" style="color:var(--gray-300); padding:40px 0;">Nenhum resultado registrado ainda.</p>';
+      return;
+    }
+
+    const medals = ['&#129351;', '&#129352;', '&#129353;'];
+    let html = `
+      <table class="ranking-table">
+        <thead>
+          <tr>
+            <th style="width:50px; text-align:center;">#</th>
+            <th>Jogador</th>
+            <th>Empresa</th>
+            <th style="text-align:center;">IIO</th>
+            <th>Perfil</th>
+            <th style="text-align:center;">Tempo</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    top10.forEach((r, i) => {
+      const rankClass = i < 3 ? `rank-${i + 1}` : '';
+      const pos = i < 3 ? `<span class="rank-medal">${medals[i]}</span>` : `<span class="rank-position">${i + 1}</span>`;
+      const displayName = EVENT_MODE ? r.name.split(' ')[0] : r.name;
+      html += `
+        <tr class="${rankClass}">
+          <td style="text-align:center;">${pos}</td>
+          <td>${displayName}</td>
+          <td>${r.company}</td>
+          <td class="rank-score" style="text-align:center;">${r.score}</td>
+          <td style="font-size:0.75rem;">${r.profile}</td>
+          <td style="text-align:center; font-size:0.8rem;">${r.time}</td>
+        </tr>
+      `;
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  },
+
+  goBack() {
+    const prev = GameState.previousScreen || 'landing';
+    if (prev === 'cTA') {
+      this.showScreen('cTA');
+    } else {
+      this.showScreen('landing');
+    }
+  },
+
+  restart() {
+    this.stopTimer();
+    GameState.currentRound = 0;
+    GameState.decisions = [];
+    GameState.surpriseEventsUsed = [];
+    GameState.totalDecisionTime = 0;
+    GameState.finished = false;
+    GameState.iio = 0;
+    GameState.elapsedTime = 0;
+    GameState.indicators = { ...GameState.initialIndicators };
+    document.getElementById('headerTimer').textContent = '00:00';
+    document.body.classList.remove('env-healthy', 'env-warning', 'env-critical');
+    
+    if (EVENT_MODE) {
+      // In event mode, go back to register for next participant
+      document.getElementById('registerForm').reset();
+      this.showScreen('register');
+    } else {
+      this.showScreen('landing');
+    }
+  }
+};
+
+// ============================================
+// ADMIN PANEL
+// ============================================
+const Admin = {
+  sortField: 'score',
+  sortAsc: false,
+
+  showPasswordModal() {
+    document.getElementById('adminPasswordInput').value = '';
+    document.getElementById('passwordModal').classList.add('active');
+    setTimeout(() => document.getElementById('adminPasswordInput').focus(), 100);
+  },
+
+  closePasswordModal() {
+    document.getElementById('passwordModal').classList.remove('active');
+  },
+
+  checkPassword() {
+    // Check saved password first, then default
+    let pwd = ADMIN_PASSWORD;
+    try {
+      const saved = localStorage.getItem('mvo_admin_pwd');
+      if (saved) pwd = saved;
+    } catch (e) {}
+
+    const input = document.getElementById('adminPasswordInput').value;
+    if (input === pwd) {
+      this.closePasswordModal();
+      this.open();
+    } else {
+      showToast('Senha incorreta.', 'critical-alert');
+      document.getElementById('adminPasswordInput').value = '';
+      document.getElementById('adminPasswordInput').focus();
+    }
+  },
+
+  open() {
+    document.getElementById('adminOverlay').classList.add('active');
+    this.loadSettings();
+    this.refresh();
+  },
+
+  close() {
+    document.getElementById('adminOverlay').classList.remove('active');
+  },
+
+  loadSettings() {
+    try {
+      const em = localStorage.getItem('mvo_event_mode');
+      if (em !== null) {
+        EVENT_MODE = em === 'true';
+        document.getElementById('eventModeToggle').checked = EVENT_MODE;
+      }
+      const ar = localStorage.getItem('mvo_auto_restart');
+      if (ar) {
+        EVENT_AUTO_RESTART_SECONDS = parseInt(ar);
+        document.getElementById('eventAutoRestart').value = EVENT_AUTO_RESTART_SECONDS;
+      }
+      const links = JSON.parse(localStorage.getItem('mvo_links'));
+      if (links) {
+        if (links.participate) document.getElementById('adminLinkParticipate').value = links.participate;
+        if (links.specialist) document.getElementById('adminLinkSpecialist').value = links.specialist;
+      }
+    } catch (e) {}
+  },
+
+  refresh() {
+    let results = [];
+    try { results = JSON.parse(localStorage.getItem('mvo_results') || '[]'); } catch (e) {}
+
+    // Stats
+    const total = results.length;
+    const avgScore = total > 0 ? Math.round(results.reduce((s, r) => s + r.score, 0) / total) : 0;
+    const avgTime = total > 0 ? Math.round(results.reduce((s, r) => s + (r.timeSeconds || 0), 0) / total) : 0;
+    const avgMin = Math.floor(avgTime / 60);
+    const avgSec = avgTime % 60;
+
+    document.getElementById('adminStats').innerHTML = `
+      <div class="admin-stat">
+        <div class="admin-stat-value">${total}</div>
+        <div class="admin-stat-label">Participantes</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-value">${avgScore}</div>
+        <div class="admin-stat-label">Média IIO</div>
+      </div>
+      <div class="admin-stat">
+        <div class="admin-stat-value">${avgMin}:${String(avgSec).padStart(2, '0')}</div>
+        <div class="admin-stat-label">Tempo Médio</div>
+      </div>
+    `;
+
+    // Profile distribution
+    const profiles = {
+      'Gestão em Estado de Alerta': { count: 0, color: 'var(--red)' },
+      'Gestão Reativa': { count: 0, color: 'var(--orange)' },
+      'Gestão em Evolução': { count: 0, color: 'var(--yellow)' },
+      'Gestão Preventiva': { count: 0, color: 'var(--green)' },
+      'Líder da Virada Ocupacional': { count: 0, color: 'var(--blue-electric)' }
+    };
+    results.forEach(r => { if (profiles[r.profile]) profiles[r.profile].count++; });
+
+    const distHtml = Object.entries(profiles).map(([name, data]) => {
+      const pct = total > 0 ? Math.round((data.count / total) * 100) : 0;
+      return `
+        <div class="admin-profile-bar">
+          <span class="admin-profile-label">${name}</span>
+          <div class="admin-profile-fill-bg">
+            <div class="admin-profile-fill" style="width:${pct}%; background:${data.color};">${data.count > 0 ? data.count : ''}</div>
+          </div>
+          <span style="font-size:0.75rem; color:var(--gray-300); width:40px; text-align:right;">${pct}%</span>
+        </div>
+      `;
+    }).join('');
+    document.getElementById('adminProfileDist').innerHTML = distHtml || '<p style="color:var(--gray-400); font-size:0.85rem;">Nenhum dado disponível.</p>';
+
+    // Common mistakes (rounds where most chose "poor" quality)
+    const roundMistakes = {};
+    results.forEach(r => {
+      if (r.decisions) {
+        r.decisions.forEach(d => {
+          if (d.quality === 'poor') {
+            const key = d.round;
+            roundMistakes[key] = (roundMistakes[key] || 0) + 1;
+          }
+        });
+      }
+    });
+
+    const mistakesHtml = Object.entries(roundMistakes)
+      .sort((a, b) => b[1] - a[1])
+      .map(([roundIdx, count]) => {
+        const round = ROUNDS_DATA[parseInt(roundIdx)];
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+        return `
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <span style="font-size:0.8rem; color:var(--gray-200); width:200px; flex-shrink:0;">R${round.number}: ${round.theme}</span>
+            <div class="admin-profile-fill-bg" style="flex:1;">
+              <div class="admin-profile-fill" style="width:${pct}%; background:var(--red);">${count}</div>
+            </div>
+            <span style="font-size:0.75rem; color:var(--gray-300); width:40px; text-align:right;">${pct}%</span>
+          </div>
+        `;
+      }).join('');
+    document.getElementById('adminMistakes').innerHTML = mistakesHtml || '<p style="color:var(--gray-400); font-size:0.85rem;">Nenhum dado disponível.</p>';
+
+    // Participants table
+    this.renderTable(results);
+  },
+
+  renderTable(results) {
+    const query = (document.getElementById('adminSearch').value || '').toLowerCase();
+    let filtered = results;
+    if (query) {
+      filtered = results.filter(r => 
+        r.name.toLowerCase().includes(query) || 
+        r.company.toLowerCase().includes(query)
+      );
+    }
+
+    // Sort
+    filtered.sort((a, b) => {
+      let va = a[this.sortField] || '';
+      let vb = b[this.sortField] || '';
+      if (this.sortField === 'score' || this.sortField === 'timeSeconds') {
+        va = Number(va) || 0;
+        vb = Number(vb) || 0;
+      } else {
+        va = String(va).toLowerCase();
+        vb = String(vb).toLowerCase();
+      }
+      if (va < vb) return this.sortAsc ? -1 : 1;
+      if (va > vb) return this.sortAsc ? 1 : -1;
+      return 0;
+    });
+
+    const tbody = document.getElementById('adminTableBody');
+    tbody.innerHTML = filtered.map(r => `
+      <tr>
+        <td>${r.name}</td>
+        <td>${r.company}</td>
+        <td style="font-weight:700; color:var(--blue-electric);">${r.score}</td>
+        <td style="font-size:0.7rem;">${r.profile}</td>
+        <td>${r.time || '-'}</td>
+      </tr>
+    `).join('');
+  },
+
+  sortBy(field) {
+    const fieldMap = { name: 'name', company: 'company', score: 'score', profile: 'profile', time: 'timeSeconds' };
+    const mapped = fieldMap[field] || field;
+    if (this.sortField === mapped) {
+      this.sortAsc = !this.sortAsc;
+    } else {
+      this.sortField = mapped;
+      this.sortAsc = field === 'score' ? false : true;
+    }
+    this.refresh();
+  },
+
+  filterParticipants() {
+    let results = [];
+    try { results = JSON.parse(localStorage.getItem('mvo_results') || '[]'); } catch (e) {}
+    this.renderTable(results);
+  },
+
+  toggleEventMode() {
+    EVENT_MODE = document.getElementById('eventModeToggle').checked;
+    try { localStorage.setItem('mvo_event_mode', EVENT_MODE.toString()); } catch (e) {}
+    showToast(EVENT_MODE ? 'Modo Evento ativado.' : 'Modo Evento desativado.', 'success');
+  },
+
+  saveEventSettings() {
+    EVENT_AUTO_RESTART_SECONDS = parseInt(document.getElementById('eventAutoRestart').value) || 30;
+    try { localStorage.setItem('mvo_auto_restart', EVENT_AUTO_RESTART_SECONDS.toString()); } catch (e) {}
+  },
+
+  saveLinks() {
+    const links = {
+      participate: document.getElementById('adminLinkParticipate').value.trim(),
+      specialist: document.getElementById('adminLinkSpecialist').value.trim()
+    };
+    try { localStorage.setItem('mvo_links', JSON.stringify(links)); } catch (e) {}
+    // Update href attributes
+    const btnP = document.getElementById('btnParticipate');
+    const btnS = document.getElementById('btnSpecialist');
+    if (btnP && links.participate) btnP.href = links.participate;
+    if (btnS && links.specialist) btnS.href = links.specialist;
+    showToast('Links salvos com sucesso.', 'success');
+  },
+
+  changePassword() {
+    const newPwd = document.getElementById('adminNewPassword').value.trim();
+    if (!newPwd || newPwd.length < 4) {
+      showToast('A senha deve ter pelo menos 4 caracteres.', 'warning');
+      return;
+    }
+    try { localStorage.setItem('mvo_admin_pwd', newPwd); } catch (e) {}
+    document.getElementById('adminNewPassword').value = '';
+    showToast('Senha alterada com sucesso.', 'success');
+  },
+
+  exportCSV() {
+    let results = [];
+    try { results = JSON.parse(localStorage.getItem('mvo_results') || '[]'); } catch (e) {}
+    if (results.length === 0) {
+      showToast('Nenhum resultado para exportar.', 'warning');
+      return;
+    }
+
+    const headers = ['Nome', 'Empresa', 'Cargo', 'WhatsApp', 'Email', 'Pontuação', 'Perfil', 'Tempo', 'Saúde', 'Jurídica', 'Produtividade', 'Financeira', 'Data'];
+    const rows = results.map(r => [
+      `"${(r.name || '').replace(/"/g, '""')}"`,
+      `"${(r.company || '').replace(/"/g, '""')}"`,
+      `"${(r.role || '').replace(/"/g, '""')}"`,
+      `"${(r.whatsapp || '').replace(/"/g, '""')}"`,
+      `"${(r.email || '').replace(/"/g, '""')}"`,
+      r.score,
+      `"${r.profile}"`,
+      `"${r.time || ''}"`,
+      r.indicators ? r.indicators.health : '',
+      r.indicators ? r.indicators.legal : '',
+      r.indicators ? r.indicators.productivity : '',
+      r.indicators ? r.indicators.finance : '',
+      `"${r.date || ''}"`
+    ].join(','));
+
+    // BOM for UTF-8 compatibility
+    const csv = '\ufeff' + headers.join(',') + '\n' + rows.join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `missao_virada_ocupacional_${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('CSV exportado com sucesso!', 'success');
+  },
+
+  clearRanking() {
+    if (!confirm('Tem certeza que deseja limpar todo o ranking? Esta ação não pode ser desfeita.')) return;
+    try { localStorage.removeItem('mvo_results'); } catch (e) {}
+    this.refresh();
+    showToast('Ranking limpo com sucesso.', 'success');
+  },
+
+  clearAllData() {
+    if (!confirm('ATENÇÃO: Isso removerá TODOS os dados do jogo (participantes, configurações, ranking). Deseja continuar?')) return;
+    if (!confirm('Confirmação final: todos os dados serão permanentemente excluídos.')) return;
+    try {
+      localStorage.removeItem('mvo_results');
+      localStorage.removeItem('mvo_links');
+      localStorage.removeItem('mvo_event_mode');
+      localStorage.removeItem('mvo_auto_restart');
+      localStorage.removeItem('mvo_admin_pwd');
+    } catch (e) {}
+    EVENT_MODE = false;
+    this.refresh();
+    this.loadSettings();
+    showToast('Todos os dados foram removidos.', 'success');
+  }
+};
+
+// ============================================
+// INITIALIZATION
+// ============================================
+document.addEventListener('DOMContentLoaded', () => {
+  // Load saved settings
+  try {
+    const em = localStorage.getItem('mvo_event_mode');
+    if (em === 'true') EVENT_MODE = true;
+    const ar = localStorage.getItem('mvo_auto_restart');
+    if (ar) EVENT_AUTO_RESTART_SECONDS = parseInt(ar);
+    const links = JSON.parse(localStorage.getItem('mvo_links'));
+    if (links) {
+      if (links.participate) {
+        const btnP = document.getElementById('btnParticipate');
+        if (btnP) btnP.href = links.participate;
+      }
+      if (links.specialist) {
+        const btnS = document.getElementById('btnSpecialist');
+        if (btnS) btnS.href = links.specialist;
+      }
+    }
+  } catch (e) {}
+
+  // Sound toggle
+  document.getElementById('btnSound').addEventListener('click', () => {
+    if (!SoundSystem.audioCtx) SoundSystem.init();
+    SoundSystem.toggle();
+  });
+
+  // Fullscreen toggle
+  document.getElementById('btnFullscreen').addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  });
+
+  // Ranking screen setup: render when shown
+  const rankingObserver = new MutationObserver(() => {
+    const screen = document.getElementById('screenRanking');
+    if (screen.classList.contains('active')) {
+      Game.showRanking();
+    }
+  });
+  rankingObserver.observe(document.getElementById('screenRanking'), { attributes: true, attributeFilter: ['class'] });
+
+  // Keyboard navigation for screens
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('adminOverlay').classList.contains('active')) Admin.close();
+      else if (document.getElementById('passwordModal').classList.contains('active')) Admin.closePasswordModal();
+      else if (document.getElementById('diagnosticOverlay').classList.contains('active')) Game.closeDiagnostic();
+      else if (document.getElementById('eventOverlay').classList.contains('active')) Game.dismissEvent();
+    }
+  });
+
+  // WhatsApp mask
+  const whatsappInput = document.getElementById('playerWhatsapp');
+  whatsappInput.addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g, '');
+    if (v.length > 11) v = v.slice(0, 11);
+    if (v.length > 7) v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    else if (v.length > 2) v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    else if (v.length > 0) v = `(${v}`;
+    e.target.value = v;
+  });
+
+  // Handle showScreen for CTA (special casing)
+  const origShowScreen = Game.showScreen.bind(Game);
+  Game.showScreen = function(screenId) {
+    // Normalize cTA to cTA
+    origShowScreen(screenId);
+  };
+
+  // If event mode is on, show register directly
+  if (EVENT_MODE) {
+    // Stay on landing, user clicks "COMEÇAR"
+  }
+});
+
+// Global error handler
+window.onerror = function(msg, url, lineNo, colNo, error) {
+  console.error('Erro:', msg, 'Linha:', lineNo);
+  return false;
+};
+</script>
+</body>
+</html>
