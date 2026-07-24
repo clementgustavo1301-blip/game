@@ -1554,7 +1554,7 @@ body::after {
 .countdown-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(10,22,40,0.95);
+  background: #000;
   z-index: 500;
   display: none;
   align-items: center;
@@ -1563,11 +1563,11 @@ body::after {
 .countdown-overlay.active { display: flex; }
 .countdown-number {
   font-family: var(--font-display);
-  font-size: 8rem;
+  font-size: 15vw;
   font-weight: 900;
   color: var(--blue-electric);
   animation: countPulse 1s ease;
-  text-shadow: 0 0 40px rgba(0,180,255,0.5);
+  text-shadow: 8px 8px 0px #fff;
 }
 @keyframes countPulse {
   0% { transform: scale(0.5); opacity: 0; }
@@ -2007,9 +2007,6 @@ body::after {
     </div>
 
     <div class="btn-group animate-in delay-2" style="flex-direction:column; max-width:400px; margin:0 auto;">
-      <a id="btnParticipate" href="#" target="_blank" class="btn btn-gold btn-full" onclick="Game.openLink('participate')">
-        GARANTIR MINHA PARTICIPAÇÃO
-      </a>
       <button class="btn btn-primary btn-full" onclick="Game.shareResult()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         COMPARTILHAR RESULTADO
