@@ -1784,46 +1784,53 @@ body::after {
      SCREEN 2: REGISTER
      ============================================ -->
 <section id="screenRegister" class="screen">
-  <div class="landing-content" style="padding-top:40px; max-width:500px;">
-    <h2 class="landing-title" style="font-size:clamp(1.5rem,4vw,2rem); margin-bottom:8px;">Identificação do Jogador</h2>
-    <p class="landing-desc" style="margin-bottom:24px;">Preencha seus dados para iniciar a missão. Suas informações serão salvas apenas neste dispositivo.</p>
-    
-    <form id="registerForm" onsubmit="Game.handleRegister(event); return false;" novalidate>
-      <div class="form-group">
-        <label for="playerName">Nome completo *</label>
-        <input type="text" id="playerName" placeholder="Seu nome" required autocomplete="name" maxlength="100">
-      </div>
-      <div class="form-group">
-        <label for="playerCompany">Empresa *</label>
-        <input type="text" id="playerCompany" placeholder="Nome da empresa" required autocomplete="organization" maxlength="100">
-      </div>
-      <div class="form-group">
-        <label for="playerRole">Cargo</label>
-        <input type="text" id="playerRole" placeholder="Seu cargo" autocomplete="organization-title" maxlength="100">
-      </div>
-      <div class="form-group">
-        <label for="playerWhatsapp">WhatsApp</label>
-        <input type="tel" id="playerWhatsapp" placeholder="(00) 00000-0000" autocomplete="tel" maxlength="20">
-      </div>
-      <div class="form-group">
-        <label for="playerEmail">E-mail</label>
-        <input type="email" id="playerEmail" placeholder="seu@email.com" autocomplete="email" maxlength="100">
-      </div>
+  <div class="brutalist-grid">
+    <div class="brutalist-left" style="justify-content: center;">
+      <div class="brutalist-badge">[ ETAPA 01: CREDENCIAIS ]</div>
+      <h2 class="brutalist-title" style="font-size: clamp(2.5rem, 5vw, 4rem);">IDENTIFICAÇÃO_</h2>
+      <p class="brutalist-desc">
+        Insira seus dados para acesso ao painel de crise. Suas credenciais ficarão salvas apenas neste terminal local.
+      </p>
       
-      <div class="checkbox-group">
-        <input type="checkbox" id="consentCheck" required>
-        <label for="consentCheck">
-          Concordo com a utilização dos meus dados para comunicações relacionadas ao 
-          1º Workshop de Inteligência Ocupacional do RN, conforme a LGPD (Lei nº 13.709/2018). 
-          Meus dados serão armazenados apenas neste dispositivo e poderão ser removidos a qualquer momento.
-        </label>
+      <form id="registerForm" onsubmit="Game.handleRegister(event); return false;" novalidate style="max-width: 500px;">
+        <div class="form-group">
+          <label for="playerName">Nome completo *</label>
+          <input type="text" id="playerName" placeholder="SEU NOME" required autocomplete="name" maxlength="100">
+        </div>
+        <div class="form-group">
+          <label for="playerCompany">Empresa *</label>
+          <input type="text" id="playerCompany" placeholder="NOME DA EMPRESA" required autocomplete="organization" maxlength="100">
+        </div>
+        <div class="form-group">
+          <label for="playerRole">Cargo</label>
+          <input type="text" id="playerRole" placeholder="SEU CARGO" autocomplete="organization-title" maxlength="100">
+        </div>
+        <div class="form-group">
+          <label for="playerWhatsapp">WhatsApp</label>
+          <input type="tel" id="playerWhatsapp" placeholder="(00) 00000-0000" autocomplete="tel" maxlength="20">
+        </div>
+        <div class="form-group">
+          <label for="playerEmail">E-mail</label>
+          <input type="email" id="playerEmail" placeholder="seu@email.com" autocomplete="email" maxlength="100">
+        </div>
+        
+        <div class="checkbox-group">
+          <input type="checkbox" id="consentCheck" required>
+          <label for="consentCheck">
+            Concordo com a utilização dos dados para comunicações do 1º Workshop de Inteligência Ocupacional do RN (LGPD). Dados mantidos apenas neste terminal local.
+          </label>
+        </div>
+        
+        <button type="submit" class="btn-brutalist" style="margin-top:20px; width: 100%;">
+          INICIAR A VIRADA //
+        </button>
+      </form>
+    </div>
+    <div class="brutalist-right">
+      <div class="brutalist-bg-text" style="writing-mode: vertical-rl; text-orientation: mixed; transform: none; top: 0; left: auto; right: 2vw; font-size: 15vh; opacity: 0.05;">
+        SISTEMA
       </div>
-      
-      <button type="submit" class="btn btn-gold btn-full" style="margin-top:8px;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-        INICIAR A VIRADA
-      </button>
-    </form>
+    </div>
   </div>
 </section>
 
@@ -1831,80 +1838,62 @@ body::after {
      SCREEN 3: CONTEXT / BRIEFING
      ============================================ -->
 <section id="screenContext" class="screen">
-  <div class="round-container" style="padding-top:30px;">
-    <div class="text-center animate-in">
-      <div class="landing-badge" style="margin-bottom:16px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        BRIEFING DA MISSÃO
-      </div>
-      <h2 class="landing-title" style="font-size:clamp(1.3rem,4vw,1.8rem); margin-bottom:12px;">Empresa Fictícia: Grupo Horizonte</h2>
-      <p class="situation-text" style="max-width:650px; margin:0 auto 20px; text-align:left;">
-        Você acaba de assumir a gestão de pessoas e saúde ocupacional do <strong>Grupo Horizonte</strong>, 
-        uma empresa de médio porte com 420 colaboradores. A situação é crítica:
+  <div class="brutalist-grid">
+    <div class="brutalist-left" style="overflow-y: auto;">
+      <div class="brutalist-badge">[ ETAPA 02: DOSSIÊ CONFIDENCIAL ]</div>
+      <h2 class="brutalist-title" style="font-size: clamp(2rem, 4vw, 3rem); line-height: 1.1; margin-bottom: 2rem;">
+        EMPRESA FICTÍCIA:<br><span class="highlight">GRUPO HORIZONTE</span>
+      </h2>
+      
+      <p class="brutalist-desc">
+        Você acaba de assumir a gestão de pessoas e saúde ocupacional do <strong>Grupo Horizonte</strong>, uma empresa com 420 colaboradores. O sistema acusa colapso iminente.
       </p>
-    </div>
 
-    <div class="card card-tech animate-in delay-1" style="max-width:650px; margin:0 auto 20px;">
-      <ul style="list-style:none; padding:0; display:grid; gap:8px;">
-        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
-          <span style="color:var(--red); flex-shrink:0;">&#9888;</span> Afastamentos aumentaram 35% nos últimos 6 meses
-        </li>
-        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
-          <span style="color:var(--red); flex-shrink:0;">&#9888;</span> Absenteísmo acima da média do setor
-        </li>
-        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
-          <span style="color:var(--red); flex-shrink:0;">&#9888;</span> Queda de 20% na produtividade operacional
-        </li>
-        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
-          <span style="color:var(--red); flex-shrink:0;">&#9888;</span> Reclamações frequentes de sobrecarga e burnout
-        </li>
-        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
-          <span style="color:var(--orange); flex-shrink:0;">&#9888;</span> Riscos psicossociais não mapeados
-        </li>
-        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
-          <span style="color:var(--orange); flex-shrink:0;">&#9888;</span> PGR e documentos de SST desatualizados
-        </li>
-        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
-          <span style="color:var(--orange); flex-shrink:0;">&#9888;</span> Falta de integração entre RH, SST e Medicina do Trabalho
-        </li>
-        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
-          <span style="color:var(--yellow); flex-shrink:0;">&#9888;</span> Custos trabalhistas ocultos crescentes
-        </li>
-        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
-          <span style="color:var(--yellow); flex-shrink:0;">&#9888;</span> Lideranças despreparadas para gestão de pessoas
-        </li>
-        <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.88rem; color:var(--gray-100);">
-          <span style="color:var(--yellow); flex-shrink:0;">&#9888;</span> Ausência de análise de dados ocupacionais
-        </li>
-      </ul>
-    </div>
-
-    <div class="text-center animate-in delay-2">
-      <p style="font-size:0.85rem; color:var(--gray-200); margin-bottom:16px; font-weight:600; text-transform:uppercase; letter-spacing:1px;">Indicadores atuais da empresa</p>
-    </div>
-
-    <div class="indicators-grid animate-in delay-3" id="contextIndicators">
-      <!-- Filled by JS -->
-    </div>
-
-    <div class="iio-bar-container animate-in delay-4" style="max-width:650px;">
-      <div class="iio-label">
-        <span>Índice de Inteligência Ocupacional (IIO)</span>
-        <span class="iio-value" id="contextIIO">0</span>
+      <div class="card" style="border-color: var(--red); box-shadow: 4px 4px 0px var(--red); max-width: 600px; margin-bottom: 4rem;">
+        <h3 style="color: var(--red); font-family: monospace; font-size: 1rem; margin-bottom: 1rem;">[ RELATÓRIO DE FALHAS CRÍTICAS ]</h3>
+        <ul style="list-style:none; padding:0; display:grid; gap:12px;">
+          <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.9rem; color:var(--gray-200);">
+            <span style="color:var(--red);">[!]</span> Afastamentos aumentaram 35% nos últimos 6 meses
+          </li>
+          <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.9rem; color:var(--gray-200);">
+            <span style="color:var(--red);">[!]</span> Absenteísmo muito acima da média do setor
+          </li>
+          <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.9rem; color:var(--gray-200);">
+            <span style="color:var(--red);">[!]</span> Queda drástica de 20% na produtividade operacional
+          </li>
+          <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.9rem; color:var(--gray-200);">
+            <span style="color:var(--orange);">[!]</span> Reclamações sistêmicas de sobrecarga e burnout
+          </li>
+          <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.9rem; color:var(--gray-200);">
+            <span style="color:var(--orange);">[!]</span> Falta de integração entre RH, SST e Medicina
+          </li>
+          <li style="display:flex; align-items:flex-start; gap:8px; font-size:0.9rem; color:var(--gray-200);">
+            <span style="color:var(--yellow);">[!]</span> Custos trabalhistas ocultos em crescimento acelerado
+          </li>
+        </ul>
       </div>
-      <div class="iio-bar">
-        <div id="contextIIOFill" class="iio-fill" style="width:0%"></div>
-      </div>
-    </div>
 
-    <div class="text-center animate-in delay-5" style="margin-top:24px;">
-      <p style="font-size:1rem; color:var(--yellow); font-weight:700; margin-bottom:20px;">
-        Sua missão: transformar esses indicadores em 7 rodadas de decisão.
-      </p>
-      <button class="btn btn-primary" onclick="Game.startRounds()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-        ACEITAR A MISSÃO
+      <button class="btn-brutalist" onclick="Game.startRounds()">
+        ACEITAR MISSÃO //
       </button>
+    </div>
+    
+    <div class="brutalist-right" style="flex-direction: column; align-items: stretch; justify-content: center; padding: 4vw; background: #111;">
+      <h3 style="font-family: monospace; color: var(--yellow); font-size: 1rem; margin-bottom: 2rem;">[ STATUS INICIAL DOS SISTEMAS ]</h3>
+      
+      <div class="indicators-grid animate-in" id="contextIndicators" style="margin: 0; max-width: 100%; width: 100%; display: grid; grid-template-columns: 1fr; gap: 20px;">
+        <!-- Filled by JS -->
+      </div>
+      
+      <div class="iio-bar-container animate-in delay-2" style="margin-top: 2rem; width: 100%; max-width: 100%; background: #000; border-color: rgba(255,255,255,0.1);">
+        <div class="iio-label">
+          <span>IIO - INTELIGÊNCIA OCUPACIONAL</span>
+          <span class="iio-value" id="contextIIO">0</span>
+        </div>
+        <div class="iio-bar">
+          <div id="contextIIOFill" class="iio-fill" style="width:0%"></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1912,37 +1901,48 @@ body::after {
 <!-- ============================================
      SCREEN 4: ROUND GAMEPLAY
      ============================================ -->
-<section id="screenRound" class="screen">
-  <div class="round-container">
-    <div class="round-header" id="roundHeader">
-      <!-- Filled by JS -->
-    </div>
-    <div id="roundSituation" class="situation-card">
-      <!-- Filled by JS -->
-    </div>
-    <div id="roundOptions" class="options-container">
-      <!-- Filled by JS -->
-    </div>
-    <div id="roundFeedback" class="feedback-panel hidden">
-      <!-- Filled by JS -->
-    </div>
-    <div class="indicators-grid" id="roundIndicators" style="margin-top:20px;">
-      <!-- Filled by JS -->
-    </div>
-    <div class="iio-bar-container" style="margin-top:12px;">
-      <div class="iio-label">
-        <span>IIO — Índice de Inteligência Ocupacional</span>
-        <span class="iio-value" id="roundIIO">0</span>
+<section id="screenRound" class="screen" style="padding: 0;">
+  <div class="brutalist-grid" style="min-height: 100vh;">
+    <!-- Sidebar -->
+    <div class="brutalist-left" style="background: #111; padding: 3vw; justify-content: flex-start; border-right: 2px solid #222;">
+      <div class="round-header" id="roundHeader">
+        <!-- Filled by JS -->
       </div>
-      <div class="iio-bar">
-        <div id="roundIIOFill" class="iio-fill" style="width:0%"></div>
+      
+      <div class="indicators-grid" id="roundIndicators" style="margin-top:20px; display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%;">
+        <!-- Filled by JS -->
+      </div>
+      
+      <div class="iio-bar-container" style="margin-top:auto; width: 100%; max-width: 100%; background: #000; border-color: rgba(255,255,255,0.1);">
+        <div class="iio-label">
+          <span>IIO</span>
+          <span class="iio-value" id="roundIIO">0</span>
+        </div>
+        <div class="iio-bar">
+          <div id="roundIIOFill" class="iio-fill" style="width:0%"></div>
+        </div>
       </div>
     </div>
-    <div id="roundNextBtn" class="text-center hidden" style="margin-top:20px;">
-      <button class="btn btn-primary" onclick="Game.nextRound()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-        <span id="nextBtnText">PRÓXIMA RODADA</span>
-      </button>
+    
+    <!-- Main content area -->
+    <div class="brutalist-right" style="padding: 4vw; justify-content: flex-start; overflow-y: auto;">
+      <div id="roundSituation" class="situation-card" style="margin-bottom: 2rem; max-width: 100%; border-color: var(--blue-electric); box-shadow: 6px 6px 0px var(--blue-electric);">
+        <!-- Filled by JS -->
+      </div>
+      
+      <div id="roundOptions" class="options-container" style="display: grid; gap: 1rem;">
+        <!-- Filled by JS -->
+      </div>
+      
+      <div id="roundFeedback" class="feedback-panel hidden" style="margin-top: 2rem; border-color: var(--yellow); box-shadow: 4px 4px 0px var(--yellow);">
+        <!-- Filled by JS -->
+      </div>
+      
+      <div id="roundNextBtn" class="text-left hidden" style="margin-top:3rem;">
+        <button class="btn-brutalist" onclick="Game.nextRound()">
+          <span id="nextBtnText">PRÓXIMA RODADA //</span>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -1950,16 +1950,15 @@ body::after {
 <!-- ============================================
      SURPRISE EVENT OVERLAY
      ============================================ -->
-<div id="eventOverlay" class="event-overlay">
-  <div class="event-card">
-    <div class="event-badge">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-      EVENTO SURPRESA
+<div id="eventOverlay" class="event-overlay" style="background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center; z-index: 9999; position: fixed; top:0; left:0; width:100%; height:100%;">
+  <div class="event-card" style="background: var(--yellow); color: #000; border: none; border-radius: 0; padding: 40px; box-shadow: 16px 16px 0px rgba(255,0,0,1); max-width: 600px; width: 90%;">
+    <div class="event-badge" style="color: #000; border-color: #000; font-family: monospace; font-size: 0.9rem; font-weight: bold;">
+      [!] ALERTA CRÍTICO DO SISTEMA
     </div>
-    <h3 id="eventTitle" class="event-title"></h3>
-    <p id="eventText" class="event-text"></p>
-    <div id="eventImpact" class="impact-grid" style="justify-content:center; margin-bottom:20px;"></div>
-    <button class="btn btn-gold" onclick="Game.dismissEvent()">CONTINUAR</button>
+    <h3 id="eventTitle" class="event-title" style="color: #000; font-size: 2.2rem; font-family: var(--font-display); text-transform: uppercase; line-height: 1.1; margin: 20px 0;"></h3>
+    <p id="eventText" class="event-text" style="color: #111; font-weight: 500; font-size: 1.1rem; line-height: 1.5; margin-bottom: 20px;"></p>
+    <div id="eventImpact" class="impact-grid" style="justify-content:center; margin-bottom:30px;"></div>
+    <button class="btn-brutalist" style="background: #000; color: var(--yellow); width: 100%; font-size: 1.2rem; display: block; text-align: center;" onclick="Game.dismissEvent()">CIENTE //</button>
   </div>
 </div>
 
