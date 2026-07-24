@@ -2067,9 +2067,18 @@ body::after {
 <script type="module">
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+let supabase = null;
+try {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  if (supabaseUrl && supabaseAnonKey && supabaseUrl !== 'undefined' && supabaseAnonKey !== 'undefined') {
+    supabase = createClient(supabaseUrl, supabaseAnonKey);
+  } else {
+    console.warn("Supabase URL or Anon Key is missing or invalid. Falling back to local storage.");
+  }
+} catch (e) {
+  console.error("Failed to initialize Supabase client:", e);
+}
 
 /* ============================================
    CONFIGURAÇÕES EDITÁVEIS
@@ -3271,29 +3280,31 @@ const Game = {
       showToast('Não foi possível salvar o resultado no dispositivo.', 'warning');
     }
 
-    try {
-      const { error } = await supabase
-        .from('game_results')
-        .insert([{
-          name: entry.name,
-          company: entry.company,
-          role: entry.role,
-          whatsapp: entry.whatsapp,
-          email: entry.email,
-          score: entry.score,
-          profile: entry.profile,
-          time: entry.time,
-          timeSeconds: entry.timeSeconds,
-          health: entry.indicators.health,
-          legal: entry.indicators.legal,
-          productivity: entry.indicators.productivity,
-          finance: entry.indicators.finance
-        }]);
-      if (error) throw error;
-      showToast('Resultado enviado com sucesso!', 'success');
-    } catch (e) {
-      console.error('Erro ao salvar no Supabase:', e);
-      showToast('Salvo offline. Erro ao sincronizar com o servidor.', 'warning');
+    if (supabase) {
+      try {
+        const { error } = await supabase
+          .from('game_results')
+          .insert([{
+            name: entry.name,
+            company: entry.company,
+            role: entry.role,
+            whatsapp: entry.whatsapp,
+            email: entry.email,
+            score: entry.score,
+            profile: entry.profile,
+            time: entry.time,
+            timeSeconds: entry.timeSeconds,
+            health: entry.indicators.health,
+            legal: entry.indicators.legal,
+            productivity: entry.indicators.productivity,
+            finance: entry.indicators.finance
+          }]);
+        if (error) throw error;
+        showToast('Resultado enviado com sucesso!', 'success');
+      } catch (e) {
+        console.error('Erro ao salvar no Supabase:', e);
+        showToast('Salvo offline. Erro ao sincronizar com o servidor.', 'warning');
+      }
     }
   },
 
@@ -3542,26 +3553,33 @@ const Game = {
     }
 
     let results = [];
-    try {
-      const { data, error } = await supabase
-        .from('game_results')
-        .select('*')
-        .order('score', { ascending: false })
-        .order('timeSeconds', { ascending: true })
-        .limit(10);
-      
-      if (error) throw error;
-      results = (data || []).map(r => ({
-        ...r,
-        indicators: {
-          health: r.health,
-          legal: r.legal,
-          productivity: r.productivity,
-          finance: r.finance
-        }
-      }));
-    } catch (e) {
-      console.error('Erro ao buscar ranking:', e);
+    let loadedFromSupabase = false;
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('game_results')
+          .select('*')
+          .order('score', { ascending: false })
+          .order('timeSeconds', { ascending: true })
+          .limit(10);
+        
+        if (error) throw error;
+        results = (data || []).map(r => ({
+          ...r,
+          indicators: {
+            health: r.health,
+            legal: r.legal,
+            productivity: r.productivity,
+            finance: r.finance
+          }
+        }));
+        loadedFromSupabase = true;
+      } catch (e) {
+        console.error('Erro ao buscar ranking:', e);
+      }
+    }
+    
+    if (!loadedFromSupabase) {
       try {
         results = JSON.parse(localStorage.getItem('mvo_results') || '[]');
         results.sort((a, b) => b.score - a.score || a.timeSeconds - b.timeSeconds);
@@ -3712,23 +3730,30 @@ const Admin = {
 
   async refresh() {
     let results = [];
-    try {
-      const { data, error } = await supabase
-        .from('game_results')
-        .select('*');
-      
-      if (error) throw error;
-      results = (data || []).map(r => ({
-        ...r,
-        indicators: {
-          health: r.health,
-          legal: r.legal,
-          productivity: r.productivity,
-          finance: r.finance
-        }
-      }));
-    } catch (e) {
-      console.error('Erro ao buscar dados do Supabase:', e);
+    let loadedFromSupabase = false;
+    if (supabase) {
+      try {
+        const { data, error } = await supabase
+          .from('game_results')
+          .select('*');
+        
+        if (error) throw error;
+        results = (data || []).map(r => ({
+          ...r,
+          indicators: {
+            health: r.health,
+            legal: r.legal,
+            productivity: r.productivity,
+            finance: r.finance
+          }
+        }));
+        loadedFromSupabase = true;
+      } catch (e) {
+        console.error('Erro ao buscar dados do Supabase:', e);
+      }
+    }
+    
+    if (!loadedFromSupabase) {
       try { results = JSON.parse(localStorage.getItem('mvo_results') || '[]'); } catch (err) {}
     }
     this.cachedResults = results;
