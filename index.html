@@ -415,25 +415,39 @@ body::after {
 }
 
 @media (max-width: 900px) {
-  .screen.active#screenLanding {
-    height: auto;
-    min-height: 100vh;
+  .screen.active {
+    height: auto !important;
+    min-height: 100vh !important;
+    padding: 0 !important;
   }
   .brutalist-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    height: auto !important;
+    min-height: 100vh !important;
   }
-  .brutalist-right {
-    min-height: 50vh;
-    border-left: none;
-    border-top: 1px solid rgba(255,255,255,0.05);
-    padding: 3rem 0;
+  .brutalist-left, .brutalist-right {
+    padding: 24px !important;
+    border-right: none !important;
+    border-left: none !important;
+    border-top: 1px solid rgba(255,255,255,0.05) !important;
+    min-height: auto !important;
+  }
+  .brutalist-bg-text {
+    writing-mode: horizontal-tb !important;
+    font-size: 15vw !important;
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    left: auto !important;
+    text-align: center;
+    margin: 20px 0;
   }
   .brutalist-footer {
-    position: static;
+    position: static !important;
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    padding: 2rem;
+    padding: 20px !important;
   }
 }
 
