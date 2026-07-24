@@ -2064,7 +2064,13 @@ body::after {
 <!-- ============================================
      JAVASCRIPT — GAME ENGINE
      ============================================ -->
-<script>
+<script type="module">
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
 /* ============================================
    CONFIGURAÇÕES EDITÁVEIS
    Altere os valores abaixo conforme necessário
@@ -3242,7 +3248,7 @@ const Game = {
     animate();
   },
 
-  saveResult(score, profile, timeStr) {
+  async saveResult(score, profile, timeStr) {
     const entry = {
       name: GameState.player.name,
       company: GameState.player.company,
@@ -3263,6 +3269,31 @@ const Game = {
     results.push(entry);
     try { localStorage.setItem('mvo_results', JSON.stringify(results)); } catch (e) {
       showToast('Não foi possível salvar o resultado no dispositivo.', 'warning');
+    }
+
+    try {
+      const { error } = await supabase
+        .from('game_results')
+        .insert([{
+          name: entry.name,
+          company: entry.company,
+          role: entry.role,
+          whatsapp: entry.whatsapp,
+          email: entry.email,
+          score: entry.score,
+          profile: entry.profile,
+          time: entry.time,
+          timeSeconds: entry.timeSeconds,
+          health: entry.indicators.health,
+          legal: entry.indicators.legal,
+          productivity: entry.indicators.productivity,
+          finance: entry.indicators.finance
+        }]);
+      if (error) throw error;
+      showToast('Resultado enviado com sucesso!', 'success');
+    } catch (e) {
+      console.error('Erro ao salvar no Supabase:', e);
+      showToast('Salvo offline. Erro ao sincronizar com o servidor.', 'warning');
     }
   },
 
@@ -3504,13 +3535,41 @@ const Game = {
   },
 
   // ---- RANKING ----
-  showRanking() {
+  async showRanking() {
+    const container = document.getElementById('rankingContent');
+    if (container) {
+      container.innerHTML = '<p class="text-center" style="color:var(--gray-300); padding:40px 0;">Carregando ranking...</p>';
+    }
+
     let results = [];
-    try { results = JSON.parse(localStorage.getItem('mvo_results') || '[]'); } catch (e) {}
-    results.sort((a, b) => b.score - a.score || a.timeSeconds - b.timeSeconds);
+    try {
+      const { data, error } = await supabase
+        .from('game_results')
+        .select('*')
+        .order('score', { ascending: false })
+        .order('timeSeconds', { ascending: true })
+        .limit(10);
+      
+      if (error) throw error;
+      results = (data || []).map(r => ({
+        ...r,
+        indicators: {
+          health: r.health,
+          legal: r.legal,
+          productivity: r.productivity,
+          finance: r.finance
+        }
+      }));
+    } catch (e) {
+      console.error('Erro ao buscar ranking:', e);
+      try {
+        results = JSON.parse(localStorage.getItem('mvo_results') || '[]');
+        results.sort((a, b) => b.score - a.score || a.timeSeconds - b.timeSeconds);
+      } catch (err) {}
+    }
     const top10 = results.slice(0, 10);
 
-    const container = document.getElementById('rankingContent');
+    if (!container) return;
     if (top10.length === 0) {
       container.innerHTML = '<p class="text-center" style="color:var(--gray-300); padding:40px 0;">Nenhum resultado registrado ainda.</p>';
       return;
@@ -3590,6 +3649,7 @@ const Game = {
 const Admin = {
   sortField: 'score',
   sortAsc: false,
+  cachedResults: [],
 
   showPasswordModal() {
     document.getElementById('adminPasswordInput').value = '';
@@ -3650,9 +3710,28 @@ const Admin = {
     } catch (e) {}
   },
 
-  refresh() {
+  async refresh() {
     let results = [];
-    try { results = JSON.parse(localStorage.getItem('mvo_results') || '[]'); } catch (e) {}
+    try {
+      const { data, error } = await supabase
+        .from('game_results')
+        .select('*');
+      
+      if (error) throw error;
+      results = (data || []).map(r => ({
+        ...r,
+        indicators: {
+          health: r.health,
+          legal: r.legal,
+          productivity: r.productivity,
+          finance: r.finance
+        }
+      }));
+    } catch (e) {
+      console.error('Erro ao buscar dados do Supabase:', e);
+      try { results = JSON.parse(localStorage.getItem('mvo_results') || '[]'); } catch (err) {}
+    }
+    this.cachedResults = results;
 
     // Stats
     const total = results.length;
@@ -3785,9 +3864,7 @@ const Admin = {
   },
 
   filterParticipants() {
-    let results = [];
-    try { results = JSON.parse(localStorage.getItem('mvo_results') || '[]'); } catch (e) {}
-    this.renderTable(results);
+    this.renderTable(this.cachedResults);
   },
 
   toggleEventMode() {
@@ -3865,14 +3942,23 @@ const Admin = {
     showToast('CSV exportado com sucesso!', 'success');
   },
 
-  clearRanking() {
-    if (!confirm('Tem certeza que deseja limpar todo o ranking? Esta ação não pode ser desfeita.')) return;
+  async clearRanking() {
+    if (!confirm('Tem certeza que deseja limpar todo o ranking no Supabase e localmente? Esta ação não pode ser desfeita.')) return;
     try { localStorage.removeItem('mvo_results'); } catch (e) {}
-    this.refresh();
+    try {
+      const { error } = await supabase
+        .from('game_results')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000');
+      if (error) throw error;
+    } catch (e) {
+      console.error('Erro ao limpar Supabase:', e);
+    }
+    await this.refresh();
     showToast('Ranking limpo com sucesso.', 'success');
   },
 
-  clearAllData() {
+  async clearAllData() {
     if (!confirm('ATENÇÃO: Isso removerá TODOS os dados do jogo (participantes, configurações, ranking). Deseja continuar?')) return;
     if (!confirm('Confirmação final: todos os dados serão permanentemente excluídos.')) return;
     try {
@@ -3882,8 +3968,17 @@ const Admin = {
       localStorage.removeItem('mvo_auto_restart');
       localStorage.removeItem('mvo_admin_pwd');
     } catch (e) {}
+    try {
+      const { error } = await supabase
+        .from('game_results')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000');
+      if (error) throw error;
+    } catch (e) {
+      console.error('Erro ao limpar Supabase:', e);
+    }
     EVENT_MODE = false;
-    this.refresh();
+    await this.refresh();
     this.loadSettings();
     showToast('Todos os dados foram removidos.', 'success');
   }
@@ -3975,6 +4070,12 @@ window.onerror = function(msg, url, lineNo, colNo, error) {
   console.error('Erro:', msg, 'Linha:', lineNo);
   return false;
 };
+
+// Expose objects to global scope for inline HTML handlers
+window.Game = Game;
+window.Admin = Admin;
+window.SoundSystem = SoundSystem;
+window.GameState = GameState;
 </script>
 </body>
 </html>
