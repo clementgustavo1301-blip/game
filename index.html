@@ -260,6 +260,26 @@ body::after {
   50% { transform: scale(1.1); opacity: 0.6; }
 }
 
+.landing-character {
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto 24px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 180, 255, 0.2);
+  border: 3px solid var(--blue-electric);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+.landing-character:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(0, 180, 255, 0.5), 0 0 15px rgba(0, 180, 255, 0.3);
+}
+.landing-character img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .landing-badge {
   display: inline-flex;
   align-items: center;
@@ -1603,6 +1623,9 @@ body::after {
     </div>
     <h1 class="landing-title">MISSÃO VIRADA OCUPACIONAL</h1>
     <p class="landing-subtitle">A Virada Começa Agora</p>
+    <div class="landing-character">
+      <img src="/character.jpg" alt="Personagem do Jogo">
+    </div>
     <p class="landing-desc">
       Assuma a gestão de uma empresa em crise ocupacional. Tome decisões estratégicas sobre saúde, 
       segurança, liderança e custos. Transforme indicadores críticos antes que seja tarde.
