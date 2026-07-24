@@ -229,55 +229,173 @@ body::after {
   padding: 60px 20px 40px;
 }
 
-.landing-logo {
-  width: 140px;
-  height: 140px;
-  margin: 0 auto 30px;
+/* --- Hero Layout --- */
+.landing-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 20px;
   position: relative;
 }
-.landing-logo .logo-ring {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  border: 3px solid var(--blue-electric);
+
+.landing-character-hero {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+.landing-character-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 50%;
-  animation: pulseRing 2s ease-in-out infinite;
+  border: 4px solid transparent;
+  background-image: linear-gradient(var(--bg-primary), var(--bg-primary)), 
+                    linear-gradient(135deg, var(--blue-electric), var(--yellow), var(--green));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow: 0 0 40px rgba(0, 180, 255, 0.25), 0 0 80px rgba(0, 180, 255, 0.08);
+  animation: heroFloat 4s ease-in-out infinite;
 }
-.landing-logo .logo-ring:nth-child(2) { 
-  animation-delay: 0.5s;
-  border-color: rgba(0,180,255,0.4);
-  transform: scale(1.15);
+@keyframes heroFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
-.landing-logo .logo-icon {
+
+/* Speech bubble */
+.landing-speech {
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3rem;
+  top: 8px;
+  right: -60px;
+  background: var(--white);
+  color: var(--bg-primary);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 10px 14px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  animation: speechPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
+  max-width: 110px;
+  text-align: center;
+  line-height: 1.3;
+}
+.landing-speech::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 20px;
+  width: 0; height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid var(--white);
+}
+@keyframes speechPop {
+  0% { opacity: 0; transform: scale(0.5); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Glow ring behind character */
+.landing-character-hero::before {
+  content: '';
+  position: absolute;
+  top: -10px; left: -10px; right: -10px; bottom: -10px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 180, 255, 0.15);
+  animation: pulseRing 3s ease-in-out infinite;
+}
+.landing-character-hero::after {
+  content: '';
+  position: absolute;
+  top: -20px; left: -20px; right: -20px; bottom: -20px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 180, 255, 0.07);
+  animation: pulseRing 3s ease-in-out infinite 0.5s;
 }
 
 @keyframes pulseRing {
   0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 0.6; }
+  50% { transform: scale(1.06); opacity: 0.4; }
 }
 
-.landing-character {
-  width: 100%;
-  max-width: 220px;
-  margin: 0 auto 24px;
-  border-radius: 20px;
+/* --- Particle field behind landing --- */
+.landing-particles {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 180, 255, 0.2);
-  border: 3px solid var(--blue-electric);
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  pointer-events: none;
+  z-index: 0;
 }
-.landing-character:hover {
-  transform: scale(1.05);
-  box-shadow: 0 12px 40px rgba(0, 180, 255, 0.5), 0 0 15px rgba(0, 180, 255, 0.3);
+.landing-particles span {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: var(--blue-electric);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleDrift 6s linear infinite;
 }
-.landing-character img {
-  width: 100%;
-  height: auto;
-  display: block;
+.landing-particles span:nth-child(1) { left: 10%; animation-delay: 0s; }
+.landing-particles span:nth-child(2) { left: 25%; animation-delay: 1s; }
+.landing-particles span:nth-child(3) { left: 40%; animation-delay: 2s; }
+.landing-particles span:nth-child(4) { left: 55%; animation-delay: 0.5s; }
+.landing-particles span:nth-child(5) { left: 70%; animation-delay: 3s; }
+.landing-particles span:nth-child(6) { left: 85%; animation-delay: 1.5s; }
+.landing-particles span:nth-child(7) { left: 15%; animation-delay: 4s; }
+.landing-particles span:nth-child(8) { left: 60%; animation-delay: 2.5s; }
+@keyframes particleDrift {
+  0% { bottom: -10px; opacity: 0; transform: translateX(0); }
+  20% { opacity: 0.6; }
+  80% { opacity: 0.3; }
+  100% { bottom: 110%; opacity: 0; transform: translateX(30px); }
+}
+
+/* --- Stats floating badges --- */
+.landing-stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.landing-stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 1px solid;
+  animation: statFadeIn 0.5s ease forwards;
+  opacity: 0;
+}
+.landing-stat-pill:nth-child(1) { animation-delay: 0.8s; }
+.landing-stat-pill:nth-child(2) { animation-delay: 1s; }
+.landing-stat-pill:nth-child(3) { animation-delay: 1.2s; }
+.landing-stat-pill:nth-child(4) { animation-delay: 1.4s; }
+.landing-stat-pill.health {
+  color: var(--green); border-color: rgba(0, 230, 118, 0.25);
+  background: rgba(0, 230, 118, 0.06);
+}
+.landing-stat-pill.legal {
+  color: var(--blue-light); border-color: rgba(79, 195, 247, 0.25);
+  background: rgba(79, 195, 247, 0.06);
+}
+.landing-stat-pill.productivity {
+  color: var(--yellow); border-color: rgba(255, 193, 7, 0.25);
+  background: rgba(255, 193, 7, 0.06);
+}
+.landing-stat-pill.finance {
+  color: var(--orange); border-color: rgba(255, 152, 0, 0.25);
+  background: rgba(255, 152, 0, 0.06);
+}
+@keyframes statFadeIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 .landing-badge {
@@ -318,7 +436,7 @@ body::after {
   font-size: 0.95rem;
   color: var(--gray-200);
   line-height: 1.7;
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 .landing-tagline {
   font-size: 1.1rem;
@@ -1598,42 +1716,41 @@ body::after {
      SCREEN 1: LANDING
      ============================================ -->
 <section id="screenLanding" class="screen active">
-  <div class="landing-content">
-    <div class="landing-logo">
-      <div class="logo-ring"></div>
-      <div class="logo-ring"></div>
-      <div class="logo-icon">
-        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-          <circle cx="30" cy="20" r="8" stroke="#00b4ff" stroke-width="2.5" fill="none"/>
-          <path d="M15 45c0-8.28 6.72-15 15-15s15 6.72 15 15" stroke="#00b4ff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path d="M30 30v-5" stroke="#ffc107" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M25 18h10" stroke="#ffc107" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="47" cy="15" r="5" stroke="#00e676" stroke-width="1.5" fill="none"/>
-          <polyline points="44,15 46,17 50,13" stroke="#00e676" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-          <rect x="8" y="35" width="10" height="12" rx="2" stroke="#4fc3f7" stroke-width="1.5" fill="none"/>
-          <line x1="11" y1="38" x2="15" y2="38" stroke="#4fc3f7" stroke-width="1"/>
-          <line x1="11" y1="41" x2="15" y2="41" stroke="#4fc3f7" stroke-width="1"/>
-          <line x1="11" y1="44" x2="14" y2="44" stroke="#4fc3f7" stroke-width="1"/>
-        </svg>
-      </div>
-    </div>
+  <div class="landing-particles">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div class="landing-content" style="position:relative; z-index:1;">
     <div class="landing-badge">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>
       1º Workshop de Inteligência Ocupacional do RN
     </div>
+
+    <div class="landing-hero">
+      <div class="landing-character-hero">
+        <img src="/character.jpg" alt="Especialista em Saúde Ocupacional">
+        <div class="landing-speech">Olá, vamos jogar! 🚀</div>
+      </div>
+    </div>
+
     <h1 class="landing-title">MISSÃO VIRADA OCUPACIONAL</h1>
     <p class="landing-subtitle">A Virada Começa Agora</p>
-    <div class="landing-character">
-      <img src="/character.jpg" alt="Personagem do Jogo">
+
+    <div class="landing-stats-row">
+      <span class="landing-stat-pill health">❤ Saúde</span>
+      <span class="landing-stat-pill legal">🛡 Jurídica</span>
+      <span class="landing-stat-pill productivity">📈 Produtividade</span>
+      <span class="landing-stat-pill finance">💰 Financeira</span>
     </div>
+
     <p class="landing-desc">
       Assuma a gestão de uma empresa em crise ocupacional. Tome decisões estratégicas sobre saúde, 
       segurança, liderança e custos. Transforme indicadores críticos antes que seja tarde.
     </p>
     <p class="landing-tagline">Você está pronto para a virada?</p>
-    <button class="btn btn-primary pulse-glow" onclick="Game.showScreen('register')" aria-label="Começar o jogo">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"/></svg>
-      COMEÇAR
+    <button class="btn btn-gold pulse-glow" onclick="Game.showScreen('register')" aria-label="Começar o jogo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>
+      COMEÇAR A MISSÃO
     </button>
   </div>
   <div class="footer">
