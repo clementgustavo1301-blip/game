@@ -1628,7 +1628,7 @@ body::after {
     <h2 class="landing-title" style="font-size:clamp(1.5rem,4vw,2rem); margin-bottom:8px;">Identificação do Jogador</h2>
     <p class="landing-desc" style="margin-bottom:24px;">Preencha seus dados para iniciar a missão. Suas informações serão salvas apenas neste dispositivo.</p>
     
-    <form id="registerForm" onsubmit="return Game.handleRegister(event)" novalidate>
+    <form id="registerForm" onsubmit="Game.handleRegister(event); return false;" novalidate>
       <div class="form-group">
         <label for="playerName">Nome completo *</label>
         <input type="text" id="playerName" placeholder="Seu nome" required autocomplete="name" maxlength="100">
@@ -2688,11 +2688,13 @@ const Game = {
     if (screenId !== 'ranking') GameState.previousScreen = screenId;
   },
 
-  handleRegister(e) {
+  async handleRegister(e) {
     e.preventDefault();
     const name = document.getElementById('playerName').value.trim();
     const company = document.getElementById('playerCompany').value.trim();
     const consent = document.getElementById('consentCheck').checked;
+    const whatsapp = document.getElementById('playerWhatsapp').value.trim();
+    const email = document.getElementById('playerEmail').value.trim();
 
     if (!name || !company) {
       showToast('Por favor, preencha nome e empresa.', 'warning');
@@ -2703,13 +2705,62 @@ const Game = {
       return false;
     }
 
+    // Show loading state
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    let originalBtnText = '';
+    if (submitBtn) {
+      originalBtnText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Verificando cadastro...';
+    }
+
+    // Check unique participant in Supabase
+    if (supabase) {
+      try {
+        const conditions = [`and(name.ilike."${name}",company.ilike."${company}")`];
+        if (email) {
+          conditions.push(`email.ilike."${email}"`);
+        }
+        if (whatsapp) {
+          const cleanWhatsapp = whatsapp.replace(/\D/g, '');
+          if (cleanWhatsapp) {
+            conditions.push(`whatsapp.ilike."%${cleanWhatsapp}%"`);
+          }
+        }
+
+        const { data, error } = await supabase
+          .from('game_results')
+          .select('id')
+          .or(conditions.join(','))
+          .limit(1);
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          showToast('Você já participou do jogo. Cada participante só pode jogar uma vez!', 'warning');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnText;
+          }
+          return false;
+        }
+      } catch (err) {
+        console.error('Erro ao verificar cadastro existente:', err);
+      }
+    }
+
     GameState.player = {
       name,
       company,
       role: document.getElementById('playerRole').value.trim(),
-      whatsapp: document.getElementById('playerWhatsapp').value.trim(),
-      email: document.getElementById('playerEmail').value.trim()
+      whatsapp,
+      email
     };
+
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalBtnText;
+    }
 
     SoundSystem.play('click');
     this.showContext();
