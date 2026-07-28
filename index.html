@@ -1691,6 +1691,132 @@ body::after {
   display: inline-block;
   transition: all 0.5s ease;
 }
+
+/* ---------- COMPACT LAYOUT FOR LOW HEIGHT DESKTOPS ---------- */
+@media (min-width: 901px) {
+  body { overflow-x: hidden; }
+  
+  .screen.active {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-top: 60px !important;
+    padding-bottom: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  .screen.active::-webkit-scrollbar { display: none !important; }
+  
+  .brutalist-grid {
+    height: auto !important;
+    min-height: calc(100vh - 60px) !important;
+    max-height: none !important;
+    align-items: stretch !important;
+  }
+  
+  /* Landing screen keeps centered layout */
+  .screen.active#screenLanding .brutalist-grid {
+    min-height: calc(100vh - 60px) !important;
+    height: calc(100vh - 60px) !important;
+  }
+  
+  .brutalist-left, .brutalist-right {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 2vh 4vw 4vh !important;
+    justify-content: flex-start !important;
+    overflow-y: visible !important;
+  }
+  
+  .brutalist-left::-webkit-scrollbar, .brutalist-right::-webkit-scrollbar,
+  .round-container::-webkit-scrollbar, .result-container::-webkit-scrollbar {
+    display: none !important;
+  }
+  
+  /* Global Fonts & Spacing fluid to height */
+  .brutalist-title { 
+    font-size: clamp(1.8rem, 5vh, 4rem) !important; 
+    margin-bottom: 2vh !important; 
+    margin-top: auto;
+  }
+  .brutalist-badge { 
+    margin-bottom: 2vh !important; 
+    font-size: clamp(0.7rem, 1.5vh, 0.85rem) !important;
+    margin-top: auto;
+  }
+  .brutalist-desc { 
+    margin-bottom: 2vh !important; 
+    font-size: clamp(0.85rem, 2vh, 1.15rem) !important; 
+    line-height: 1.4; 
+  }
+  
+  /* Form - Fluid compression */
+  .form-group { margin-bottom: 1.5vh !important; }
+  .form-group label { 
+    margin-bottom: 0.5vh !important; 
+    font-size: clamp(0.6rem, 1.2vh, 0.9rem) !important; 
+  }
+  .form-group input, .form-group select { 
+    padding: 1vh 1vw !important; 
+    font-size: clamp(0.75rem, 1.8vh, 1rem) !important; 
+  }
+  
+  .checkbox-group { margin: 1.5vh 0 !important; }
+  .checkbox-group label { 
+    font-size: clamp(0.6rem, 1.3vh, 0.85rem) !important; 
+    line-height: 1.3; 
+  }
+  
+  /* Buttons */
+  .btn-brutalist { 
+    padding: 1.5vh 2vw !important; 
+    font-size: clamp(0.85rem, 2vh, 1rem) !important; 
+    margin-top: 1.5vh !important;
+    margin-bottom: auto;
+    width: 100%;
+  }
+  .btn { padding: 1.5vh 2vw !important; min-height: unset !important; font-size: clamp(0.8rem, 1.8vh, 0.95rem) !important; }
+
+  /* Round Elements */
+  .situation-card { padding: 2vh 2vw !important; margin-bottom: 1.5vh !important; }
+  .situation-text { font-size: clamp(0.85rem, 1.8vh, 1rem) !important; line-height: 1.4; }
+  .options-container { gap: 1vh !important; margin-bottom: 1.5vh !important; }
+  .option-card { padding: 1vh 1.5vw !important; }
+  .option-text { font-size: clamp(0.8rem, 1.6vh, 0.9rem) !important; line-height: 1.3; }
+  .feedback-panel { padding: 2vh 2vw !important; margin-top: 1.5vh !important; }
+  
+  /* Indicators */
+  .indicators-grid { margin: 1.5vh auto !important; gap: 1.5vh !important; }
+  .indicator-card { padding: 1.5vh !important; }
+  .indicator-value { font-size: clamp(1.4rem, 3.5vh, 2rem) !important; }
+  .indicator-icon { width: clamp(24px, 4vh, 32px) !important; height: clamp(24px, 4vh, 32px) !important; margin: 0 auto 0.5vh !important; }
+  .indicator-icon svg { width: clamp(18px, 3vh, 24px) !important; height: clamp(18px, 3vh, 24px) !important; }
+  
+  .result-score-circle { width: clamp(80px, 15vh, 140px) !important; height: clamp(80px, 15vh, 140px) !important; margin: 0 auto 1.5vh !important; }
+  .result-score-number { font-size: clamp(1.8rem, 4vh, 2.5rem) !important; }
+  .result-ind-value { font-size: clamp(1.1rem, 2.5vh, 1.4rem) !important; }
+  .result-profile { margin-bottom: 1.5vh !important; }
+  .result-indicators { gap: 1vh !important; }
+  .result-ind-item { padding: 1vh !important; }
+  
+  .recommendation-card { padding: 1.5vh 2vw !important; margin-top: 1.5vh !important; }
+  .cta-event-card { padding: 2vh 2vw !important; margin-bottom: 1.5vh !important; }
+  .ranking-table td { padding: 1vh !important; font-size: clamp(0.75rem, 1.5vh, 0.9rem) !important; }
+  
+  .round-container, .result-container, .cta-container, .ranking-container, .admin-container {
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: auto;
+    padding-bottom: 40px;
+  }
+}
 </style>
 </head>
 <body>
@@ -1948,7 +2074,7 @@ body::after {
     </div>
     
     <!-- Main content area -->
-    <div class="brutalist-right" style="flex-direction: column; align-items: stretch; padding: 4vw; justify-content: flex-start; overflow-y: auto;">
+    <div class="brutalist-right" style="flex-direction: column; align-items: stretch; padding: 4vw; justify-content: flex-start;">
       <div id="roundSituation" class="situation-card" style="margin-bottom: 2rem; max-width: 100%; border-color: var(--blue-electric); box-shadow: 6px 6px 0px var(--blue-electric);">
         <!-- Filled by JS -->
       </div>
@@ -2426,37 +2552,39 @@ const ROUNDS_DATA = [
     number: 1,
     theme: 'Riscos Psicossociais e NR-01',
     title: 'Riscos Psicossociais e Atualização do PGR',
-    situation: 'A empresa recebeu um comunicado: os riscos psicossociais devem ser incluídos no Programa de Gerenciamento de Riscos (PGR), conforme a atualização da NR-01. Atualmente, o PGR do Grupo Horizonte está desatualizado e não contempla fatores como estresse ocupacional, assédio, sobrecarga mental e conflitos interpessoais. O SESMT não tem experiência com esse tipo de levantamento.',
+    situation: 'A empresa precisa incluir os riscos psicossociais no Programa de Gerenciamento de Riscos (PGR) conforme a nova NR-01. O SESMT não tem experiência com saúde mental, mas a diretoria cobra uma solução que resolva a questão sem prejudicar o cronograma.',
     options: [
       {
         letter: 'A',
-        text: 'Contratar uma consultoria especializada em saúde ocupacional para realizar o levantamento de riscos psicossociais, atualizar o PGR de forma integrada e capacitar o SESMT para manutenção contínua.',
-        impact: { health: 12, legal: 15, productivity: 5, finance: -8 },
-        quality: 'excellent',
-        strategic: true,
-        feedback: 'Decisão estratégica e sustentável.',
-        consequence: 'A empresa passa a ter um PGR completo e atualizado, reduzindo significativamente o risco de autuações e demonstrando compromisso com o bem-estar dos colaboradores.',
-        expert: 'O gerenciamento de riscos psicossociais não é apenas uma exigência normativa — é uma ferramenta de gestão que reduz afastamentos por transtornos mentais, melhora o clima e aumenta a produtividade.'
+        text: 'Contratar uma consultoria especializada para um levantamento clínico, atualizando o PGR e mapeando a fundo a saúde mental da equipe.',
+        impact: { health: 15, legal: 12, productivity: -5, finance: -8 },
+        feedback: 'Abordagem clínica, segura e técnica.',
+        consequence: 'Garante excelente proteção jurídica e mapeia a saúde real, mas exige alto investimento financeiro inicial e horas da equipe fora da produção para entrevistas.',
+        expert: 'Consultorias especializadas trazem precisão diagnóstica.'
       },
       {
         letter: 'B',
-        text: 'Orientar o SESMT a incluir os riscos psicossociais no PGR internamente, utilizando modelos e checklists genéricos disponíveis na internet para economizar recursos.',
-        impact: { health: 3, legal: 5, productivity: 2, finance: 2 },
-        quality: 'mediocre',
-        strategic: false,
-        feedback: 'Solução parcial. Cumpre formalmente, mas com fragilidades técnicas.',
-        consequence: 'O documento existe, mas pode não refletir a realidade da empresa. Em uma fiscalização detalhada ou perícia, a superficialidade do levantamento pode ser identificada.',
-        expert: 'Riscos psicossociais exigem metodologia adequada (como questionários validados e análise ergonômica). Documentos genéricos raramente atendem às especificidades de cada organização.'
+        text: 'Orientar o SESMT a preencher planilhas e checklists genéricos da internet para o PGR apenas para cumprir a burocracia.',
+        impact: { health: -10, legal: -8, productivity: 8, finance: 10 },
+        feedback: 'Solução focada no caixa e na operação imediata.',
+        consequence: 'A empresa não gasta nada e ninguém para de trabalhar. Porém, o documento é frágil e a empresa fica exposta a multas e não resolve a saúde mental do time.',
+        expert: 'Documentações de fachada não sobrevivem a uma perícia.'
       },
       {
         letter: 'C',
-        text: 'Aguardar para ver como a fiscalização vai cobrar na prática e priorizar os investimentos em produção. Atualizar o PGR apenas se houver notificação formal.',
-        impact: { health: -5, legal: -10, productivity: 3, finance: 5 },
-        quality: 'poor',
-        strategic: false,
-        feedback: 'Risco elevado. Ganho financeiro de curto prazo com exposição jurídica significativa.',
-        consequence: 'A empresa fica vulnerável a autuações, ações trabalhistas e agravamento dos problemas de saúde mental dos colaboradores. O custo de uma multa ou ação judicial pode superar em muito o investimento evitado.',
-        expert: 'A gestão reativa em SST tende a ser muito mais cara do que a prevenção. Além dos custos diretos, há impacto no FAP, na imagem da empresa e na retenção de talentos.'
+        text: 'Criar ações de bem-estar lideradas pelo RH e rodas de conversa com gestores, focando no clima ao invés do laudo técnico.',
+        impact: { health: 8, legal: -10, productivity: 10, finance: 0 },
+        feedback: 'Foco prático em clima, sem suporte técnico-legal.',
+        consequence: 'O clima e o engajamento melhoram rapidamente, mas a empresa continua descumprindo a NR-01 e fica totalmente vulnerável em caso de fiscalização do trabalho.',
+        expert: 'Cultura sem base documental legal gera riscos invisíveis.'
+      },
+      {
+        letter: 'D',
+        text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
+        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        feedback: 'Decisão desastrosa e omissa.',
+        consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
+        expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
       }
     ]
   },
@@ -2464,37 +2592,39 @@ const ROUNDS_DATA = [
     number: 2,
     theme: 'Afastamentos e Absenteísmo',
     title: 'Aumento dos Atestados e Afastamentos Recorrentes',
-    situation: 'Nos últimos 3 meses, os atestados médicos aumentaram 40%. Cinco colaboradores do setor operacional estão com afastamentos recorrentes de curta duração (1 a 3 dias). O RH percebe o padrão, mas não existe acompanhamento médico ocupacional sistemático. O gestor da área cobra soluções imediatas para manter a produção.',
+    situation: 'Nos últimos 3 meses, os atestados médicos aumentaram 40%. Vários colaboradores da produção estão com afastamentos curtos e recorrentes. O gestor da área está desesperado cobrando soluções para manter as máquinas rodando.',
     options: [
       {
         letter: 'A',
-        text: 'Implementar um programa de gestão de absenteísmo com acompanhamento pelo médico do trabalho, análise das causas dos afastamentos e criação de planos individuais de retorno ao trabalho.',
-        impact: { health: 15, legal: 8, productivity: 10, finance: -5 },
-        quality: 'excellent',
-        strategic: true,
-        feedback: 'Abordagem completa e sustentável.',
-        consequence: 'A empresa começa a entender as causas reais dos afastamentos e pode atuar preventivamente. Os colaboradores se sentem acolhidos e a tendência de afastamentos se estabiliza.',
-        expert: 'A gestão de absenteísmo eficaz vai além do controle — ela identifica fatores organizacionais, ergonômicos e de saúde que contribuem para as ausências e permite intervenções direcionadas.'
+        text: 'Implementar auditoria médica rigorosa: o RH passa a ligar para clínicas para checar cada atestado e cobra metas de absenteísmo dos líderes.',
+        impact: { health: -12, legal: 5, productivity: 10, finance: 8 },
+        feedback: 'Controle incisivo focado em conter o sangramento.',
+        consequence: 'As ausências caem por medo, mantendo a operação e o caixa. Mas o clima piora, os doentes vão trabalhar medicados (presenteísmo) e a saúde geral declina no longo prazo.',
+        expert: 'Auditorias reduzem falsos atestados, mas geram tensão na equipe.'
       },
       {
         letter: 'B',
-        text: 'Criar uma política de controle rigoroso de atestados, com entrevista de retorno obrigatória conduzida pelo RH para verificar a legitimidade dos afastamentos e identificar possíveis abusos.',
-        impact: { health: -3, legal: -5, productivity: 5, finance: 3 },
-        quality: 'poor',
-        strategic: false,
-        feedback: 'Abordagem punitiva com riscos significativos.',
-        consequence: 'Colaboradores podem se sentir perseguidos e constrangidos. O clima piora, há risco de denúncias de assédio moral e o problema real por trás dos atestados permanece sem tratamento.',
-        expert: 'Entrevistas de retorno têm valor quando conduzidas com acolhimento e foco na saúde. Quando usadas como instrumento de pressão, configuram prática discriminatória e podem gerar passivo trabalhista.'
+        text: 'Lançar um programa de acompanhamento médico acolhedor, onde o médico do trabalho entrevista quem falta para entender a causa estrutural.',
+        impact: { health: 15, legal: 8, productivity: -8, finance: -5 },
+        feedback: 'Foco na causa raiz e no cuidado humano.',
+        consequence: 'A empresa acolhe e entende o adoecimento real. Contudo, as entrevistas demandam tempo de ambulatório, profissionais caros e desfalcam a equipe provisoriamente.',
+        expert: 'Acolhimento médico constrói vínculo e resolve a longo prazo.'
       },
       {
         letter: 'C',
-        text: 'Contratar trabalhadores temporários para cobrir as ausências e manter a produção, tratando o problema como uma questão operacional e não de saúde.',
-        impact: { health: -2, legal: -3, productivity: 8, finance: -10 },
-        quality: 'mediocre',
-        strategic: false,
-        feedback: 'Solução paliativa com alto custo e sem tratar a causa.',
-        consequence: 'Os custos de contratação temporária se acumulam. Os problemas de saúde continuam sem tratamento e os afastamentos tendem a aumentar. Pode surgir risco de vínculo empregatício dos temporários.',
-        expert: 'Substituir pessoas sem investigar a causa é como trocar peças de uma máquina sem fazer a manutenção. O problema sistêmico continuará gerando consequências cada vez maiores.'
+        text: 'Manter os afastamentos atuais, mas inflar o quadro com trabalhadores temporários para cobrir os buracos da escala de forma ágil.',
+        impact: { health: 5, legal: -8, productivity: 12, finance: -5 },
+        feedback: 'Abordagem puramente operacional de contingência.',
+        consequence: 'A produção não para e o RH desafoga. No entanto, os custos com rescisões e taxas disparam, e o problema original de saúde da equipe fixa continua existindo.',
+        expert: 'Terceirizar o problema não resolve o desgaste ocupacional.'
+      },
+      {
+        letter: 'D',
+        text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
+        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        feedback: 'Decisão desastrosa e omissa.',
+        consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
+        expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
       }
     ]
   },
@@ -2502,189 +2632,199 @@ const ROUNDS_DATA = [
     number: 3,
     theme: 'Liderança e Clima Organizacional',
     title: 'Lideranças Despreparadas e Pressão Excessiva',
-    situation: 'Uma pesquisa interna revelou que 65% dos colaboradores consideram seus líderes "autoritários" ou "distantes". Há relatos de metas inatingíveis, ausência de feedback construtivo e comunicação agressiva. Nos últimos dois meses, dois pedidos de demissão citaram o clima organizacional como principal motivo. O turnover está afetando a operação.',
+    situation: 'Dois bons funcionários pediram demissão citando o clima pesado gerado pelo supervisor direto. A diretoria cobra resultados deste supervisor, que repassa a pressão de forma autoritária.',
     options: [
       {
         letter: 'A',
-        text: 'Desenvolver um programa de capacitação de líderes com foco em comunicação empática, gestão humanizada, saúde mental da equipe e ferramentas de feedback, com acompanhamento trimestral.',
-        impact: { health: 12, legal: 5, productivity: 10, finance: -6 },
-        quality: 'excellent',
-        strategic: true,
-        feedback: 'Investimento estratégico em pessoas com retorno sustentável.',
-        consequence: 'As lideranças desenvolvem competências para gerir pessoas de forma saudável. O clima melhora gradualmente, a rotatividade diminui e a produtividade aumenta pela melhora do engajamento.',
-        expert: 'Lideranças tóxicas são uma das principais causas de adoecimento mental no trabalho. Investir no desenvolvimento de líderes é investir diretamente na prevenção de afastamentos e na retenção de talentos.'
+        text: 'Demitir o supervisor imediatamente, mandando um recado forte, e promover um operador querido pela equipe.',
+        impact: { health: 12, legal: -12, productivity: -10, finance: -8 },
+        feedback: 'Corte radical e focado na equipe.',
+        consequence: 'O clima melhora instantaneamente. Mas o alto custo da rescisão sem justa causa pesa, e o novo supervisor não tem a mesma eficiência técnica, derrubando a produção inicial.',
+        expert: 'Ações radicais podem resolver o sintoma e criar novos gargalos.'
       },
       {
         letter: 'B',
-        text: 'Reforçar o programa de metas com bonificações financeiras agressivas para líderes que atingirem resultados, criando incentivos claros de desempenho para toda a cadeia de gestão.',
-        impact: { health: -8, legal: -3, productivity: 5, finance: -5 },
-        quality: 'poor',
-        strategic: false,
-        feedback: 'Aumenta a pressão sobre pessoas já sobrecarregadas.',
-        consequence: 'Líderes intensificam a cobrança sobre suas equipes para alcançar as bonificações. O clima piora, os afastamentos por estresse aumentam e a empresa pode enfrentar ações por assédio moral organizacional.',
-        expert: 'Bonificações baseadas apenas em resultados financeiros sem considerar indicadores de clima, saúde e pessoas tendem a criar um ciclo vicioso de pressão e adoecimento.'
+        text: 'Contratar um programa de coaching e mentoria de longo prazo para os supervisores aprenderem liderança humanizada.',
+        impact: { health: 8, legal: 5, productivity: -5, finance: -8 },
+        feedback: 'Investimento clássico em desenvolvimento humano.',
+        consequence: 'Protege a empresa legalmente e prepara os líderes para o futuro. Porém, o clima atual demora a melhorar e o investimento financeiro do treinamento é expressivo.',
+        expert: 'O desenvolvimento cultural tem inércia, exige paciência.'
       },
       {
         letter: 'C',
-        text: 'Transferir os colaboradores insatisfeitos para outros setores e manter as lideranças atuais, evitando confrontos e preservando a hierarquia estabelecida.',
-        impact: { health: -5, legal: -8, productivity: -3, finance: 2 },
-        quality: 'poor',
-        strategic: false,
-        feedback: 'Evita o problema sem resolvê-lo. Risco de interpretação como retaliação.',
-        consequence: 'Os colaboradores transferidos podem interpretar a movimentação como punição por terem reclamado. Novos colaboradores que chegarem ao setor enfrentarão os mesmos problemas. O risco de ações trabalhistas aumenta.',
-        expert: 'Transferir quem reclama sem tratar a liderança é silenciar sintomas. O problema continuará gerando rotatividade, afastamentos e passivos — apenas em novos rostos.'
+        text: 'Aumentar os bônus e premiações da equipe para compensar o estresse, mantendo o supervisor técnico que entrega resultados.',
+        impact: { health: -12, legal: -5, productivity: 15, finance: 5 },
+        feedback: 'Usa incentivos financeiros para mascarar o desgaste.',
+        consequence: 'A equipe tolera o estresse pelas metas, e a produção atinge picos históricos. O faturamento cresce, mas o burnout silencioso e a insatisfação tornam-se bombas-relógio.',
+        expert: 'Incentivos financeiros não anulam gestão tóxica.'
+      },
+      {
+        letter: 'D',
+        text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
+        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        feedback: 'Decisão desastrosa e omissa.',
+        consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
+        expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
       }
     ]
   },
   {
     number: 4,
     theme: 'Integração de Áreas',
-    title: 'Falta de Integração entre RH, SST e Medicina do Trabalho',
-    situation: 'O RH não tem acesso aos dados do PCMSO. O SESMT não sabe quais trabalhadores estão afastados. A Medicina do Trabalho realiza exames periódicos sem comunicar os achados relevantes à gestão. Cada área trabalha de forma isolada. O resultado: decisões fragmentadas, duplicidade de esforços e riscos não detectados a tempo.',
+    title: 'Falta de Integração entre RH, SST e Medicina',
+    situation: 'RH, Segurança e Medicina não conversam. O RH descobre afastamentos tarde, o PCMSO não reflete a realidade do chão de fábrica e a documentação é um caos de planilhas soltas.',
     options: [
       {
         letter: 'A',
-        text: 'Criar um comitê integrado de saúde e performance com reuniões mensais entre RH, SST, Medicina do Trabalho e gestores operacionais, definindo indicadores compartilhados e fluxos de comunicação.',
-        impact: { health: 10, legal: 10, productivity: 12, finance: 5 },
-        quality: 'excellent',
-        strategic: true,
-        feedback: 'Modelo de integração com alto impacto e baixo custo.',
-        consequence: 'A empresa passa a ter visão sistêmica da saúde ocupacional. Problemas são detectados mais cedo, decisões são mais assertivas e os recursos são utilizados de forma mais eficiente.',
-        expert: 'A integração entre RH, SST e Saúde Ocupacional é a base da inteligência ocupacional. Quando essas áreas conversam, o gerenciamento de riscos deixa de ser burocrático e se torna estratégico.'
+        text: 'Investir pesado em um software integrado de Saúde Ocupacional que consolide todos os dados e emita laudos automáticos para o eSocial.',
+        impact: { health: 5, legal: 15, productivity: -5, finance: -10 },
+        feedback: 'Aposta em tecnologia e conformidade.',
+        consequence: 'A rastreabilidade e segurança contra multas ficam blindadas. Mas a licença do software é muito cara e a curva de aprendizado da ferramenta desacelera o RH.',
+        expert: 'Softwares robustos mitigam risco jurídico com alto custo.'
       },
       {
         letter: 'B',
-        text: 'Contratar um software de gestão ocupacional para centralizar as informações de SST, RH e saúde, mantendo os processos e responsabilidades atuais de cada área.',
-        impact: { health: 3, legal: 5, productivity: 5, finance: -8 },
-        quality: 'mediocre',
-        strategic: false,
-        feedback: 'Ferramenta útil, mas insuficiente sem mudança de processo.',
-        consequence: 'O software centraliza dados, mas se as áreas não colaboram nos processos, as informações continuarão subutilizadas. Há risco de investimento sem retorno proporcional.',
-        expert: 'Tecnologia sem processo integrado é como comprar um carro sem saber dirigir. A ferramenta potencializa resultados quando há governança e cultura de colaboração entre as áreas.'
+        text: 'Implantar comitês semanais de 3 horas com os líderes do RH, SST e Medicina para alinhamento obrigatório dos casos críticos.',
+        impact: { health: 12, legal: 5, productivity: -12, finance: 2 },
+        feedback: 'Integração baseada em relacionamento e comunicação.',
+        consequence: 'A gestão dos adoecidos melhora drasticamente através do diálogo. Mas a ausência dos líderes de suas funções por muitas horas na semana drena a eficiência operacional.',
+        expert: 'Comitês melhoram a visão humana ao custo de horas ativas.'
       },
       {
         letter: 'C',
-        text: 'Designar o RH como área centralizadora, responsável por consolidar todos os relatórios de SST e Saúde em uma planilha mensal para a diretoria.',
-        impact: { health: 2, legal: 3, productivity: 3, finance: 2 },
-        quality: 'mediocre',
-        strategic: false,
-        feedback: 'Centraliza informação, mas não integra decisão.',
-        consequence: 'O RH fica sobrecarregado com uma atribuição que não domina tecnicamente. A qualidade da análise pode ser comprometida e a responsabilidade fica difusa.',
-        expert: 'Integrar áreas vai além de consolidar dados. É preciso que as equipes compartilhem análises, definam ações conjuntas e monitorem resultados de forma colaborativa.'
+        text: 'Terceirizar a gestão do eSocial e dos exames para uma clínica externa de grande porte, deixando o RH livre para focar na produção.',
+        impact: { health: -8, legal: 10, productivity: 15, finance: -5 },
+        feedback: 'Estratégia de terceirização do risco burocrático.',
+        consequence: 'A empresa fica nos trilhos burocráticos e o RH consegue focar no recrutamento operacional. No entanto, a empresa perde a inteligência interna sobre a saúde da sua equipe.',
+        expert: 'Terceirizar burocracia é ótimo, mas requer supervisão atenta.'
+      },
+      {
+        letter: 'D',
+        text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
+        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        feedback: 'Decisão desastrosa e omissa.',
+        consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
+        expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
       }
     ]
   },
   {
     number: 5,
     theme: 'Acidente e Prevenção',
-    title: 'Acidente de Trabalho e Ausência de Procedimentos Preventivos',
-    situation: 'Um trabalhador sofreu um acidente com máquina no setor de produção, gerando afastamento de 30 dias. A investigação revelou que o procedimento operacional estava desatualizado há 2 anos, o treinamento do operador foi superficial e a manutenção preventiva da máquina estava atrasada em 4 meses. A empresa nunca realizou análise de riscos específica para aquela atividade.',
+    title: 'Acidente de Trabalho e Procedimentos Atrasados',
+    situation: 'Um acidente na máquina gerou 30 dias de afastamento. A investigação mostrou que a proteção estava violada e o treinamento do operador estava vencido. Há outras máquinas similares rodando agora.',
     options: [
       {
         letter: 'A',
-        text: 'Paralisar a atividade, realizar análise de causas-raiz com participação do SESMT e dos trabalhadores, atualizar todos os procedimentos operacionais, treinar a equipe e revisar o cronograma de manutenção preventiva.',
-        impact: { health: 15, legal: 12, productivity: -5, finance: -10 },
-        quality: 'excellent',
-        strategic: true,
-        feedback: 'Abordagem completa. Perda temporária de produtividade com grande ganho em segurança.',
-        consequence: 'A empresa demonstra maturidade em SST. O risco de novos acidentes diminui drasticamente. A documentação atualizada protege juridicamente a empresa e os trabalhadores se sentem mais seguros.',
-        expert: 'A análise de causas-raiz é fundamental: ela identifica não apenas o que aconteceu, mas por que os controles falharam. Sem isso, acidentes semelhantes tendem a se repetir.'
+        text: 'Parar o setor inteiro por 3 dias, revisar todas as máquinas e realizar retreinamento em massa com toda a equipe.',
+        impact: { health: 15, legal: 15, productivity: -20, finance: -10 },
+        feedback: 'Segurança absoluta e prioridade à vida.',
+        consequence: 'Você elimina qualquer risco imediato e blinda a empresa contra processos criminais e do MPT. Porém, o atraso na entrega dos pedidos gera multas contratuais dos clientes.',
+        expert: 'Parar a operação preserva vidas, mas exige caixa robusto.'
       },
       {
         letter: 'B',
-        text: 'Emitir a CAT, afastar o trabalhador conforme a legislação, providenciar o conserto da máquina e orientar verbalmente a equipe para redobrar os cuidados ao retomar a atividade.',
-        impact: { health: 2, legal: -5, productivity: 5, finance: 3 },
-        quality: 'poor',
-        strategic: false,
-        feedback: 'Cumpre o mínimo legal, mas não trata as causas.',
-        consequence: 'O procedimento continua desatualizado, o treinamento permanece insuficiente e a manutenção seguirá atrasada. As condições para um novo acidente estão mantidas.',
-        expert: 'Orientar verbalmente não substitui análise técnica, atualização de procedimentos e treinamento formal. A reincidência de acidentes em condições idênticas agrava a responsabilidade da empresa.'
+        text: 'Emitir a CAT, afastar o acidentado, dar uma advertência rápida geral e religar as máquinas para não atrasar a produção do dia.',
+        impact: { health: -15, legal: -15, productivity: 15, finance: 12 },
+        feedback: 'Foco exclusivo na continuidade do negócio.',
+        consequence: 'O faturamento é preservado e os clientes nem percebem o problema. Mas a máquina segue desprotegida e a empresa pode sofrer interdição grave se o MPT for acionado.',
+        expert: 'Lucro no curto prazo com exposição à roleta-russa jurídica.'
       },
       {
         letter: 'C',
-        text: 'Emitir a CAT e iniciar investigação do acidente, mas adiar a atualização dos procedimentos e treinamentos para o próximo semestre em razão do cronograma apertado de produção.',
-        impact: { health: -3, legal: -8, productivity: 8, finance: 5 },
-        quality: 'poor',
-        strategic: false,
-        feedback: 'Prioriza a produção sobre a segurança. Alto risco jurídico.',
-        consequence: 'Se ocorrer um novo acidente antes das correções, a empresa poderá ser responsabilizada por negligência. O adiamento documentado pode ser usado como prova contra a empresa em eventual processo.',
-        expert: 'Adiar medidas corretivas após um acidente é uma das situações mais graves em SST. Demonstra que a empresa conhecia o risco e escolheu não agir — o que configura dolo eventual em muitas interpretações jurídicas.'
+        text: 'Manter a produção, mas colocar o Engenheiro de Segurança operando ao lado das máquinas durante os próximos dias para vigiar os operadores.',
+        impact: { health: 5, legal: -5, productivity: 5, finance: -5 },
+        feedback: 'Mitigação provisória no "olho".',
+        consequence: 'Você não perde a produção e evita acidentes bobos pela vigilância, mas gasta o tempo valioso do engenheiro e não resolve a falta de proteção física na máquina (NR-12).',
+        expert: 'Supervisão física não substitui engenharia de segurança.'
+      },
+      {
+        letter: 'D',
+        text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
+        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        feedback: 'Decisão desastrosa e omissa.',
+        consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
+        expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
       }
     ]
   },
   {
     number: 6,
     theme: 'Custos Invisíveis',
-    title: 'Custos Invisíveis: Absenteísmo, Presenteísmo e Rotatividade',
-    situation: 'O controller financeiro apresentou um relatório alarmante: o custo real dos afastamentos, rotatividade e baixa produtividade é três vezes maior que o estimado. Incluindo horas extras para cobrir faltas, recrutamento, treinamento de substitutos, presenteísmo e perdas de qualidade, a empresa perde aproximadamente R$ 480 mil por ano em custos que não aparecem nos demonstrativos tradicionais.',
+    title: 'Cortar na Carne ou Investir na Base?',
+    situation: 'Os custos operacionais subiram muito neste trimestre. A diretoria exige um corte orçamentário. O pacote de benefícios (plano de saúde premium, massagem) e os treinamentos estão na mira do corte.',
     options: [
       {
         letter: 'A',
-        text: 'Implementar um programa estruturado de saúde ocupacional e bem-estar com foco em prevenção, mapeando os principais fatores de risco, atuando nas causas do absenteísmo e monitorando indicadores de saúde e produtividade.',
-        impact: { health: 12, legal: 8, productivity: 10, finance: 15 },
-        quality: 'excellent',
-        strategic: true,
-        feedback: 'Investimento que se paga. Atua nas causas e gera retorno mensurável.',
-        consequence: 'A empresa começa a reduzir custos invisíveis de forma sustentável. Os indicadores de saúde e produtividade melhoram gradualmente, e o retorno sobre o investimento em prevenção se torna evidente em poucos meses.',
-        expert: 'Estudos demonstram que cada R$ 1 investido em saúde ocupacional preventiva gera retorno de R$ 3 a R$ 6 em redução de custos com afastamentos, rotatividade e ganhos de produtividade.'
+        text: 'Cortar radicalmente o plano de saúde para um modelo básico e suspender todos os programas de bem-estar.',
+        impact: { health: -15, legal: -5, productivity: -10, finance: 20 },
+        feedback: 'Ajuste fiscal agressivo.',
+        consequence: 'A empresa atinge a meta de economia financeira no mês. Imediatamente, o talento do time começa a procurar outros empregos e a satisfação desaba.',
+        expert: 'Cortes abruptos em saúde geram economia hoje e crise amanhã.'
       },
       {
         letter: 'B',
-        text: 'Reduzir imediatamente custos cortando benefícios de saúde, treinamentos e programas de qualidade de vida para equilibrar o orçamento neste exercício fiscal.',
-        impact: { health: -15, legal: -5, productivity: -8, finance: 10 },
-        quality: 'poor',
-        strategic: false,
-        feedback: 'Alívio financeiro momentâneo com agravamento dos problemas.',
-        consequence: 'Os cortes em saúde e treinamento agravam o ciclo de adoecimento e desmotivação. A rotatividade aumenta, os custos de recrutamento crescem e a produtividade cai ainda mais. O "corte" se transforma em custo maior no médio prazo.',
-        expert: 'Cortar investimentos em saúde para reduzir custos é como parar de fazer manutenção preventiva em equipamentos para economizar. O colapso é questão de tempo.'
+        text: 'Preservar todos os benefícios integrais e programas de saúde, reduzindo os recursos de marketing e manutenções de fábrica.',
+        impact: { health: 15, legal: 5, productivity: -15, finance: -5 },
+        feedback: 'Proteção ao trabalhador acima do comercial.',
+        consequence: 'Os colaboradores se sentem incrivelmente valorizados e seguros. O problema é que a falta de manutenção gerará lentidão na operação e a queda em marketing pode derrubar vendas futuras.',
+        expert: 'Proteger benefícios fideliza o time.'
       },
       {
         letter: 'C',
-        text: 'Terceirizar as atividades com maior índice de afastamento para transferir o risco trabalhista e reduzir custos diretos com encargos e benefícios.',
-        impact: { health: -5, legal: -10, productivity: 3, finance: 5 },
-        quality: 'poor',
-        strategic: false,
-        feedback: 'Transfere o problema sem resolvê-lo e cria novos riscos.',
-        consequence: 'A terceirização motivada apenas pela transferência de risco pode configurar fraude trabalhista. A empresa contratante mantém responsabilidade subsidiária ou solidária, e o risco reputacional aumenta.',
-        expert: 'A terceirização é legítima quando focada em especialização. Quando usada apenas para transferir passivos, cria vulnerabilidade jurídica e não resolve as causas do adoecimento ocupacional.'
+        text: 'Implantar a coparticipação no plano de saúde e amarrar bônus de produção para quem tiver alta presença (Prêmio Assiduidade).',
+        impact: { health: -5, legal: -10, productivity: 15, finance: 8 },
+        feedback: 'Divisão de custos e estímulo de produção.',
+        consequence: 'Reduz os custos com o plano sem cortá-lo totalmente e força o aumento da produção. Mas, o prêmio assiduidade gera presenteísmo (trabalhadores doentes escondendo sintomas) e risco de processo sindical.',
+        expert: 'Prêmio por assiduidade mascaras o adoecimento real.'
+      },
+      {
+        letter: 'D',
+        text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
+        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        feedback: 'Decisão desastrosa e omissa.',
+        consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
+        expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
       }
     ]
   },
   {
     number: 7,
-    theme: 'Inteligência Ocupacional',
-    title: 'Dados, Indicadores e Estratégia de Inteligência Ocupacional',
-    situation: 'Após todas as decisões tomadas, a diretoria solicita um plano estratégico de longo prazo. A empresa precisa definir como vai monitorar, prevenir e gerenciar a saúde ocupacional de forma inteligente e sustentável. É o momento de consolidar uma visão integrada.',
+    theme: 'Estratégia de Longo Prazo',
+    title: 'O Futuro da Inteligência Ocupacional',
+    situation: 'A diretoria pede a estratégia ocupacional para os próximos anos. A visão que você escolher agora definirá o destino corporativo.',
     options: [
       {
         letter: 'A',
-        text: 'Criar um painel de inteligência ocupacional com indicadores integrados (absenteísmo, FAP, NTEP, afastamentos, produtividade, clima, rotatividade) e estabelecer metas preventivas anuais com revisão trimestral.',
-        impact: { health: 15, legal: 12, productivity: 15, finance: 12 },
-        quality: 'excellent',
-        strategic: true,
-        feedback: 'Visão de futuro. Transforma dados em decisões estratégicas.',
-        consequence: 'A empresa constrói um modelo de gestão baseado em evidências. Os riscos são antecipados, as decisões são mais assertivas e a organização se posiciona como referência em inteligência ocupacional.',
-        expert: 'Inteligência ocupacional é a capacidade de transformar dados de saúde, segurança e pessoas em informação estratégica para tomada de decisão. É o futuro da gestão de SST.'
+        text: 'Investir na construção de um Ambulatório de Saúde Integrada dentro da fábrica, com equipe própria atuando focada na prevenção e cuidado de base.',
+        impact: { health: 20, legal: 10, productivity: 0, finance: -12 },
+        feedback: 'Saúde como pilar absoluto da empresa.',
+        consequence: 'Torna-se referência no setor em cuidado humano. Zero ações trabalhistas de doença, mas o custo fixo de folha médica pesa fortemente no balanço do trimestre.',
+        expert: 'Internalizar saúde cria uma cultura de vida.'
       },
       {
         letter: 'B',
-        text: 'Contratar uma auditoria externa anual para verificar a conformidade legal da empresa e aguardar os relatórios para definir as ações corretivas necessárias.',
-        impact: { health: 3, legal: 8, productivity: 2, finance: -5 },
-        quality: 'mediocre',
-        strategic: false,
-        feedback: 'Válido como complemento, insuficiente como estratégia.',
-        consequence: 'A auditoria anual detecta problemas, mas a frequência é baixa para uma gestão proativa. Muitos riscos podem se materializar entre uma auditoria e outra.',
-        expert: 'Auditorias são ferramentas de verificação, não de gestão. Uma estratégia de inteligência ocupacional usa dados em tempo real para antecipar problemas, não apenas para verificar conformidade.'
+        text: 'Focar a estratégia exclusivamente na automação robótica das linhas de frente para retirar o ser humano das posições de risco ergonômico.',
+        impact: { health: -5, legal: 15, productivity: 20, finance: -15 },
+        feedback: 'Tecnologia em substituição à exposição.',
+        consequence: 'Riscos ocupacionais físicos despencam drasticamente. A eficiência sobe ao máximo. Porém, o clima despenca com as demissões e o investimento em capex (robôs) leva anos para se pagar.',
+        expert: 'Automação erradica lesões físicas, mas abala a segurança social.'
       },
       {
         letter: 'C',
-        text: 'Manter o modelo atual de gestão, tratando cada problema conforme surge, e direcionar o orçamento disponível para marketing e vendas para garantir o crescimento comercial.',
-        impact: { health: -5, legal: -5, productivity: 3, finance: 5 },
-        quality: 'poor',
-        strategic: false,
-        feedback: 'Gestão reativa. Crescer sem cuidar das pessoas é insustentável.',
-        consequence: 'A empresa pode crescer em receita, mas os custos ocultos com saúde, afastamentos e rotatividade corroerão a margem. Sem estratégia ocupacional, o crescimento é frágil e vulnerável.',
-        expert: 'Empresas que crescem sem estrutura de gestão de pessoas e saúde ocupacional tendem a enfrentar crises graves quando atingem determinado porte. A prevenção é investimento, não custo.'
+        text: 'Terceirizar todo o quadro operacional com empresas parceiras de mão de obra temporária, esvaziando o risco trabalhista da empresa matriz.',
+        impact: { health: -15, legal: -15, productivity: 15, finance: 20 },
+        feedback: 'Modelo de negócio ultra-enxuto.',
+        consequence: 'A empresa matriz infla seu caixa livre e sua agilidade, sem burocracias de folha. Contudo, há alta rotatividade, má qualidade de entrega final e passivo de terceirização (responsabilidade solidária).',
+        expert: 'A quarterização do risco sem governança cria passivos ocultos graves.'
+      },
+      {
+        letter: 'D',
+        text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
+        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        feedback: 'Decisão desastrosa e omissa.',
+        consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
+        expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
       }
     ]
   }
@@ -3076,13 +3216,12 @@ const Game = {
       }
     });
 
-    // Mark option quality visually
+    // Mark option visually
     setTimeout(() => {
       document.querySelectorAll('.option-card').forEach((card, i) => {
-        const opt = round.options[i];
-        if (opt.quality === 'excellent') card.classList.add('correct');
-        else if (opt.quality === 'poor') card.classList.add('wrong');
-        else card.classList.add('neutral');
+        if (i === optionIndex) {
+          card.classList.add('neutral'); // Usar cor neutra para todas as escolhas
+        }
       });
     }, 500);
 
@@ -3097,20 +3236,16 @@ const Game = {
     GameState.decisions.push({
       round: roundIndex,
       option: optionIndex,
-      quality: option.quality,
-      strategic: option.strategic,
       time: decisionTime
     });
 
     // Play sound
-    if (option.quality === 'excellent') SoundSystem.play('success');
-    else if (option.quality === 'poor') SoundSystem.play('warning');
-    else SoundSystem.play('click');
+    SoundSystem.play('click');
 
     // Show feedback
     const feedbackEl = document.getElementById('roundFeedback');
-    const feedbackIcon = option.quality === 'excellent' ? '&#10004;' : option.quality === 'poor' ? '&#10006;' : '&#9888;';
-    const feedbackColor = option.quality === 'excellent' ? 'var(--green)' : option.quality === 'poor' ? 'var(--red)' : 'var(--orange)';
+    const feedbackIcon = '&#10148;'; // Neutral arrow
+    const feedbackColor = 'var(--blue-electric)';
 
     feedbackEl.innerHTML = `
       <div class="feedback-title" style="color:${feedbackColor}">
@@ -3239,30 +3374,23 @@ const Game = {
     if (GameState.decisions.length === 0) return 0;
 
     const ind = GameState.indicators;
-    // Indicator average (40%)
+    
+    // 50% - Média dos Indicadores (performance geral)
     const indAvg = (ind.health + ind.legal + ind.productivity + ind.finance) / 4;
-    const indScore = (indAvg / 100) * 40;
+    const indScore = (indAvg / 100) * 50;
 
-    // Decision quality (30%)
-    const excellentCount = GameState.decisions.filter(d => d.quality === 'excellent').length;
-    const qualityRatio = excellentCount / GameState.decisions.length;
-    const qualityScore = qualityRatio * 30;
+    // 40% - Bônus de Equilíbrio
+    // A diferença máxima teórica entre o maior e menor é 100.
+    // Se range = 0 (equilíbrio total), ganha 40. Se range = 100, ganha 0.
+    const values = [ind.health, ind.legal, ind.productivity, ind.finance];
+    const range = Math.max(...values) - Math.min(...values);
+    const balanceScore = Math.max(0, 40 - (range * 0.4));
 
-    // Time bonus (10%) - faster is better, baseline 420 seconds (7 minutes)
+    // 10% - Bônus de Tempo
     const avgTime = GameState.totalDecisionTime / GameState.decisions.length;
     const timeBonus = Math.max(0, Math.min(10, 10 - (avgTime - 20) * 0.15));
 
-    // Balance bonus (10%) - all indicators within 20 points of each other
-    const values = [ind.health, ind.legal, ind.productivity, ind.finance];
-    const range = Math.max(...values) - Math.min(...values);
-    const balanceScore = Math.max(0, 10 - (range * 0.15));
-
-    // Strategic vision (10%) - chose strategic options
-    const strategicCount = GameState.decisions.filter(d => d.strategic).length;
-    const strategicRatio = strategicCount / GameState.decisions.length;
-    const strategicScore = strategicRatio * 10;
-
-    const total = Math.round(Math.max(0, Math.min(100, indScore + qualityScore + timeBonus + balanceScore + strategicScore)));
+    const total = Math.round(Math.max(0, Math.min(100, indScore + balanceScore + timeBonus)));
     return total;
   },
 
@@ -3298,8 +3426,6 @@ const Game = {
     // Determine strengths and weaknesses
     const strengths = [];
     const weaknesses = [];
-    const excellentRounds = GameState.decisions.filter(d => d.quality === 'excellent');
-    const poorRounds = GameState.decisions.filter(d => d.quality === 'poor');
 
     if (ind.health >= 60) strengths.push('Boa gestão da saúde dos colaboradores');
     else weaknesses.push('Saúde dos trabalhadores ainda precisa de atenção');
@@ -3313,13 +3439,14 @@ const Game = {
     if (ind.finance >= 60) strengths.push('Saúde financeira preservada');
     else weaknesses.push('Custos ocultos impactando a saúde financeira');
 
-    if (excellentRounds.length >= 5) strengths.push('Tomada de decisão consistentemente estratégica');
-    if (excellentRounds.length >= 3 && excellentRounds.length < 5) strengths.push('Decisões acertadas em áreas-chave');
-    if (poorRounds.length >= 3) weaknesses.push('Decisões de curto prazo comprometeram resultados sustentáveis');
-    
-    const strategicCount = GameState.decisions.filter(d => d.strategic).length;
-    if (strategicCount >= 5) strengths.push('Visão estratégica de longo prazo');
-    else if (strategicCount <= 2) weaknesses.push('Falta de visão estratégica e preventiva');
+    // Balance check
+    const values = [ind.health, ind.legal, ind.productivity, ind.finance];
+    const range = Math.max(...values) - Math.min(...values);
+    if (range <= 20) {
+      strengths.push('Gestão altamente equilibrada entre as áreas');
+    } else if (range >= 50) {
+      weaknesses.push('Forte desequilíbrio: você priorizou uma área e sacrificou outra');
+    }
 
     // Recommendation based on lowest indicator
     const indArr = [
