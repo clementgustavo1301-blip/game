@@ -3560,17 +3560,29 @@ const Game = {
     setTimeout(() => {
       document.querySelectorAll('.option-card').forEach((card, i) => {
         if (i === optionIndex) {
-          card.classList.add('neutral'); // Usar cor neutra para todas as escolhas
+          card.classList.add('neutral');
         }
       });
     }, 500);
 
-    // Apply impact
+    // Save previous values to compute actual deltas
+    const prevHealth = GameState.indicators.health;
+    const prevLegal = GameState.indicators.legal;
+    const prevProductivity = GameState.indicators.productivity;
+    const prevFinance = GameState.indicators.finance;
+
+    // Apply impact (clamped 0-100)
     const imp = option.impact;
-    GameState.indicators.health = Math.max(0, Math.min(100, GameState.indicators.health + imp.health));
-    GameState.indicators.legal = Math.max(0, Math.min(100, GameState.indicators.legal + imp.legal));
-    GameState.indicators.productivity = Math.max(0, Math.min(100, GameState.indicators.productivity + imp.productivity));
-    GameState.indicators.finance = Math.max(0, Math.min(100, GameState.indicators.finance + imp.finance));
+    GameState.indicators.health = Math.max(0, Math.min(100, prevHealth + imp.health));
+    GameState.indicators.legal = Math.max(0, Math.min(100, prevLegal + imp.legal));
+    GameState.indicators.productivity = Math.max(0, Math.min(100, prevProductivity + imp.productivity));
+    GameState.indicators.finance = Math.max(0, Math.min(100, prevFinance + imp.finance));
+
+    // Compute actual deltas (what really changed after clamping)
+    const actualHealth = GameState.indicators.health - prevHealth;
+    const actualLegal = GameState.indicators.legal - prevLegal;
+    const actualProductivity = GameState.indicators.productivity - prevProductivity;
+    const actualFinance = GameState.indicators.finance - prevFinance;
 
     // Record decision
     GameState.decisions.push({
@@ -3582,9 +3594,9 @@ const Game = {
     // Play sound
     SoundSystem.play('click');
 
-    // Show feedback
+    // Show feedback with ACTUAL deltas
     const feedbackEl = document.getElementById('roundFeedback');
-    const feedbackIcon = '&#10148;'; // Neutral arrow
+    const feedbackIcon = '&#10148;';
     const feedbackColor = 'var(--blue-electric)';
 
     feedbackEl.innerHTML = `
@@ -3593,10 +3605,10 @@ const Game = {
       </div>
       <p class="feedback-text">${option.consequence}</p>
       <div class="impact-grid">
-        ${this.renderImpactItem('Saúde', imp.health)}
-        ${this.renderImpactItem('Jurídica', imp.legal)}
-        ${this.renderImpactItem('Produtividade', imp.productivity)}
-        ${this.renderImpactItem('Financeira', imp.finance)}
+        ${this.renderImpactItem('Saúde', actualHealth)}
+        ${this.renderImpactItem('Jurídica', actualLegal)}
+        ${this.renderImpactItem('Produtividade', actualProductivity)}
+        ${this.renderImpactItem('Financeira', actualFinance)}
       </div>
       <div class="feedback-expert">
         <div class="feedback-expert-label">Visão do Especialista</div>
@@ -3614,11 +3626,16 @@ const Game = {
       this.checkCriticalAlerts();
     }, 300);
 
-    // Show next button
+    // Show next button and scroll to it
     const nextBtn = document.getElementById('roundNextBtn');
     nextBtn.classList.remove('hidden');
     const isLast = roundIndex >= ROUNDS_DATA.length - 1;
     document.getElementById('nextBtnText').textContent = isLast ? 'VER RESULTADO' : 'PRÓXIMA RODADA';
+
+    // Auto-scroll to the button so the user can see and click it
+    setTimeout(() => {
+      nextBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 400);
   },
 
   renderImpactItem(label, value) {
@@ -3628,11 +3645,15 @@ const Game = {
   },
 
   nextRound() {
+    // Debounce: prevent double-clicks
+    if (Game._nextRoundLocked) return;
+    Game._nextRoundLocked = true;
+    setTimeout(() => { Game._nextRoundLocked = false; }, 600);
+
     SoundSystem.play('click');
     const nextIndex = GameState.currentRound + 1;
 
     if (nextIndex >= ROUNDS_DATA.length) {
-      // Check for surprise event before results
       const shouldEvent = this.shouldTriggerEvent(nextIndex);
       if (shouldEvent) {
         this.triggerSurpriseEvent(() => { this.showResults(); });
@@ -3642,7 +3663,6 @@ const Game = {
       return;
     }
 
-    // Check for surprise event between rounds
     const shouldEvent = this.shouldTriggerEvent(nextIndex);
     if (shouldEvent) {
       this.triggerSurpriseEvent(() => { this.showRound(nextIndex); });
@@ -3702,11 +3722,15 @@ const Game = {
   },
 
   dismissEvent() {
+    if (Game._dismissLocked) return;
+    Game._dismissLocked = true;
+    setTimeout(() => { Game._dismissLocked = false; }, 600);
     document.getElementById('eventOverlay').classList.remove('active');
     SoundSystem.play('click');
     if (Game._eventCallback) {
-      Game._eventCallback();
+      const cb = Game._eventCallback;
       Game._eventCallback = null;
+      cb();
     }
   },
 
