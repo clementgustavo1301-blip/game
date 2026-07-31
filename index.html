@@ -3711,8 +3711,6 @@ const Game = {
   },
 
   calculateIIO() {
-    if (GameState.decisions.length === 0) return 0;
-
     const ind = GameState.indicators;
     
     // 50% - Média dos Indicadores (performance geral) (Aumentado para facilitar nota alta)
