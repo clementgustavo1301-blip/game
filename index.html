@@ -2562,7 +2562,12 @@ const ROUNDS_DATA = [
       {
         letter: 'A',
         text: 'Criar ações de bem-estar lideradas pelo RH e rodas de conversa com gestores, focando no clima ao invés do laudo técnico.',
-        impact: { health: 8, legal: -10, productivity: 10, finance: 0 },
+        impact: {
+          health: 8,
+          legal: -10,
+          productivity: 15,
+          finance: 5
+        },
         feedback: 'Foco prático em clima, sem suporte técnico-legal.',
         consequence: 'O clima e o engajamento melhoram rapidamente, mas a empresa continua descumprindo a NR-01 e fica totalmente vulnerável em caso de fiscalização do trabalho.',
         expert: 'Cultura sem base documental legal gera riscos invisíveis.'
@@ -2570,7 +2575,12 @@ const ROUNDS_DATA = [
       {
         letter: 'B',
         text: 'Orientar o SESMT a preencher planilhas e checklists genéricos da internet para o PGR apenas para cumprir a burocracia.',
-        impact: { health: -10, legal: -8, productivity: 8, finance: 10 },
+        impact: {
+          health: -10,
+          legal: -8,
+          productivity: 13,
+          finance: 15
+        },
         feedback: 'Solução focada no caixa e na operação imediata.',
         consequence: 'A empresa não gasta nada e ninguém para de trabalhar. Porém, o documento é frágil e a empresa fica exposta a multas e não resolve a saúde mental do time.',
         expert: 'Documentações de fachada não sobrevivem a uma perícia.'
@@ -2578,7 +2588,12 @@ const ROUNDS_DATA = [
       {
         letter: 'C',
         text: 'Contratar uma consultoria especializada para um levantamento clínico, atualizando o PGR e mapeando a fundo a saúde mental da equipe.',
-        impact: { health: 15, legal: 12, productivity: -2, finance: -5 },
+        impact: {
+          health: 15,
+          legal: 12,
+          productivity: 3,
+          finance: 0
+        },
         feedback: 'Abordagem clínica, segura e técnica.',
         consequence: 'Garante excelente proteção jurídica e mapeia a saúde real. Há um investimento financeiro inicial e horas fora da produção, mas os resultados compensam rapidamente.',
         expert: 'Consultorias especializadas trazem precisão diagnóstica.'
@@ -2586,7 +2601,12 @@ const ROUNDS_DATA = [
       {
         letter: 'D',
         text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
-        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: -10,
+          finance: -10
+        },
         feedback: 'Decisão desastrosa e omissa.',
         consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
         expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
@@ -2602,7 +2622,12 @@ const ROUNDS_DATA = [
       {
         letter: 'A',
         text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
-        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: -10,
+          finance: -10
+        },
         feedback: 'Decisão desastrosa e omissa.',
         consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
         expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
@@ -2610,7 +2635,12 @@ const ROUNDS_DATA = [
       {
         letter: 'B',
         text: 'Manter os afastamentos atuais, mas inflar o quadro com trabalhadores temporários para cobrir os buracos da escala de forma ágil.',
-        impact: { health: 5, legal: -8, productivity: 12, finance: -5 },
+        impact: {
+          health: 5,
+          legal: -8,
+          productivity: 15,
+          finance: 0
+        },
         feedback: 'Abordagem puramente operacional de contingência.',
         consequence: 'A produção não para e o RH desafoga. No entanto, os custos com rescisões e taxas disparam, e o problema original de saúde da equipe fixa continua existindo.',
         expert: 'Terceirizar o problema não resolve o desgaste ocupacional.'
@@ -2618,7 +2648,12 @@ const ROUNDS_DATA = [
       {
         letter: 'C',
         text: 'Implementar auditoria médica rigorosa: o RH passa a ligar para clínicas para checar cada atestado e cobra metas de absenteísmo dos líderes.',
-        impact: { health: -12, legal: 5, productivity: 10, finance: 8 },
+        impact: {
+          health: -12,
+          legal: 5,
+          productivity: 15,
+          finance: 13
+        },
         feedback: 'Controle incisivo focado em conter o sangramento.',
         consequence: 'As ausências caem por medo, mantendo a operação e o caixa. Mas o clima piora, os doentes vão trabalhar medicados (presenteísmo) e a saúde geral declina no longo prazo.',
         expert: 'Auditorias reduzem falsos atestados, mas geram tensão na equipe.'
@@ -2626,7 +2661,12 @@ const ROUNDS_DATA = [
       {
         letter: 'D',
         text: 'Lançar um programa de acompanhamento médico acolhedor, onde o médico do trabalho entrevista quem falta para entender a causa estrutural.',
-        impact: { health: 15, legal: 8, productivity: -3, finance: -2 },
+        impact: {
+          health: 15,
+          legal: 8,
+          productivity: 2,
+          finance: 3
+        },
         feedback: 'Foco na causa raiz e no cuidado humano.',
         consequence: 'A empresa acolhe e entende o adoecimento real. Contudo, as entrevistas demandam tempo de ambulatório e desfalcam a equipe provisoriamente, mas curam a longo prazo.',
         expert: 'Acolhimento médico constrói vínculo e resolve a longo prazo.'
@@ -2642,7 +2682,12 @@ const ROUNDS_DATA = [
       {
         letter: 'A',
         text: 'Contratar um programa de coaching e mentoria de longo prazo para os supervisores aprenderem liderança humanizada.',
-        impact: { health: 10, legal: 8, productivity: -2, finance: -4 },
+        impact: {
+          health: 10,
+          legal: 8,
+          productivity: 3,
+          finance: 1
+        },
         feedback: 'Investimento clássico em desenvolvimento humano.',
         consequence: 'Protege a empresa legalmente e prepara os líderes para o futuro. O investimento financeiro do treinamento é expressivo, mas evita rescisões milionárias.',
         expert: 'O desenvolvimento cultural tem inércia, mas exige consistência.'
@@ -2650,7 +2695,12 @@ const ROUNDS_DATA = [
       {
         letter: 'B',
         text: 'Demitir o supervisor imediatamente, mandando um recado forte, e promover um operador querido pela equipe.',
-        impact: { health: 12, legal: -12, productivity: -10, finance: -8 },
+        impact: {
+          health: 12,
+          legal: -12,
+          productivity: -5,
+          finance: -3
+        },
         feedback: 'Corte radical e focado na equipe.',
         consequence: 'O clima melhora instantaneamente. Mas o alto custo da rescisão sem justa causa pesa, e o novo supervisor não tem a mesma eficiência técnica, derrubando a produção inicial.',
         expert: 'Ações radicais podem resolver o sintoma e criar novos gargalos.'
@@ -2658,7 +2708,12 @@ const ROUNDS_DATA = [
       {
         letter: 'C',
         text: 'Aumentar os bônus e premiações da equipe para compensar o estresse, mantendo o supervisor técnico que entrega resultados.',
-        impact: { health: -12, legal: -5, productivity: 15, finance: 5 },
+        impact: {
+          health: -12,
+          legal: -5,
+          productivity: 15,
+          finance: 10
+        },
         feedback: 'Usa incentivos financeiros para mascarar o desgaste.',
         consequence: 'A equipe tolera o estresse pelas metas, e a produção atinge picos históricos. O faturamento cresce, mas o burnout silencioso e a insatisfação tornam-se bombas-relógio.',
         expert: 'Incentivos financeiros não anulam gestão tóxica.'
@@ -2666,7 +2721,12 @@ const ROUNDS_DATA = [
       {
         letter: 'D',
         text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
-        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: -10,
+          finance: -10
+        },
         feedback: 'Decisão desastrosa e omissa.',
         consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
         expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
@@ -2682,7 +2742,12 @@ const ROUNDS_DATA = [
       {
         letter: 'A',
         text: 'Terceirizar a gestão do eSocial e dos exames para uma clínica externa de grande porte, deixando o RH livre para focar na produção.',
-        impact: { health: -8, legal: 10, productivity: 15, finance: -5 },
+        impact: {
+          health: -8,
+          legal: 10,
+          productivity: 15,
+          finance: 0
+        },
         feedback: 'Estratégia de terceirização do risco burocrático.',
         consequence: 'A empresa fica nos trilhos burocráticos e o RH consegue focar no recrutamento operacional. No entanto, a empresa perde a inteligência interna sobre a saúde da sua equipe.',
         expert: 'Terceirizar burocracia é ótimo, mas requer supervisão atenta.'
@@ -2690,7 +2755,12 @@ const ROUNDS_DATA = [
       {
         letter: 'B',
         text: 'Investir pesado em um software integrado de Saúde Ocupacional que consolide todos os dados e emita laudos automáticos para o eSocial.',
-        impact: { health: 8, legal: 15, productivity: 0, finance: -5 },
+        impact: {
+          health: 8,
+          legal: 15,
+          productivity: 5,
+          finance: 0
+        },
         feedback: 'Aposta em tecnologia e conformidade.',
         consequence: 'A rastreabilidade e segurança contra multas ficam blindadas. A licença do software é cara, mas a eficiência ganha a longo prazo compensa o investimento inicial.',
         expert: 'Softwares robustos mitigam risco jurídico com eficiência e integração de dados.'
@@ -2698,7 +2768,12 @@ const ROUNDS_DATA = [
       {
         letter: 'C',
         text: 'Implantar comitês semanais de 3 horas com os líderes do RH, SST e Medicina para alinhamento obrigatório dos casos críticos.',
-        impact: { health: 12, legal: 5, productivity: -12, finance: 2 },
+        impact: {
+          health: 12,
+          legal: 5,
+          productivity: -7,
+          finance: 7
+        },
         feedback: 'Integração baseada em relacionamento e comunicação.',
         consequence: 'A gestão dos adoecidos melhora drasticamente através do diálogo. Mas a ausência dos líderes de suas funções por muitas horas na semana drena a eficiência operacional.',
         expert: 'Comitês melhoram a visão humana ao custo de horas ativas.'
@@ -2706,7 +2781,12 @@ const ROUNDS_DATA = [
       {
         letter: 'D',
         text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
-        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: -10,
+          finance: -10
+        },
         feedback: 'Decisão desastrosa e omissa.',
         consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
         expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
@@ -2722,7 +2802,12 @@ const ROUNDS_DATA = [
       {
         letter: 'A',
         text: 'Emitir a CAT, afastar o acidentado, dar uma advertência rápida geral e religar as máquinas para não atrasar a produção do dia.',
-        impact: { health: -15, legal: -15, productivity: 15, finance: 12 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: 15,
+          finance: 15
+        },
         feedback: 'Foco exclusivo na continuidade do negócio.',
         consequence: 'O faturamento é preservado e os clientes nem percebem o problema. Mas a máquina segue desprotegida e a empresa pode sofrer interdição grave se o MPT for acionado.',
         expert: 'Lucro no curto prazo com exposição à roleta-russa jurídica.'
@@ -2730,7 +2815,12 @@ const ROUNDS_DATA = [
       {
         letter: 'B',
         text: 'Manter a produção, mas colocar o Engenheiro de Segurança operando ao lado das máquinas durante os próximos dias para vigiar os operadores.',
-        impact: { health: 5, legal: -5, productivity: 5, finance: -5 },
+        impact: {
+          health: 5,
+          legal: -5,
+          productivity: 10,
+          finance: 0
+        },
         feedback: 'Mitigação provisória no "olho".',
         consequence: 'Você não perde a produção e evita acidentes bobos pela vigilância, mas gasta o tempo valioso do engenheiro e não resolve a falta de proteção física na máquina (NR-12).',
         expert: 'Supervisão física não substitui engenharia de segurança.'
@@ -2738,7 +2828,12 @@ const ROUNDS_DATA = [
       {
         letter: 'C',
         text: 'Parar o setor inteiro por 3 dias, revisar todas as máquinas e realizar retreinamento em massa com toda a equipe.',
-        impact: { health: 15, legal: 15, productivity: -8, finance: -5 },
+        impact: {
+          health: 15,
+          legal: 15,
+          productivity: -3,
+          finance: 0
+        },
         feedback: 'Segurança absoluta e prioridade à vida.',
         consequence: 'Você elimina qualquer risco imediato e blinda a empresa contra processos criminais e do MPT. Há um impacto inicial de produção, mas o ganho preventivo é absoluto.',
         expert: 'Parar a operação preserva vidas, mostra compromisso e salva a empresa.'
@@ -2746,7 +2841,12 @@ const ROUNDS_DATA = [
       {
         letter: 'D',
         text: 'Ignorar o problema completamente e não tomar nenhuma ação, focando apenas na operação diária e esperando a poeira baixar.',
-        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: -10,
+          finance: -10
+        },
         feedback: 'Decisão desastrosa e omissa.',
         consequence: 'A inércia agravou todos os problemas. A empresa sofreu autuações severas, a produtividade despencou, os custos explodiram e a saúde da equipe colapsou.',
         expert: 'A omissão é a pior estratégia possível na gestão ocupacional.'
@@ -2762,7 +2862,12 @@ const ROUNDS_DATA = [
       {
         letter: 'A',
         text: 'Preservar todos os benefícios integrais e programas de saúde, reduzindo inteligentemente custos de áreas menos críticas no momento.',
-        impact: { health: 15, legal: 5, productivity: -5, finance: -2 },
+        impact: {
+          health: 15,
+          legal: 5,
+          productivity: 0,
+          finance: 3
+        },
         feedback: 'Proteção ao trabalhador acima do corte seco.',
         consequence: 'Os colaboradores se sentem incrivelmente valorizados. Apesar do esforço financeiro, a retenção de talentos e o baixo absenteísmo provam o retorno sobre o investimento.',
         expert: 'Proteger benefícios fideliza o time na crise.'
@@ -2770,7 +2875,12 @@ const ROUNDS_DATA = [
       {
         letter: 'B',
         text: 'Cortar radicalmente o plano de saúde para um modelo básico e suspender todos os programas de bem-estar.',
-        impact: { health: -15, legal: -5, productivity: -10, finance: 20 },
+        impact: {
+          health: -15,
+          legal: -5,
+          productivity: -5,
+          finance: 15
+        },
         feedback: 'Ajuste fiscal agressivo.',
         consequence: 'A empresa atinge a meta de economia financeira no mês. Imediatamente, o talento do time começa a procurar outros empregos e a satisfação desaba.',
         expert: 'Cortes abruptos em saúde geram economia hoje e crise amanhã.'
@@ -2778,7 +2888,12 @@ const ROUNDS_DATA = [
       {
         letter: 'C',
         text: 'Implantar a coparticipação no plano de saúde e amarrar bônus de produção para quem tiver alta presença (Prêmio Assiduidade).',
-        impact: { health: -5, legal: -10, productivity: 15, finance: 8 },
+        impact: {
+          health: -5,
+          legal: -10,
+          productivity: 15,
+          finance: 13
+        },
         feedback: 'Divisão de custos e estímulo de produção.',
         consequence: 'Reduz os custos com o plano e força o aumento da produção. Mas o prêmio assiduidade gera presenteísmo (trabalhadores doentes escondendo sintomas) e risco judicial.',
         expert: 'Prêmio por assiduidade mascara o adoecimento real.'
@@ -2786,7 +2901,12 @@ const ROUNDS_DATA = [
       {
         letter: 'D',
         text: 'Ignorar a diretriz de corte e não tomar nenhuma ação, gastando o caixa livre e esperando as vendas aumentarem magicamente.',
-        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: -10,
+          finance: -10
+        },
         feedback: 'Decisão desastrosa e omissa.',
         consequence: 'A inércia agravou todos os problemas financeiros e resultou na falência da empresa. A omissão foi fatal.',
         expert: 'A omissão é a pior estratégia possível na gestão ocupacional e de negócios.'
@@ -2802,7 +2922,12 @@ const ROUNDS_DATA = [
       {
         letter: 'A',
         text: 'Terceirizar todo o quadro operacional com empresas parceiras de mão de obra temporária, esvaziando o risco trabalhista da empresa matriz.',
-        impact: { health: -15, legal: -15, productivity: 15, finance: 20 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: 15,
+          finance: 15
+        },
         feedback: 'Modelo de negócio ultra-enxuto.',
         consequence: 'A empresa matriz infla seu caixa livre. Contudo, há alta rotatividade, má qualidade de entrega final e enorme passivo de responsabilidade solidária.',
         expert: 'A quarterização do risco sem governança cria passivos ocultos graves.'
@@ -2810,7 +2935,12 @@ const ROUNDS_DATA = [
       {
         letter: 'B',
         text: 'Focar a estratégia exclusivamente na automação robótica das linhas de frente para retirar o ser humano das posições de risco ergonômico.',
-        impact: { health: -5, legal: 15, productivity: 20, finance: -15 },
+        impact: {
+          health: -5,
+          legal: 15,
+          productivity: 15,
+          finance: -10
+        },
         feedback: 'Tecnologia em substituição à exposição.',
         consequence: 'Riscos físicos despencam. A eficiência sobe ao máximo. Porém, o clima despenca com as demissões em massa e o investimento em capex demora muito a se pagar.',
         expert: 'Automação erradica lesões físicas, mas abala a segurança social e financeira de curto prazo.'
@@ -2818,7 +2948,12 @@ const ROUNDS_DATA = [
       {
         letter: 'C',
         text: 'Manter tudo como está hoje, não fazer investimentos futuros e esperar que as leis trabalhistas afrouxem.',
-        impact: { health: -15, legal: -15, productivity: -15, finance: -15 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: -10,
+          finance: -10
+        },
         feedback: 'Decisão desastrosa e omissa.',
         consequence: 'A empresa fica para trás no mercado. Sem ESG e com acidentes em alta, investidores e clientes fogem, levando ao colapso do negócio.',
         expert: 'A omissão é a pior estratégia possível na gestão de longo prazo.'
@@ -2826,7 +2961,12 @@ const ROUNDS_DATA = [
       {
         letter: 'D',
         text: 'Investir na construção de um Ambulatório de Saúde Integrada dentro da fábrica, com equipe própria atuando focada na prevenção e cuidado de base.',
-        impact: { health: 18, legal: 10, productivity: 2, finance: -5 },
+        impact: {
+          health: 18,
+          legal: 10,
+          productivity: 7,
+          finance: 0
+        },
         feedback: 'Saúde como pilar absoluto da empresa.',
         consequence: 'Torna-se referência no setor em cuidado humano. A proteção é forte e o custo médico a longo prazo diminui. A equipe opera com saúde plena.',
         expert: 'Internalizar saúde cria uma cultura de vida.'
@@ -2842,7 +2982,12 @@ const ROUNDS_DATA = [
       {
         letter: 'A',
         text: 'Exigir o retorno de todos ao trabalho 100% presencial imediatamente, onde a empresa já possui o mobiliário adequado, para eliminar o risco em casa.',
-        impact: { health: -5, legal: 15, productivity: -12, finance: -5 },
+        impact: {
+          health: -5,
+          legal: 15,
+          productivity: -7,
+          finance: 0
+        },
         feedback: 'Decisão radical e impopular.',
         consequence: 'O passivo do home office some, mas o clima organizacional desaba. Talentos começam a pedir demissão por perderem a flexibilidade, gerando custos altos de rescisão.',
         expert: 'Forçar o retorno apenas pelo risco ergonômico é uma falha na adaptação do negócio.'
@@ -2850,7 +2995,12 @@ const ROUNDS_DATA = [
       {
         letter: 'B',
         text: 'Fornecer auxílio financeiro para compra de cadeiras e mesas adequadas, e exigir a comprovação e fotos, além de aplicar treinamentos de ergonomia online.',
-        impact: { health: 15, legal: 10, productivity: 5, finance: -4 },
+        impact: {
+          health: 15,
+          legal: 10,
+          productivity: 10,
+          finance: 1
+        },
         feedback: 'Solução estruturada e preventiva.',
         consequence: 'As queixas reduzem drasticamente e a empresa fica protegida legalmente. O custo é administrável e a produtividade sobe consideravelmente com o conforto da equipe.',
         expert: 'Investir na ergonomia do home office é prevenir um passivo invisível gigantesco.'
@@ -2858,7 +3008,12 @@ const ROUNDS_DATA = [
       {
         letter: 'C',
         text: 'Enviar cartilhas por e-mail com dicas de alongamento e postura, responsabilizando o funcionário por cuidar do próprio ambiente de trabalho.',
-        impact: { health: 2, legal: -8, productivity: 0, finance: 5 },
+        impact: {
+          health: 2,
+          legal: -8,
+          productivity: 5,
+          finance: 10
+        },
         feedback: 'Ação paliativa e de baixo custo.',
         consequence: 'Não há impacto financeiro imediato, mas os problemas continuam. Em caso de processo trabalhista, a cartilha não serve como prova suficiente de estrutura.',
         expert: 'Informação não substitui a adequação física do posto de trabalho.'
@@ -2866,7 +3021,12 @@ const ROUNDS_DATA = [
       {
         letter: 'D',
         text: 'Ignorar as queixas e tratar os atestados pontualmente, entendendo que dores nas costas são normais e o home office é uma comodidade do funcionário.',
-        impact: { health: -15, legal: -15, productivity: -10, finance: -10 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: -5,
+          finance: -5
+        },
         feedback: 'Omissão grave e perigosa.',
         consequence: 'As lesões se agravam e viram processos. O absenteísmo dispara e a empresa sofre prejuízos financeiros e legais altíssimos.',
         expert: 'A omissão diante de queixas ergonômicas é a receita certa para processos.'
@@ -2882,7 +3042,12 @@ const ROUNDS_DATA = [
       {
         letter: 'A',
         text: 'Aplicar advertências e suspensões imediatamente para qualquer um flagrado sem EPI, impondo uma política de tolerância zero.',
-        impact: { health: 5, legal: 15, productivity: -10, finance: -2 },
+        impact: {
+          health: 5,
+          legal: 15,
+          productivity: -5,
+          finance: 3
+        },
         feedback: 'Foco estrito na conformidade.',
         consequence: 'O uso de EPIs aumenta pelo medo e a empresa se blinda juridicamente. No entanto, o clima fica péssimo, a liderança perde a confiança da equipe e a produtividade cai pela tensão.',
         expert: 'Punição sem educação gera obediência cega, mas destrói o clima e a confiança.'
@@ -2890,7 +3055,12 @@ const ROUNDS_DATA = [
       {
         letter: 'B',
         text: 'Trocar gradativamente todos os veteranos por funcionários novos que já entram com a cultura de segurança em mente, sem precisar de reeducação.',
-        impact: { health: -5, legal: -5, productivity: -15, finance: -15 },
+        impact: {
+          health: -5,
+          legal: -5,
+          productivity: -10,
+          finance: -10
+        },
         feedback: 'Perda irreparável de capital intelectual.',
         consequence: 'A empresa perde anos de conhecimento técnico. A produção despenca pelos erros dos novatos e os custos com rescisões estouram o orçamento.',
         expert: 'Demitir conhecimento técnico por falta de gestão cultural é uma falha clara de liderança.'
@@ -2898,7 +3068,12 @@ const ROUNDS_DATA = [
       {
         letter: 'C',
         text: 'Envolver a equipe na escolha dos modelos de EPIs, testando diferentes marcas, e promover campanhas educativas valorizando os veteranos como exemplos.',
-        impact: { health: 15, legal: 10, productivity: 5, finance: -3 },
+        impact: {
+          health: 15,
+          legal: 10,
+          productivity: 10,
+          finance: 2
+        },
         feedback: 'Gestão participativa e inteligente.',
         consequence: 'Os veteranos se sentem ouvidos e adotam os EPIs, influenciando novatos. A adesão sobe, o clima melhora e a produtividade flui normalmente sem interrupções de advertências.',
         expert: 'Engajar o colaborador na escolha do EPI é a melhor forma de garantir o uso contínuo.'
@@ -2906,7 +3081,12 @@ const ROUNDS_DATA = [
       {
         letter: 'D',
         text: 'Deixar como está, apenas registrando a entrega dos EPIs na ficha, para ter a assinatura do funcionário caso haja fiscalização.',
-        impact: { health: -15, legal: -10, productivity: 5, finance: 5 },
+        impact: {
+          health: -15,
+          legal: -10,
+          productivity: 10,
+          finance: 10
+        },
         feedback: 'Foco apenas no papel.',
         consequence: 'A empresa foca no papel, mas acidentes acontecem. A justiça entende que não basta entregar, tem que fiscalizar o uso. A empresa perde processos caríssimos.',
         expert: 'Assinatura na ficha não isenta a empresa da obrigação de exigir e educar.'
@@ -2922,7 +3102,12 @@ const ROUNDS_DATA = [
       {
         letter: 'A',
         text: 'Alocar a funcionária em regime de home office 100%, evitando grandes reformas na empresa, mas mantendo a cota de PcD preenchida.',
-        impact: { health: 5, legal: -5, productivity: -5, finance: 10 },
+        impact: {
+          health: 5,
+          legal: -5,
+          productivity: 0,
+          finance: 15
+        },
         feedback: 'Solução fácil, mas excludente.',
         consequence: 'A empresa economiza com reformas, mas a funcionária se sente isolada. O risco legal de discriminação aumenta por excluí-la do convívio social por falta de estrutura.',
         expert: 'Home office forçado por falta de acessibilidade é prática discriminatória na justiça.'
@@ -2930,7 +3115,12 @@ const ROUNDS_DATA = [
       {
         letter: 'B',
         text: 'Fazer apenas adaptações provisórias de baixo custo, como colocar uma rampa de madeira na entrada e improvisar um banheiro.',
-        impact: { health: -10, legal: -10, productivity: -5, finance: 5 },
+        impact: {
+          health: -10,
+          legal: -10,
+          productivity: 0,
+          finance: 10
+        },
         feedback: 'Improviso perigoso.',
         consequence: 'As adaptações fora da norma causam um acidente. A empresa sofre processo por danos morais e materiais, além da multa do Ministério do Trabalho.',
         expert: 'Acessibilidade improvisada é muitas vezes mais perigosa que a falta dela.'
@@ -2938,7 +3128,12 @@ const ROUNDS_DATA = [
       {
         letter: 'C',
         text: 'Ignorar as reclamações e cobrar produtividade normalmente, argumentando que a empresa já cumpriu seu papel social contratando a funcionária.',
-        impact: { health: -15, legal: -15, productivity: -15, finance: -5 },
+        impact: {
+          health: -15,
+          legal: -15,
+          productivity: -10,
+          finance: 0
+        },
         feedback: 'Atitude capacitista e negligente.',
         consequence: 'A funcionária pede demissão por justa causa indireta. A empresa é denunciada ao Ministério Público e sofre danos pesados na reputação.',
         expert: 'Contratar e não dar condições é o caminho rápido para punições severas.'
@@ -2946,7 +3141,12 @@ const ROUNDS_DATA = [
       {
         letter: 'D',
         text: 'Realizar uma reforma estrutural imediata para garantir a acessibilidade e promover um treinamento de inclusão para toda a liderança.',
-        impact: { health: 15, legal: 15, productivity: 5, finance: -6 },
+        impact: {
+          health: 15,
+          legal: 15,
+          productivity: 10,
+          finance: -1
+        },
         feedback: 'Inclusão real e responsável.',
         consequence: 'O ambiente torna-se acessível e acolhedor. A funcionária atinge alta produtividade. O investimento financeiro é compensado pelo engajamento e redução de rotatividade.',
         expert: 'A verdadeira inclusão exige preparar o ambiente físico e cultural.'
@@ -2954,7 +3154,6 @@ const ROUNDS_DATA = [
     ]
   }
 ];
-
 
 // ============================================
 // SURPRISE EVENTS DATA
